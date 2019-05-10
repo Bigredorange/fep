@@ -1,0 +1,10 @@
+{
+  "name": "@fep-project-lib/routes",
+  "version": "0.0.1",
+  "description": "所有系统路由列表",
+  "main": "src/index.js",
+  "devDependencies": {
+    "@fep-project-lib/dll": "^0.0.1",
+    "@fep/launchs-pc": "^0.0.1"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@fep/tools",
+  "version": "0.0.1",
+  "description": "node工具集",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "conventional-changelog": "^3.0.6",
+    "marked": "^0.6.1",
+    "nodemailer": "^5.1.1"
+  }
+}

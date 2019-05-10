@@ -1,0 +1,14 @@
+{
+  "smtp": {
+    "host": "smtp.exmail.qq.com",
+    "port": 465,
+    "sender": {
+      "user": "assistant@joshwong.cn",
+      "pass": "Hro111111"
+    },
+    "receiver": {
+      "to": ["492867726@qq.com"],
+      "cc": []
+    }
+  }
+}

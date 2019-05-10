@@ -1,0 +1,9 @@
+{
+  "name": "@fep-project/v-main",
+  "version": "0.0.1",
+  "description": "初始路由",
+  "main": "src/index.js",
+  "devDependencies": {
+    "@fep-project-lib/ci": "^0.0.1"
+  }
+}

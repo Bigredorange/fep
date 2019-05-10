@@ -1,0 +1,203 @@
+// 表格内小按钮
+.ui-mini-btn {
+  padding: 4px 6px;
+  max-width: 100%;
+  @include clamp(1);
+  display: inline-block;
+}
+// 页脚
+.ui-pagination {
+  padding: 9px 20px;
+  box-shadow: 0px -4px 4px 0px rgba(153, 153, 153, 0.1);
+  background-color: #fff;
+  .total {
+    margin-right: 50px;
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+  }
+  .btn-prev, .btn-next, li {
+    vertical-align: middle;
+    margin: 0 3px;
+    min-width: 30px;
+    height: 32px;
+    border: 1px solid #d2d2d2;
+    border-radius: 3px;
+    padding: 0 5px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    &.active {
+      background-color: #2d8cf0;
+      border-color: #2d8cf0;
+      color: #fff;
+      & + li {
+        border-left: 1px solid #d2d2d2;
+      }
+    }
+  }
+  &.inline {
+    padding: 0;
+    box-shadow: none;
+    text-align: right;
+  }
+  .el-input__inner {
+    height: 32px;
+  }
+}
+// 弹框
+.ui-dialog {
+  border-radius: 5px;
+  .el-dialog__header {
+    padding: 10px 22px;
+    background-color: #eff4f9;
+    border-radius: 5px 5px 0 0;
+  }
+  .el-dialog__title {
+    line-height: 1;
+    font-size: 14px;
+    color: #718193;
+  }
+  .el-dialog__headerbtn {
+    top: 7px;
+    right: 18px;
+  }
+  .el-dialog__body {
+    padding: 16px 22px 30px;
+  }
+  .el-dialog__footer {
+    border-top: 1px solid #dce3eb;
+    padding: 12px 22px;
+    border-radius: 0 0 5px 5px;
+  }
+}
+// 搜索输入框
+.ui-input-search {
+  .el-input-group__append {
+    padding: 0 14px;
+    background-color: #dce3eb;
+    color: #2d8cf0;
+    .el-icon-search {
+      font-weight: bold;
+      font-size: 12px;
+    }
+  }
+}
+// 带下划线的标题
+.ui-title {
+  margin-bottom: 20px;
+  padding: 11px;
+  line-height: 1;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  border-bottom: 1px solid #f5f5f5;
+}
+// 表单布局
+.ui-form {
+  .el-form-item { // 默认两列布局
+    margin-right: 0;
+    width: 49%;
+    display: inline-flex;
+    align-items: center;
+    &.full-row {
+      width: 100% !important;
+    }
+  }
+  &.three-col {
+    .el-form-item {
+      width: 33%;
+    }
+    .el-form-item .restFull{
+      width: 66%;
+    }
+  }
+  &.four-col {
+    .el-form-item {
+      width: 24.5%;
+    }
+  }
+  .el-form-item__content {
+    flex: 1 0 0;
+    padding-right: 30px;
+  }
+  .el-form-item__content .restFull{
+    width: 66%
+  }
+  .el-form-item__label {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #373737;
+  }
+  .el-input {
+    max-width: 330px;
+  }
+  .el-select {
+    max-width: 330px;
+    width: 100%;
+  }
+  .el-date-editor.el-input {
+    max-width: 330px;
+    width: 100%;
+  }
+}
+// 月份选择
+.ui-only-month {
+  .el-date-picker__header {
+    display: none;
+  }
+  .el-picker-panel__content {
+    padding-top: 15px;
+  }
+}
+// 在线编辑表格
+.ui-edit-table {
+  td {
+    padding: 0 !important;
+  }
+  td,
+  .el-table--border td,
+  th.is-leaf {
+    border-color: #d6dfe4;
+  }
+  .el-table--border td,
+  .el-table--border th,
+  .el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+    border-color: #fff;
+  }
+  .el-input {
+    .el-input__inner {
+      border: none;
+      padding: 0 4px;
+      background-color: transparent;
+    }
+  }
+  .el-table__body-wrapper .cell,
+  .el-table__fixed-body-wrapper .cell {
+    display: block;
+    height: 32px;
+    line-height: 32px;
+  }
+  &.disabled {
+    tr, th {
+      background-color: #f0f0f0;
+    }
+    .el-input__inner {
+      background-color: #fff;
+      border-radius: 0;
+    }
+  }
+  .red {
+    color: #F56C6C;
+  }
+}
+// 必传标识
+.ui-required::before {
+	content: '*';
+	color: #f56c6c;
+	margin-right: 4px;
+}
+
+
+

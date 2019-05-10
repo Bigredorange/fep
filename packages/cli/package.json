@@ -1,0 +1,12 @@
+{
+  "name": "@fep/cli",
+  "version": "0.0.1",
+  "description": "可视化命令行",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "@fep/tools": "^0.0.1",
+    "inquirer": "^6.2.0"
+  }
+}

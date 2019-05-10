@@ -1,0 +1,19 @@
+@import './reset.scss', './component/loading.scss', './transition.scss', './element.scss', './ui.scss';
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.download {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 16px;
+    background: url('../assets/icon/download.png') center no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+  }
+}

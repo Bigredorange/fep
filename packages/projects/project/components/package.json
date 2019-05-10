@@ -1,0 +1,12 @@
+{
+  "name": "@fep-project/components",
+  "version": "0.0.1",
+  "description": "业务组件库",
+  "main": "src/index.js",
+  "devDependencies": {
+    "@fep-project-lib/ci": "^0.0.1"
+  },
+  "dependencies": {
+    "wangeditor": "^3.1.1"
+  }
+}

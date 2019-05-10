@@ -1,0 +1,23 @@
+{
+  "name": "@fep-project/bootstrap",
+  "version": "0.0.1",
+  "description": "主入口",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development node ./ci/launch.js",
+    "build": "cross-env NODE_ENV=production node ./ci/launch.js",
+    "analysis": "cross-env NODE_ENV=production ANALYSIS=true node ./ci/launch.js"
+  },
+  "dependencies": {
+    "@fep-project-lib/routes": "^0.0.1",
+    "@fep-project-lib/sass-resources": "^0.0.1",
+    "@fep-project/components": "^0.0.1",
+    "@fep-project/config": "^0.0.1",
+    "@fep-project/core": "^0.0.1",
+    "@fep-project/v-main": "^0.0.1",
+    "element-ui": "2.4.10"
+  },
+  "devDependencies": {
+    "@fep/launchs-pc": "^0.0.1",
+    "cross-env": "^5.2.0"
+  }
+}

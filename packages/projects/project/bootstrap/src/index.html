@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="renderer"  content="webkit">
+    <meta name="keywords" content="HRO系统">
+    <meta name="description" content="HRO系统">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache,no-store">
+    <meta http-equiv="expires" content="0">
+    <link rel="icon" href="<%= webpackConfig.output.publicPath %>favicon.ico">
+    <title>HRO</title>
+    <style>
+      #global-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #fff;
+        z-index: 2000;
+      }
+      #global-loading .circular {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -21px;
+        margin-left: -21px;
+        height: 42px;
+        width: 42px;
+        -webkit-animation: loading-rotate 2s linear infinite;
+        animation: loading-rotate 2s linear infinite;
+      }
+      #global-loading .path {
+        -webkit-animation: loading-dash 1.5s ease-in-out infinite;
+        animation: loading-dash 1.5s ease-in-out infinite;
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: 0;
+        stroke-width: 2;
+        stroke: #409eff;
+        stroke-linecap: round;
+      }
+      @-webkit-keyframes loading-dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -40px;
+        }
+        100% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -120px;
+        }
+      }
+      @keyframes loading-dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -40px;
+        }
+        100% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -120px;
+        }
+      }
+      @-webkit-keyframes loading-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes loading-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      #global-reload {
+        display: none;
+        z-index: 2000;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border: 1px solid #409eff;
+        background-color: #409eff;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+        transition: all 0.3s;
+      }
+      #global-reload:hover {
+        background-color: #fff;
+        color: #409eff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="global-loading">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" />
+      </svg>
+    </div>
+    <div id="global-reload" onclick="location.reload()">刷新试试</div>
+    <script src="https://lib.baomitu.com/babel-polyfill/6.26.0/polyfill.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "@fep-project-lib/dll",
+  "version": "0.0.1",
+  "description": "公共依赖库",
+  "dependencies": {
+    "vue": "^2.6.10",
+    "vuex": "^3.0.1",
+    "vue-router": "^3.0.2"
+  },
+  "devDependencies": {
+    "@fep/launchs-pc": "^0.0.1"
+  }
+}

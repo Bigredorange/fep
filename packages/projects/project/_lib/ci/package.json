@@ -1,0 +1,9 @@
+{
+  "name": "@fep-project-lib/ci",
+  "version": "0.0.1",
+  "description": "子模块打包工具",
+  "devDependencies": {
+    "@fep-project-lib/dll": "^0.0.1",
+    "@fep/launchs-pc": "^0.0.1"
+  }
+}

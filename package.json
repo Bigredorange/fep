@@ -1,0 +1,25 @@
+{
+  "name": "fep",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean -y",
+    "dev": "node ./start.js dev",
+    "build": "node ./start.js build",
+    "analysis": "node ./start.js analysis",
+    "test": "node ./start.js test",
+    "release:note": "node ./start.js release",
+    "commit": "git cz",
+    "lint": "node ./start.js lint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./packages/cli/src/script/commit.js"
+    }
+  },
+  "devDependencies": {
+    "commitizen": "^3.1.1",
+    "lerna": "^3.13.4"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "system": {
+    "alias": "dianmi",
+    "name": "灵活用工平台",
+    "envName": "本地测试"
+  },
+  "entryOutputPublicPath": "",
+  "messageSocket": "ws://localhost:8700",
+  "baseURL": "//10.1.6.7:8080"
+}

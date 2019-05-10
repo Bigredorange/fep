@@ -1,0 +1,8 @@
+{
+  "name": "@fep-project-lib/sass-resources",
+  "version": "0.0.1",
+  "description": "scss的公共变量和方法",
+  "devDependencies": {
+    "@fep/launchs-pc": "^0.0.1"
+  }
+}

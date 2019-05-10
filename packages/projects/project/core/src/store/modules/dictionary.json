@@ -1,0 +1,119 @@
+{
+  "dicGender":	{
+    "name": "性别"
+  },
+  "dicCertiFicates":	{
+    "name": "证件类型"
+  },
+  "dicMarital":	{
+    "name": "婚育状况"
+  },
+  "dicHouseHold":	{
+    "name": "户籍性质"
+  },
+  "dicTenureStatus":	{
+    "name": "任职状态"
+  },
+  "dicEmpType":	{
+    "name": "员工类型"
+  },
+  "dicTaxType":	{
+    "name": "个税类别"
+  },
+  "dicSignType":	{
+    "name": "签约类型"
+  },
+  "dicContractType":	{
+    "name": "合同类型"
+  },
+  "dicContractStatus":	{
+    "name": "合同状态"
+  },
+  "dicEmpContractType":	{
+    "name": "雇员合同类型"
+  },
+  "dicEducation":	{
+    "name": "学历"
+  },
+  "dicBank":	{
+    "name": "银行"
+  },
+  "dicCustomerType":	{
+    "name": "客户类型"
+  },
+  "dicWorkStatus":	{
+    "name": "工单状态"
+  },
+  "dicBillStatus":	{
+    "name": "账单状态"
+  },
+  "dicServiceStatus":	{
+    "name": "服务状态"
+  },
+  "dicSupplierType":	{
+    "name": "供应商类型"
+  },
+  "dicIndustry":	{
+    "name": "行业"
+  },
+  "dicCity":	{
+    "name": "城市"
+  },
+  "dicInvoiced":	{
+    "name": "开票商品"
+  },
+  "dicPoliticalFace":	{
+    "name": "政治面貌"
+  },
+  "dicNation":	{
+    "name": "民族"
+  },
+  "dicEmploymentType":	{
+    "name": "用工类型"
+  },
+  "dicQuitReason":	{
+    "name": "离职原因"
+  },
+  "dicServiceItems": {
+    "name": "服务项目"
+  },
+  "dicCompanyNature": {
+    "name": "公司性质"
+  },
+  "dicClientProperty": {
+    "name": "客户属性"
+  },  
+  "dicCominsType": {
+    "name": "险种类别"
+  },
+  "dicInsuranceCompany": {
+    "name": "保险公司"
+  },
+  "dicServiceCity": {
+    "name": "服务城市"
+  },
+  "dicServiceCalmet": {
+    "name": "服务费计算方式"
+  },
+  "wageTypes": {
+    "name": "工资类型",
+    "value": [
+      {
+        "id": 0,
+        "value": "薪金工资"
+      },
+      {
+        "id": 1,
+        "value": "劳务工资"
+      },
+      {
+        "id": 2,
+        "value": "年终奖"
+      },
+      {
+        "id": 3,
+        "value": "非居民工资"
+      }
+    ]
+  }
+}

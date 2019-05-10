@@ -1,0 +1,9 @@
+{
+  "name": "@fep-project/config",
+  "version": "0.0.1",
+  "description": "配置文件",
+  "main": "src/index.js",
+  "devDependencies": {
+    "@fep-project-lib/ci": "^0.0.1"
+  }
+}
