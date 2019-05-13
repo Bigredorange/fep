@@ -54,11 +54,7 @@ const validateRight = (to) => {
  */
 const setTitle = (to) => {
   let { systemName } = Vue.prototype;
-  if (systemName === 'crm') {
-    systemName = 'CRM系统';
-  } else {
-    systemName = 'HRO系统';
-  }
+  systemName = '灵工平台';
   const title = to.matched.reduce((name, match) => {
     const subName = match.meta && match.meta.title;
     return subName ? `${name}-${subName}` : name;

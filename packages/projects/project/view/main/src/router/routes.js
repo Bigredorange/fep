@@ -12,22 +12,23 @@
 const RouterView = {
   template: '<router-view></router-view>',
 };
-
+const whiteListRoutes = [
+  {
+    path: '/login',
+    component: () => import(/* webpackChunkName: "v-login" */ '../view/login/index.vue'),
+    meta: {
+      // noLoginRequired: true,
+      isRight: true,
+    },
+  },
+];
 const routes = [
   {
-    path: '/',
-    component: () => import(/* webpackChunkName: "v-main" */ '../view/index.vue'),
-    redirect: '/login',
+    path: '/manage',
+    component: () => import(/* webpackChunkName: "v-manage" */ '../view/manage/index.vue'),
     children: [
       {
-        path: '/login',
-        component: () => import(/* webpackChunkName: "v-login" */ '../view/login/index.vue'),
-        meta: {
-          noLoginRequired: true,
-        },
-      },
-      {
-        path: '/sys',
+        path: 'sys',
         component: RouterView,
         redirect: 'sys/org',
         icon: 'sys',
@@ -41,11 +42,32 @@ const routes = [
             meta: {
               title: '组织架构',
             },
-            component: () => import(/* webpackChunkName: "v-org" */ '../view/sys/org/index.vue'),
+            component: () => import(/* webpackChunkName: "v-org" */ '../view/manage/sys/org/index.vue'),
+          },
+          {
+            path: 'org2',
+            // redirect: 'org',
+            meta: {
+              title: '组织架构2',
+            },
+            component: () => import(/* webpackChunkName: "v-org" */ '../view/manage/sys/org/index.vue'),
           },
         ],
       },
     ],
+  },
+  ...whiteListRoutes,
+  {
+    path: '/404',
+    component: () => import(/* webpackChunkName: "v-404" */ '../view/404/index.vue'),
+  },
+  {
+    path: '/',
+    redirect: '/login',
+  },
+  {
+    path: '*',
+    redirect: '/404',
   },
 ];
 

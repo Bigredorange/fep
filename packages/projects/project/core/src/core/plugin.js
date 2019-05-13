@@ -29,7 +29,7 @@ export default {
     Vue.prototype.$opt = (key) => { // 获取key对应options值
       const dics = store.state.options[key];
       if (!dics || !dics.length) {
-        store.dispatch('options/getDataDictionary', key);
+        // store.dispatch('options/getDataDictionary', key);
       }
       return dics || [];
     };

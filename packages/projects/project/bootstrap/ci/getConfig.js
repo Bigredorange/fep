@@ -4,13 +4,8 @@ const path = require('path');
 const pages = [
   {
     key: 'entry',
-    title: 'HRO',
+    title: '灵工平台',
     outputPublicPath: '',
-  },
-  {
-    key: 'cbas',
-    title: '客服系统',
-    outputPublicPath: 'cbas',
   },
 ];
 

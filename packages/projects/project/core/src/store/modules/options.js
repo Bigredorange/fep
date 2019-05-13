@@ -8,7 +8,7 @@ Object.keys(dictionary).forEach((key) => {
   initDictionary[key] = dictionary[key].value || [];
 });
 
-const fetchKeys = []; // 记录已发起字典查询的key，防止重复查询字典
+// const fetchKeys = []; // 记录已发起字典查询的key，防止重复查询字典
 
 export default {
   namespaced: true,
@@ -30,7 +30,7 @@ export default {
   actions: {
     async init({ dispatch }) {
       // 获取所属签约公司
-      await dispatch('getMySignCompanys');
+      // await dispatch('getMySignCompanys');
       // 获取所有签约公司
       await dispatch('getSignCompanys');
     },
@@ -43,29 +43,29 @@ export default {
         });
       });
     },
-    getMySignCompanys({ state, commit }) {
-      if (state.mySignCompanys.length) return Promise.resolve();
-      return Vue.prototype.$api.signCompanyListAll().then((res) => {
-        commit('setOption', {
-          key: 'mySignCompanys',
-          value: res,
-        });
-      });
-    },
-    getDataDictionary({ state, commit }, key) {
-      if ((state[key] && state[key].length) || fetchKeys.includes(key)) return;
-      fetchKeys.push(key);
-      Vue.prototype.$api.codeDictionaryGetCodeDictionary({
-        types: key,
-      }).then((res) => {
-        res.forEach((item) => {
-          commit('setOption', {
-            key: item.type,
-            value: item.dataList || [],
-          });
-        });
-      });
-    },
+    // getMySignCompanys({ state, commit }) {
+    //   if (state.mySignCompanys.length) return Promise.resolve();
+    //   return Vue.prototype.$api.signCompanyListAll().then((res) => {
+    //     commit('setOption', {
+    //       key: 'mySignCompanys',
+    //       value: res,
+    //     });
+    //   });
+    // },
+    // getDataDictionary({ state, commit }, key) {
+    //   if ((state[key] && state[key].length) || fetchKeys.includes(key)) return;
+    //   fetchKeys.push(key);
+    //   Vue.prototype.$api.codeDictionaryGetCodeDictionary({
+    //     types: key,
+    //   }).then((res) => {
+    //     res.forEach((item) => {
+    //       commit('setOption', {
+    //         key: item.type,
+    //         value: item.dataList || [],
+    //       });
+    //     });
+    //   });
+    // },
     setDefaultSignCompanyId({ state }) {
       if (!$db('signCompanyId')) {
         $db('signCompanyId', state.signCompanys[0].id);
