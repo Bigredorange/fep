@@ -54,6 +54,31 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'customer',
+        component: RouterView,
+        redirect: 'customer/list',
+        icon: 'sys',
+        meta: {
+          title: '客户管理',
+        },
+        children: [
+          {
+            path: 'list',
+            meta: {
+              title: '列表1',
+            },
+            component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/list/index.vue'),
+          },
+          {
+            path: 'edit',
+            meta: {
+              title: '组织架构2',
+            },
+            component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
+          },
+        ],
+      },
     ],
   },
   ...whiteListRoutes,

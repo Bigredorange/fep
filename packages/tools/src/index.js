@@ -8,7 +8,7 @@
 // const sendReleaseNote = require('./scripts/send-release-note');
 // const getCMDArgs = require('./utils/get-CMD-args');
 const dirs = require('./dirs');
-
+const watch = require('./watch');
 module.exports = {
   // genReleaseNote,
   // sendEmail,
@@ -16,4 +16,5 @@ module.exports = {
   // sendReleaseNote,
   // getCMDArgs,
   dirs,
+  watch,
 };

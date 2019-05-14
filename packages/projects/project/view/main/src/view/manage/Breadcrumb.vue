@@ -2,7 +2,13 @@
   <div
     class="con"
   >
-    <span>您的位置：</span>
+    <el-button
+      icon="el-icon-back"
+      class="back"
+    >
+      返回
+    </el-button>
+    <span class="loc">您的位置：</span>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
         v-for="(item, index) in breadcrumbList"
@@ -29,8 +35,6 @@ export default {
   },
   watch: {
     $route() {
-      console.log(this.$route);
-      this.breadcrumbList = [];
       this.generateBreadcrumpList();
     },
   },
@@ -40,14 +44,12 @@ export default {
   methods: {
     generateBreadcrumpList() {
       const { path } = this.$route;
-      console.log(path);
-      if (path.includes('/manage')) {
-        let pathArr = path.split('/');
-        pathArr = pathArr.slice(2);
-        pathArr.forEach((pathEle) => {
-          this.getTitle(this.menuList, pathEle);
-        });
-      }
+      this.breadcrumbList = [];
+      let pathArr = path.split('/');
+      pathArr = pathArr.slice(2);
+      pathArr.forEach((pathEle) => {
+        this.getTitle(this.menuList, pathEle);
+      });
     },
     getTitle(arr, path) {
       const obj = {};
@@ -78,13 +80,30 @@ export default {
 </script>
 <style lang="scss" scoped>
 .con {
+  .back {
+    width: 60px;
+    height: 22px;
+    background-color: #ffffff;
+    border-radius: 11px;
+    padding: 0;
+    color: #70829a;
+    font-size: 12px;
+    margin-right: 20px;
+    &:hover {
+      background-color: #ecf5ff;
+    }
+  }
   display: flex;
   width: 100%;
   padding: 10px;
-  background: #f8f8f8;
-  font-size: 14px;
+  background: #fff;
+  font-size: 12px;
+  .loc {
+   color: #76879d;
+   line-height: 22px;
+  }
 }
 .el-breadcrumb {
-  line-height: 19px;
+  line-height: 22px;
 }
 </style>

@@ -9,16 +9,12 @@
           <div
             class="menu-submenu-title"
             :class="{
-              'active': isActiveMainMenu(menu),
+              'active': isActiveMenu(menu.path),
               'rotate': curIndex === index,
             }"
             @click="selectSubmenu(menu, index)"
           >
             <span>
-              <i
-                class="icon"
-                :style="menu.icon && { backgroundImage: `url(${require('../../assets/menu/' + menu.icon + (isActiveMainMenu(menu) ? '_blue' : '') + '.png')})` }"
-              />
               {{ menu.meta.title | getTitle }}
             </span>
             <i
@@ -37,7 +33,7 @@
                   :key="item.path"
                 >
                   <router-link
-                    :to="`/manage/${menu.path}/${item.path}`"
+                    :to="`/manage/${menu.parentPath}/${menu.path}`"
                     :class="{
                       'subActive': isActiveMenu(`/${menu.path}/${item.path}`)
                     }"
@@ -97,12 +93,13 @@ export default {
     selectSubmenu(menu, index) {
       // 当数据含路径参数，则跳转相应路由
       if (!menu.children || menu.noDropdown) {
-        this.$router.push(`/${menu.path}`);
+        this.$router.push(`/manage/${menu.parentPath}/${menu.path}`);
       }
       this.curIndex = index === this.curIndex ? null : index;
     },
     isActiveMenu(path) { // 子菜单是否激活
-      return new RegExp(`^${path}(/{1}.*)?$`).test(this.$route.path);
+      // return new RegExp(`^${path}(/{1}.*)?$`).test(this.$route.path);
+      return this.$route.path.includes(path);
     },
     isActiveMainMenu(menu) { // 主菜单是否激活
       const isEntry = !menu.children || !menu.children.length || menu.noDropdown;
@@ -114,7 +111,7 @@ export default {
         // return this.$p(path);
         return path;
       };
-      return menu.meta.title && !menu.meta.hidden && isRight(menu);
+      return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
     },
   },
 };
@@ -133,7 +130,7 @@ export default {
   border-right: 1px solid #d2d2d2;
   overflow-x: hidden;
   overflow-y: auto;
-  background: #edf0f4;
+  background: #fff;
   color: #000;
   // transition: all 0.3s; // TODO: 后期增加折叠功能后开放
   flex: none;
@@ -207,7 +204,7 @@ export default {
 .menu-list {
   width: 100%;
   font-size: 12px;
-  background: #edf0f4;
+  background: #fff;
 }
 
 .menu-submenu-title {
@@ -217,19 +214,16 @@ export default {
   height: 38px;
   cursor: pointer;
   transition: all 0.3s;
+  margin: 0 15px;
+  border-bottom: 1px solid #f0f3f6;
   > span {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    .icon {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      margin: 0 12px 0 20px;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      transition: all 0.3s;
+    justify-content: flex-start;
+    align-items: flex-start;
+    color: #76879d;
+    font-size: 16px;
+    &:hover {
+      color: #356fb8;
     }
   }
 
@@ -245,24 +239,26 @@ export default {
     margin-right: 8px;
   }
   &.active {
-    background-color: #fff;
-    color: #2d8cf0;
+    span {
+    color: #356fb8 !important;
+
+    }
   }
   &.rotate {
     .arrow {
       transform: rotateZ(180deg);
     }
   }
-  &:not(.active):hover {
-    background-color: #e2e7ed;
-  }
+  // &:not(.active):hover {
+  //   background-color: rgb(153, 147, 147);
+  // }
 }
 
 .menu {
   overflow: hidden;
   max-height: 400px;
   cursor: pointer;
-  background: #e2e7ed;
+  background: #fff;
   li {
     a {
       display: flex;

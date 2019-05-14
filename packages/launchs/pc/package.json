@@ -13,6 +13,7 @@
 		"@babel/plugin-transform-modules-commonjs": "^7.4.3",
 		"@babel/preset-env": "^7.3.4",
 		"autoprefixer": "^9.5.0",
+		"@fep/tools": "0.0.1",
 		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.5",
 		"babel-plugin-component": "^1.1.1",

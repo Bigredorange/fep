@@ -7,8 +7,12 @@
           @click="$router.push('/')"
         >灵工平台</span>
       </div>
+      <menus
+        class="menu"
+        :menu-list="menuList"
+      />
       <div class="topbar-right">
-        <ul class="buttons-list">
+        <!-- <ul class="buttons-list">
           <li>
             <el-tooltip
               content="组织架构"
@@ -72,19 +76,21 @@
               </figure>
             </el-tooltip>
           </li>
-        </ul>
+        </ul> -->
         <div
           v-clickoutside="() => showDropdown = false"
           class="selector"
           @click="showDropdown = !showDropdown;"
         >
           <img
-            src="../../assets/img/Admin2.png"
+            src="../../assets/icon/user_h.png"
             alt=""
+            height="14"
+            width="14"
           >
-          <span>{{ $store.state.hroUserinfo.username }}</span>
+          <span>{{ $store.state.hroUserinfo.username || '张果果' }}</span>
           <img
-            src="../../assets/img/dropdown1.png"
+            src="../../assets/icon/drop-down2.png"
             alt=""
           >
           <transition name="select-slide">
@@ -116,7 +122,19 @@
 </template>
 
 <script>
+// import Menu from './Menu.vue';
+import Menus from './Menu.vue';
+
 export default {
+  components: {
+    Menus,
+  },
+  props: {
+    menuList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       showDropdown: false,
@@ -251,6 +269,8 @@ export default {
   padding: 10px;
   background-color: #629BE2;
   border-radius: 5px;
+  width: 120px;
+  border-radius: 20px;
   cursor: pointer;
   span {
     margin-left: 8px;
@@ -261,7 +281,7 @@ export default {
 .dropdown-menu {
   position: absolute;
   top: 40px;
-  left: 0;
+  left: 10px;
   width: 100px;
   color: #333;
   background: #fff;
@@ -300,5 +320,9 @@ export default {
     border-radius: 50%;
     background-color: #fa5e5e;
   }
+}
+.menu {
+  left: 160px;
+  position: fixed;
 }
 </style>

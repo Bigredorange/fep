@@ -2,8 +2,10 @@ const devServer = require('./dev-server');
 const { parser } = require('./parser');
 const compile = require('./compile');
 const lint = require('./script/lint');
+const tools = require('@fep/tools');
 
 module.exports = {
+  ...tools, // 工具集
   set(option) { // 编译配置
     this._webpackConfig = parser(option)// 将配置解析为webpack原始配置
     return this;

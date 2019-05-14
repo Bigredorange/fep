@@ -77,7 +77,7 @@ export default () => {
 
   router.beforeEach(async (to, from, next) => {
     NProgress.start();
-
+    console.log(to.path);
     if (!needLogin(to)) { // 不需要登录
       next();
       return;
