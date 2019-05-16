@@ -43,6 +43,30 @@
                 @keyup.enter.native="submitForm"
               />
             </el-form-item>
+            <el-form-item prop="captcha">
+              <i class="password" />
+              <el-input
+                ref="captcha"
+                v-model.trim="form.captcha"
+                clearable
+                placeholder="验证码"
+                @keyup.enter.native="submitForm"
+              />
+            </el-form-item>
+            <el-form-item>
+              <div class="verification">
+                <img
+                  ref="verificationImg"
+                  height="40"
+                  width="120"
+                >
+                <el-button
+                  @click="getVerificationCode"
+                >
+                  换一张
+                </el-button>
+              </div>
+            </el-form-item>
             <el-button
               class="confirm"
               type="primary"
@@ -78,11 +102,19 @@ export default {
         callback();
       }
     };
+    const validCaptcha = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入验证码'));
+      } else {
+        callback();
+      }
+    };
     return {
       loading: false,
       form: {
         username: '',
         password: '',
+        captcha: '',
       },
       rules: {
         username: [{
@@ -93,8 +125,13 @@ export default {
           validator: validPass,
           trigger: 'blur',
         }],
+        captcha: [{
+          validator: validCaptcha,
+          trigger: 'blur',
+        }],
       },
       checked: false,
+      src: '',
     };
   },
   mounted() {
@@ -105,6 +142,7 @@ export default {
 
     this.$cookie.remove(sessionStorage.hroTokenName);
     sessionStorage.clear();
+    this.getVerificationCode();
   },
   methods: {
     manageToken(token) {
@@ -127,32 +165,26 @@ export default {
       await this.$refs.form.validate();
       this.$refs.account.blur();
       this.$refs.password.blur();
+      this.$refs.captcha.blur();
       this.loading = true;
       this.$api.login({
-        account: this.form.username,
+        username: this.form.username,
         password: this.$utils.aesEncrypt(this.form.password),
+        captcha: this.form.captcha,
       }).then((res) => {
-        if (!res.privilege.length) {
-          this.$message.error('该账号暂无分配系统');
-          return;
-        }
-        this.manageToken(res.accessToken);
-        let link = '';
-        switch (res.privilege[0]) {
-          case 'CBAS':
-            link = this.$config.cbasLink;
-            break;
-          case 'CRM':
-            link = this.$config.crmLink;
-            break;
-        }
-        if (!link) {
-          this.$message.error('该账号分配地址有误，请联系系统管理员');
-          return;
-        }
-        window.location.href = link;
+        const { token } = res;
+        this.manageToken(token);
+        // sessionStorage.setItem('fepUserInfo', JSON.stringify(userInfo));
+        // this.$store.commit('setFepUserinfo', userInfo);
+        this.$router.push('/manage/sys');
       }).catch(() => {}).finally(() => {
         this.loading = false;
+      });
+    },
+    getVerificationCode() {
+      this.$api.verificationCode().then((res) => {
+        this.src = window.URL.createObjectURL(res);
+        this.$refs.verificationImg.src = this.src;
       });
     },
   },
@@ -346,5 +378,9 @@ h1 {
   line-height: 1;
   font-size: 14px;
   color: #99a2aa;
+}
+.verification {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

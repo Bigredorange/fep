@@ -88,7 +88,7 @@
             height="14"
             width="14"
           >
-          <span>{{ $store.state.hroUserinfo.username || '张果果' }}</span>
+          <span>{{ $store.state.fepUserInfo.username || '张果果' }}</span>
           <img
             src="../../assets/icon/drop-down2.png"
             alt=""
@@ -145,7 +145,7 @@ export default {
   },
   computed: {
     privilege() {
-      const { privileges } = this.$store.state.hroUserinfo;
+      const { privileges } = this.$store.state.fepUserInfo;
       return privileges ? privileges.split(',') : [];
     },
   },

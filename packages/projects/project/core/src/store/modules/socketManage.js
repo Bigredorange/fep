@@ -60,7 +60,7 @@ export default {
       rootState,
     }) {
       console.log('onclose');
-      if (!rootState.hroUserinfo.account) return;
+      if (!rootState.fepUserInfo.account) return;
       const timer = setTimeout(() => {
         dispatch('init');
       }, state.heartBeat);
@@ -68,7 +68,7 @@ export default {
     },
     init({ commit, dispatch, rootState }) {
       try {
-        const socket = new WebSocket(`${Vue.prototype.$config.messageSocket}/${rootState.hroUserinfo.account}`);
+        const socket = new WebSocket(`${Vue.prototype.$config.messageSocket}/${rootState.fepUserInfo.account}`);
         socket.onopen = () => dispatch('onopen');
         socket.onmessage = data => dispatch('onmessage', data);
         socket.onclose = () => dispatch('onclose');
@@ -92,7 +92,7 @@ export default {
         fromUserId: 'SYS',
         msgType: 'TEST',
         text: '测试',
-        toUserId: rootState.hroUserinfo.account,
+        toUserId: rootState.fepUserInfo.account,
       }));
     },
   },

@@ -94,7 +94,7 @@ export default {
     return {
       dialogShow: false,
       infoLoading: false,
-      userinfo: this.$store.state.hroUserinfo,
+      userinfo: this.$store.state.fepUserInfo,
       info: {
         email: null,
         phone: null,
@@ -154,7 +154,7 @@ export default {
       this.dialogShow = false;
     },
     open() {
-      this.userinfo = this.$store.state.hroUserinfo;
+      this.userinfo = this.$store.state.fepUserInfo;
       this.info = {
         email: this.userinfo.email,
         phone: this.userinfo.phone,
@@ -175,8 +175,8 @@ export default {
     },
     updateLocalUserinfo() {
       this.$api.userGetUserInfo().then((res) => {
-        sessionStorage.hroUserinfo = JSON.stringify(res);
-        this.$store.commit('setHroUserinfo', res);
+        sessionStorage.fepUserInfo = JSON.stringify(res);
+        this.$store.commit('setFepUserinfo', res);
       });
     },
   },

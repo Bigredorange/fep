@@ -10,7 +10,8 @@ const { $config } = Vue.prototype;
 
 // 配置接口地址
 axios.defaults.baseURL = $config.baseURL;
-
+// 允许请求携带cookie信息
+axios.defaults.withCredentials = true;
 // 配置超时时间
 axios.defaults.timeout = 180e3;
 // 配置请求头
@@ -115,6 +116,8 @@ const put = (url, arg, cfg = {}) => axios.put(url, qs.stringify(arg), cfg);
 
 const del = (url, arg, cfg = {}) => axios.delete(arg ? `${url}?${qs.stringify(arg)}` : url, cfg);
 
+const patch = (url, arg, cfg = {}) => axios.patch(arg ? `${url}?${qs.stringify(arg)}` : url, cfg);
+
 const postForm = (url, arg, cfg = {}) => {
   const formData = new FormData();
   if (arg) {
@@ -163,4 +166,5 @@ module.exports = {
   getBlob,
   postJson,
   putJson,
+  patch,
 };

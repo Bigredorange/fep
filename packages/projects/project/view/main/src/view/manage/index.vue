@@ -34,12 +34,12 @@ export default {
   },
   watch: {
     $route() {
-      console.log(routes.main[0].children);
       this.getSubmenuList();
     },
   },
   mounted() {
     this.getSubmenuList();
+    this.setParentPath(this.menuList);
   },
   methods: {
     getSubmenuList() {
@@ -52,6 +52,17 @@ export default {
       this.submenuList = temp.children.map((ele) => {
         ele.parentPath = second;
         return ele;
+      });
+    },
+    setParentPath(arr) {
+      arr.forEach((element) => {
+        element.parentPath = 'manage';
+        if (element.children) {
+          element.children.map((ele) => {
+            ele.parentPath = element.path;
+            return ele;
+          });
+        }
       });
     },
   },

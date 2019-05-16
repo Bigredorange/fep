@@ -14,18 +14,18 @@ const vuex = new Vuex.Store({
   },
   state: {
     tableHeight: null, // 页面高度
-    hroUserinfo: {}, // 用户信息
+    fepUserInfo: {}, // 用户信息
     permissionList: [], // 权限路径列表
     messageCount: 0, // 系统消息数
   },
   mutations: {
     reset(state) {
-      state.hroUserinfo = {};
+      state.fepUserInfo = {};
       state.permissionList = [];
       state.messageCount = 0;
     },
-    setHroUserinfo(state, hroUserinfo) {
-      state.hroUserinfo = hroUserinfo;
+    setFepUserInfo(state, fepUserInfo) {
+      state.fepUserInfo = fepUserInfo;
     },
     setTable(state, height) {
       state.tableHeight = height - 200;
@@ -61,20 +61,20 @@ const vuex = new Vuex.Store({
     getMessageCount({ state, commit }) { // 获取站内信数量
       return Vue.prototype.$api.remindUnReadNum({
         receiverSys: 1,
-        receiverId: state.hroUserinfo.id,
+        receiverId: state.fepUserInfo.id,
       }).then((count) => {
         commit('setMessageCount', Number(count));
       });
     },
     getUserInfo({ commit }) {
-      if (sessionStorage.hroUserinfo) {
-        commit('setHroUserinfo', JSON.parse(sessionStorage.hroUserinfo));
+      if (sessionStorage.fepUserInfo) {
+        commit('setFepUserInfo', JSON.parse(sessionStorage.fepUserInfo));
         return Promise.resolve();
       }
-      return Vue.prototype.$api.userGetUserInfo().then((res) => {
+      return Vue.prototype.$api.getUserInfo().then((res) => {
         // 缓存用户信息
-        sessionStorage.hroUserinfo = JSON.stringify(res);
-        commit('setHroUserinfo', res);
+        sessionStorage.fepUserInfo = JSON.stringify(res);
+        commit('setFepUserInfo', res);
       });
     },
     getPermissionList({ commit }) {

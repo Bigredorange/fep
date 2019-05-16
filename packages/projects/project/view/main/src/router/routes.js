@@ -17,70 +17,108 @@ const whiteListRoutes = [
     path: '/login',
     component: () => import(/* webpackChunkName: "v-login" */ '../view/login/index.vue'),
     meta: {
-      // noLoginRequired: true,
+      noLoginRequired: true,
       isRight: true,
     },
   },
 ];
+const asyncRoutes = [{
+  path: '/manage',
+  component: () => import(/* webpackChunkName: "v-manage" */ '../view/manage/index.vue'),
+  children: [
+    {
+      path: 'sys',
+      component: RouterView,
+      redirect: 'sys/org',
+      icon: 'sys',
+      meta: {
+        title: '系统管理',
+      },
+      children: [
+        {
+          path: 'org',
+          meta: {
+            title: '组织架构',
+          },
+          component: () => import(/* webpackChunkName: "v-org" */ '../view/manage/sys/org/index.vue'),
+        },
+        {
+          path: 'role',
+          meta: {
+            title: '角色管理',
+          },
+          component: () => import(/* webpackChunkName: "v-role" */ '../view/manage/sys/role/index.vue'),
+        },
+        {
+          path: 'authority',
+          meta: {
+            title: '权限管理',
+          },
+          component: () => import(/* webpackChunkName: "v-authority" */ '../view/manage/sys/authority/index.vue'),
+        },
+        {
+          path: 'user',
+          component: RouterView,
+          redirect: 'user/list',
+          icon: 'sys',
+          meta: {
+            title: '用户管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-user" */ '../view/manage/sys/user/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '用户详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sys/user/edit/index.vue'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: 'customer',
+      component: RouterView,
+      redirect: 'customer/list',
+      icon: 'sys',
+      meta: {
+        title: '客户管理',
+      },
+      children: [
+        {
+          path: 'list',
+          meta: {
+            title: '列表',
+          },
+          component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/list/index.vue'),
+        },
+        {
+          path: 'edit',
+          meta: {
+            title: '组织架构2',
+          },
+          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
+        },
+      ],
+    },
+    {
+      path: 'home',
+      component: () => import(/* webpackChunkName: "v-home" */ '../view/manage/home/index.vue'),
+      meta: {
+        title: '首页',
+      },
+    },
+  ],
+}];
 const routes = [
-  {
-    path: '/manage',
-    component: () => import(/* webpackChunkName: "v-manage" */ '../view/manage/index.vue'),
-    children: [
-      {
-        path: 'sys',
-        component: RouterView,
-        redirect: 'sys/org',
-        icon: 'sys',
-        meta: {
-          title: '系统管理',
-        },
-        children: [
-          {
-            path: 'org',
-            // redirect: 'org',
-            meta: {
-              title: '组织架构',
-            },
-            component: () => import(/* webpackChunkName: "v-org" */ '../view/manage/sys/org/index.vue'),
-          },
-          {
-            path: 'org2',
-            // redirect: 'org',
-            meta: {
-              title: '组织架构2',
-            },
-            component: () => import(/* webpackChunkName: "v-org" */ '../view/manage/sys/org/index.vue'),
-          },
-        ],
-      },
-      {
-        path: 'customer',
-        component: RouterView,
-        redirect: 'customer/list',
-        icon: 'sys',
-        meta: {
-          title: '客户管理',
-        },
-        children: [
-          {
-            path: 'list',
-            meta: {
-              title: '列表1',
-            },
-            component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/list/index.vue'),
-          },
-          {
-            path: 'edit',
-            meta: {
-              title: '组织架构2',
-            },
-            component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
-          },
-        ],
-      },
-    ],
-  },
+  ...asyncRoutes,
   ...whiteListRoutes,
   {
     path: '/404',
@@ -101,4 +139,5 @@ const staticRoutes = JSON.parse(JSON.stringify(routes));
 module.exports = {
   routes,
   staticRoutes,
+  asyncRoutes,
 };

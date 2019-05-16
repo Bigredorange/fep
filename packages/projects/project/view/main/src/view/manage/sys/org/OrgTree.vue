@@ -6,8 +6,8 @@
       highlight-current
       node-key="id"
       :props="{
-        label: 'title',
-        children: 'childrenList',
+        label: 'name',
+        children: 'children',
       }"
       :data="treeData"
       :filter-node-method="filterNode"
@@ -20,18 +20,19 @@
         placement="right"
       >
         <div class="label">
-          {{ data.title }}
+          {{ data.name }}
         </div>
         <div
           slot="content"
           class="btns"
         >
-          <template v-if="node.level <= 4">
+          <template v-if="node.level <= 7">
             <el-button
               type="text"
               size="mini"
               @click="() => $refs.modifyModal.open({
-                parentId: data.id,
+                pid: data.id,
+                level: data.level,
               })"
             >
               新增
@@ -43,9 +44,9 @@
             size="mini"
             @click="() => $refs.modifyModal.open({
               id: data.id,
-              title: data.title,
-              sort: data.sort,
-              parentId: data.parentId,
+              name: data.name,
+              level: data.level,
+              pid: data.pid,
             })"
           >
             修改
@@ -77,7 +78,7 @@ export default {
     ModifyModal,
   },
   props: {
-    data: {
+    list: {
       type: Array,
       default: () => [],
     },
@@ -90,7 +91,7 @@ export default {
     };
   },
   watch: {
-    data(value) {
+    list(value) {
       this.treeData = value;
     },
     filterText(value) {
@@ -102,33 +103,44 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-    del({ id: departmentId }) {
-      this.$confirm('此操作将删除该层级, 是否继续?', '提示', {
-        type: 'warning',
-      }).then(() => {
-        this.$api.organizationDepartmentDel({
-          departmentId,
-        }).then(() => {
-          this.$message.success('删除成功!');
-          this.$emit('update');
-        });
+    del({ id }) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '此操作将删除该部门, 是否继续?',
+        onOk: () => {
+          this.$api.delDepart({
+            id,
+          }).then(() => {
+            this.$message.success('删除成功!');
+            this.$emit('update');
+          });
+        },
       });
     },
     showMember(data) {
-      this.$emit('showMember', data);
-      this.curId = data.id;
+      // this.$emit('showMember', data);
+      // this.curId = data.id;
+      this.$refs.modifyModal.open({
+        id: data.id,
+        name: data.name,
+        level: data.level,
+        pid: data.pid,
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '~styles/utils';
 
 .org-tree {
+  width: 50%;
   height: 100%;
-  border-right: 1px solid #e7e5e5;
   background-color: #fff;
+  border-radius: 10px;
+  /deep/ .el-tree {
+    border-radius: 10px;
+  }
   /deep/ .el-tree-node__content {
     height: 32px;
   }
@@ -154,8 +166,19 @@ export default {
     margin-left: 24px;
   }
   /deep/ .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
-    color: $blue-1;
+    color: #538CD3;
+    background: #fff;
   }
+  /deep/ .el-tree-node__content:hover {
+    background: #538CD3;
+    color: #fff;
+  }
+  // /deep/ .el-tooltip__popper[x-placement^=right] .popper__arrow {
+  //   border-right-color: #538CD3;
+  // }
+  // /deep/ .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
+  //   border-right-color: #538CD3;
+  // }
 }
 .btns {
   display: flex;

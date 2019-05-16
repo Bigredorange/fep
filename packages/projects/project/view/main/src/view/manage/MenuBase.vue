@@ -33,7 +33,7 @@
                   :key="item.path"
                 >
                   <router-link
-                    :to="`/manage/${menu.parentPath}/${menu.path}`"
+                    :to="`/manage/${menu.parentPath}/${menu.path}/${item.path}`"
                     :class="{
                       'subActive': isActiveMenu(`/${menu.path}/${item.path}`)
                     }"

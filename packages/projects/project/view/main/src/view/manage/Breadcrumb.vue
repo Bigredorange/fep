@@ -5,13 +5,14 @@
     <el-button
       icon="el-icon-back"
       class="back"
+      @click="$router.go(-1)"
     >
       返回
     </el-button>
     <span class="loc">您的位置：</span>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
-        v-for="(item, index) in breadcrumbList"
+        v-for="(item, index) in breadList"
         :key="index"
         :to="gotoPage(item.path, index)"
       >
@@ -31,12 +32,16 @@ export default {
   data() {
     return {
       breadcrumbList: [],
+      breadList: [],
     };
   },
   watch: {
     $route() {
       this.generateBreadcrumpList();
     },
+    // menuList() {
+    //   this.generateBreadcrumpList();
+    // },
   },
   mounted() {
     this.generateBreadcrumpList();
@@ -50,6 +55,7 @@ export default {
       pathArr.forEach((pathEle) => {
         this.getTitle(this.menuList, pathEle);
       });
+      this.breadList = this.breadcrumbList.filter(ele => ele.parentPath);
     },
     getTitle(arr, path) {
       const obj = {};
@@ -58,7 +64,16 @@ export default {
           if (element.path === path) {
             obj.path = path;
             obj.title = element.meta.title;
+            if (element.parentPath) {
+              obj.parentPath = element.parentPath;
+            }
             this.breadcrumbList.push(obj);
+            if (this.breadcrumbList.every((ele) => {
+              const flag = path !== ele.path && element.parentPath === obj.parentPath;
+              return flag;
+            })) {
+              // this.breadcrumbList.push(obj);
+            }
           } else {
             this.getTitle(element.children, path);
           }

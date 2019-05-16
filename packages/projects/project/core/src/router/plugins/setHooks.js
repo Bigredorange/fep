@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-// import cookie from 'js-cookie';
+import cookie from 'js-cookie';
 import store from '../../store/index';
 import router from '../index';
 // import db from '../../core/localDatabase';
@@ -14,7 +14,7 @@ const needLogin = to => !to.meta.noLoginRequired;
 /**
  * 是否存在登录凭证
  */
-// const existToken = () => sessionStorage.hroTokenName && cookie.get(sessionStorage.hroTokenName);
+const existToken = () => sessionStorage.hroTokenName && cookie.get(sessionStorage.hroTokenName);
 
 /**
  * 验证路由权限
@@ -27,6 +27,11 @@ const validateRight = (to) => {
 /**
  * 初始化数据
  */
+const initData = () => {
+  // const userInfo = JSON.parse(sessionStorage.getItem('fepUserInfo'));
+  // store.commit('setFepUserInfo', userInfo);
+  store.dispatch('getUserInfo');
+};
 // let inited = false;
 // const initData = async () => {
 //   if (!inited) {
@@ -43,7 +48,7 @@ const validateRight = (to) => {
 //       throw (new Error('init failed'));
 //     });
 //     store.dispatch('socketManage/init'); // 实时推送消息
-//     db.init(store.state.hroUserinfo.account); // 初始化localStorage本地缓存
+//     db.init(store.state.fepUserInfo.account); // 初始化localStorage本地缓存
 //     store.dispatch('options/setDefaultSignCompanyId'); // 初始化签约公司
 //   }
 //   store.dispatch('getMessageCount'); // 获取站内信数量
@@ -83,13 +88,13 @@ export default () => {
       return;
     }
 
-    // if (!existToken()) { // 不存在登录凭证
-    //   next(false);
-    //   store.dispatch('logout');
-    //   return;
-    // }
+    if (!existToken()) { // 不存在登录凭证
+      next(false);
+      store.dispatch('logout');
+      return;
+    }
 
-    // await initData(); // 初始化数据
+    initData(); // 初始化数据
 
     if (validateRight(to)) { // 是否通过路由权限验证
       next();

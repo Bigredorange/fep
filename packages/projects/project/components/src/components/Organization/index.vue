@@ -57,7 +57,7 @@ export default {
     const {
       id,
       departmentIds,
-    } = this.$store.state.hroUserinfo;
+    } = this.$store.state.fepUserInfo;
     return {
       isShow: false,
       deptLoading: false,
