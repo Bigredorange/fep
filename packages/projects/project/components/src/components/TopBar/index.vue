@@ -57,6 +57,7 @@ export default {
           span {
             line-height: 35px;
             min-width: 80px;
+            margin-left: 20px;
           }
         }
       }

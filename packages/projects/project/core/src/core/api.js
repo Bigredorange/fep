@@ -23,6 +23,8 @@ const api = {
   addUser: args => postJson('user', args),
   // 1.6 修改用户
   updateUser: ({ id, ...arg }) => putJson(`user/${id}`, arg),
+  // 1.7 根据ID查用户
+  getUserById: ({ id, ...arg }) => get(`user/${id}`, arg),
   /*
     组织架构
   */

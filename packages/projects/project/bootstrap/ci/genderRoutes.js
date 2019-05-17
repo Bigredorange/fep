@@ -11,7 +11,9 @@ const create = (views) => {
   let mainRoutes = null;
   views.forEach((view) => {
     if (view === '@fep-project/v-main') {
-      mainRoutes = require(`../node_modules/${view}/src/router/routes.js`).staticRoutes;
+      const routesPath = `../node_modules/${view}/src/router/routes.js`;
+      mainRoutes = require(routesPath).staticRoutes;
+      delete require.cache[require.resolve(routesPath)];
     } else {
       const route = JSON.parse(JSON.stringify(require(`../node_modules/${view}`))); // 移除component
       commonRoutes.push(route);
@@ -42,8 +44,8 @@ module.exports = () => {
   console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'development') {
     // 监听routes变化并生成路由
-    console.log(views);
     const routesPath = views.map(name => path.join(__dirname, `../node_modules/${name}/src/router/routes.js`));
+    console.log(routesPath);
     // const routesPath = path.join(__dirname, '../node_modules/@fep-project-lib/routes/src/routes.json');
     launch.watch(routesPath, (filePath) => {
       create(views);

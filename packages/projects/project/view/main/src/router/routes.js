@@ -109,12 +109,37 @@ const asyncRoutes = [{
       ],
     },
     {
-      path: 'home',
-      component: () => import(/* webpackChunkName: "v-home" */ '../view/manage/home/index.vue'),
+      path: 'hroCompany',
+      component: RouterView,
+      redirect: 'hroCompany/list',
+      icon: 'sys',
       meta: {
-        title: '首页',
+        title: 'HRO企业管理',
       },
+      children: [
+        {
+          path: 'list',
+          meta: {
+            title: '列表',
+          },
+          component: () => import(/* webpackChunkName: "v-hroCompany" */ '../view/manage/hroCompany/list/index.vue'),
+        },
+        {
+          path: 'edit',
+          meta: {
+            title: '详情',
+          },
+          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
+        },
+      ],
     },
+    // {
+    //   path: 'home',
+    //   component: () => import(/* webpackChunkName: "v-home" */ '../view/manage/home/index.vue'),
+    //   meta: {
+    //     title: '首页',
+    //   },
+    // },
   ],
 }];
 const routes = [

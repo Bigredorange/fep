@@ -126,7 +126,7 @@
           <template
             slot-scope="{ row }"
           >
-            <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+            <img :src="require(`../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
             <span
               :class="{'grey': row.status === 0}"
             >
@@ -234,7 +234,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', query: { userId: row.id } });
+      this.$router.push({ path: 'edit', params: { userId: row.id } });
     },
     selectDate(val) {
       const [start, end] = val;

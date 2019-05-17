@@ -17,23 +17,6 @@
             inline
           >
             <el-form-item
-              label="用户类型"
-              prop="level"
-            >
-              <el-select
-                v-model="form.level"
-                style="width: 200px;"
-                placeholder="请选择用户类型"
-              >
-                <el-option
-                  v-for="item in userTypeList"
-                  :key="item.key"
-                  :label="item.name"
-                  :value="item.key"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item
               label="登录账号"
               prop="username"
             >
@@ -43,7 +26,6 @@
               />
             </el-form-item>
             <el-form-item
-              v-if="!userId"
               label="密码"
               prop="password"
             >
@@ -132,44 +114,6 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              v-if="form.level === 1"
-              label="企业"
-              prop="companyId"
-            >
-              <el-select
-                v-model="form.companyId"
-                style="width: 200px;"
-                placeholder="请选择企业"
-                multiple
-              >
-                <el-option
-                  v-for="item in companyList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              v-if="form.level === 2"
-              label="客户"
-              prop="customerId"
-            >
-              <el-select
-                v-model="form.customerId"
-                style="width: 200px;"
-                placeholder="请选择客户"
-                multiple
-              >
-                <el-option
-                  v-for="item in customerList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -243,12 +187,6 @@ export default {
   data() {
     return {
       rules: {
-        level: [{
-          required: true,
-          message: '请选择用户类别',
-          trigger: 'blur',
-          type: 'number',
-        }],
         username: [{
           required: true,
           message: '请输入登陆账号',
@@ -288,18 +226,6 @@ export default {
             }
           },
         }],
-        companyId: [{
-          required: true,
-          message: '请选择企业',
-          trigger: 'blur',
-          type: 'number',
-        }],
-        customerId: [{
-          required: true,
-          message: '请选择客户',
-          trigger: 'blur',
-          type: 'number',
-        }],
       },
       form: {
         username: null,
@@ -310,44 +236,25 @@ export default {
         status: 1,
         level: null,
         remark: null,
-        companyId: null,
-        customerId: null,
       },
       confirmButtonLoading: false,
       tabName: 'org',
       departList: [],
       expandNodes: [], // 树的展开情况
       rolesList: [],
-      userTypeList: [
-        {
-          key: 1,
-          name: '企业管理员',
-        },
-        {
-          key: 2,
-          name: '客户管理员',
-        },
-        {
-          key: 3,
-          name: '普通用户',
-        },
-      ],
       userId: null,
-      customerList: [],
-      companyList: [],
     };
   },
   mounted() {
     this.getUserDepartTree();
     this.getRolesList();
-    this.userId = this.$route.query.userId;
+    this.userId = this.$route.params.userId;
     if (!this.userId) {
-      this.$utils.initData.call(this, { include: ['form'] });
+      this.form.username = null;
+      this.form.password = null;
     } else {
-      this.getUserDetail(this.userId);
+      this.getUserDetail();
     }
-    const { level } = this.$store.state.fepUserInfo;
-    this.userTypeList = this.userTypeList.filter(user => user.key >= level);
   },
   methods: {
     submit() {
@@ -360,15 +267,11 @@ export default {
           let api = '';
           let param = null;
           this.form.deptIds = resourcesIds;
-          // this.form.level = this.$store.state.fepUserInfo.level;
-          if (this.form.level === 3) {
-            this.form.companyId = this.$store.state.fepUserInfo.companyId;
-          }
           if (!this.userId) {
-            api = 'addUser';
+            api = 'addRole';
             param = this.form;
           } else {
-            api = 'updateUser';
+            api = 'updateRole';
             param = {
               ...this.form,
               id: this.userId,
@@ -437,12 +340,8 @@ export default {
         this.isLoading = false;
       });
     },
-    getUserDetail(id) {
-      this.$api.getUserById({
-        id,
-      }).then((res) => {
-        this.form = res;
-      });
+    getUserDetail() {
+      // this.$api.get
     },
   },
 };
@@ -479,7 +378,7 @@ export default {
         font-size: 14px;
       }
       /deep/ .label {
-        width: 80%;
+        width: 60%;
       }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;
@@ -489,22 +388,6 @@ export default {
   }
   .con-tab {
     margin-bottom: 10px;
-    /deep/ .el-tabs__nav-wrap::after {
-      height: 0;
-    }
-    /deep/ .el-tabs__active-bar {
-      background-color: #ffc000;
-      border-radius: 2px;
-    }
-    /deep/ .el-tabs__item.is-active {
-      color: #000000;
-    }
-    /deep/ .el-tabs__item {
-      color: #76879d;
-      &:hover {
-        color: #000000;
-      }
-    }
   }
   .bot-menu {
       margin-top: 20px;

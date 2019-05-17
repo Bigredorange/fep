@@ -52,7 +52,7 @@ const vuex = new Vuex.Store({
   actions: {
     logout({ commit }) {
       commit('reset');
-      commit('socketManage/reset');
+      // commit('socketManage/reset');
       commit('reset/reset');
       sessionStorage.clear();
       cookie.remove(sessionStorage.hroTokenName);
