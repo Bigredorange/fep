@@ -75,7 +75,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '用户详情',
+                title: '详情',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sys/user/edit/index.vue'),
             },
@@ -102,7 +102,7 @@ const asyncRoutes = [{
         {
           path: 'edit',
           meta: {
-            title: '组织架构2',
+            title: '详情',
           },
           component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
         },

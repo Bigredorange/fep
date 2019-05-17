@@ -56,7 +56,7 @@ export default {
           padding: 8px 0;
           span {
             line-height: 35px;
-            width: 80px;
+            min-width: 80px;
           }
         }
       }

@@ -39,9 +39,9 @@ export default {
     $route() {
       this.generateBreadcrumpList();
     },
-    // menuList() {
-    //   this.generateBreadcrumpList();
-    // },
+    menuList() {
+      this.generateBreadcrumpList();
+    },
   },
   mounted() {
     this.generateBreadcrumpList();

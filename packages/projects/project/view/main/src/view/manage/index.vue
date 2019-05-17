@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      menuList: routes.main[0].children,
+      menuList: [],
       submenuList: [],
     };
   },
@@ -36,10 +36,14 @@ export default {
     $route() {
       this.getSubmenuList();
     },
+    menuList(val) {
+      this.setParentPath(val);
+    },
   },
   mounted() {
+    this.menuList = routes.main[0].children;
+    // this.setParentPath(this.menuList);
     this.getSubmenuList();
-    this.setParentPath(this.menuList);
   },
   methods: {
     getSubmenuList() {
@@ -60,6 +64,12 @@ export default {
         if (element.children) {
           element.children.map((ele) => {
             ele.parentPath = element.path;
+            // todo  改成递归方式
+            // if (ele.children) {
+            //   ele.children.forEach((e) => {
+            //     e.parentPath = ele.path;
+            //   });
+            // }
             return ele;
           });
         }

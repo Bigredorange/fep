@@ -44,11 +44,6 @@
         </div>
         <div class="item">
           <span>创建日期：</span>
-          <!-- <el-input
-            v-model="form.customerNO"
-            placeholder="请输入客户编号"
-            style="width: 200px;"
-          /> -->
           <el-date-picker
             v-model="form.customerNO"
             style="width: 260px;"
