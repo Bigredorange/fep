@@ -40,7 +40,7 @@ const vuex = new Vuex.Store({
           if (item.children) {
             pushRoute(item.children, container);
           }
-          container.push(item.path);
+          container.push(item.code);
         });
         return container;
       };
@@ -69,12 +69,14 @@ const vuex = new Vuex.Store({
     getUserInfo({ commit }) {
       if (sessionStorage.fepUserInfo) {
         commit('setFepUserInfo', JSON.parse(sessionStorage.fepUserInfo));
+        commit('setPermissionList', JSON.parse(sessionStorage.fepUserInfo).permTrees);
         return Promise.resolve();
       }
       return Vue.prototype.$api.getUserInfo().then((res) => {
         // 缓存用户信息
         sessionStorage.fepUserInfo = JSON.stringify(res);
         commit('setFepUserInfo', res);
+        commit('setPermissionList', res.permTrees);
       });
     },
     getPermissionList({ commit }) {

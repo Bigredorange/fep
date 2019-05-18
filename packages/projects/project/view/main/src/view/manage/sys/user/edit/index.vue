@@ -15,6 +15,7 @@
             label-width="100px"
             style="margin-left: 120px;"
             inline
+            class="ui-form three-col"
           >
             <el-form-item
               label="用户类型"
@@ -22,7 +23,6 @@
             >
               <el-select
                 v-model="form.level"
-                style="width: 200px;"
                 placeholder="请选择用户类型"
               >
                 <el-option
@@ -111,7 +111,6 @@
                 v-model="form.remark"
                 placeholder="请输入备注"
                 type="textarea"
-                style="width: 200px;"
                 :rows="3"
               />
             </el-form-item>
@@ -119,8 +118,8 @@
               label="角色"
             >
               <el-select
-                v-model="form.status"
-                style="width: 200px;"
+                v-if="form.roleIds && rolesList.length > 1"
+                v-model="form.roleIds"
                 placeholder="请选择角色"
                 multiple
               >
@@ -139,14 +138,12 @@
             >
               <el-select
                 v-model="form.companyId"
-                style="width: 200px;"
                 placeholder="请选择企业"
-                multiple
               >
                 <el-option
                   v-for="item in companyList"
                   :key="item.id"
-                  :label="item.name"
+                  :label="item.companyName"
                   :value="item.id"
                 />
               </el-select>
@@ -158,9 +155,7 @@
             >
               <el-select
                 v-model="form.customerId"
-                style="width: 200px;"
                 placeholder="请选择客户"
-                multiple
               >
                 <el-option
                   v-for="item in customerList"
@@ -234,12 +229,7 @@
   </div>
 </template>
 <script>
-// import OrgTree from './OrgTree.vue';
-
 export default {
-  // components: {
-  //   OrgTree,
-  // },
   data() {
     return {
       rules: {
@@ -266,7 +256,6 @@ export default {
         }],
         mobile: [{
           required: true,
-          message: '请输入手机号码',
           trigger: 'blur',
           validator: (rule, value, callback) => {
             if (value && !this.$utils.regExp(value, 'mp')) {
@@ -292,7 +281,7 @@ export default {
           required: true,
           message: '请选择企业',
           trigger: 'blur',
-          type: 'number',
+          // type: 'number',
         }],
         customerId: [{
           required: true,
@@ -312,6 +301,7 @@ export default {
         remark: null,
         companyId: null,
         customerId: null,
+        roleIds: [],
       },
       confirmButtonLoading: false,
       tabName: 'org',
@@ -340,13 +330,19 @@ export default {
   mounted() {
     this.getUserDepartTree();
     this.getRolesList();
-    this.userId = this.$route.query.userId;
+    this.getCompanyList();
+    const { userId, companyId } = this.$route.query;
+    const { level } = this.$store.state.fepUserInfo;
+    this.userId = userId;
     if (!this.userId) {
       this.$utils.initData.call(this, { include: ['form'] });
+      if (companyId) {
+        this.form.companyId = companyId;
+        this.form.level = 1;
+      }
     } else {
       this.getUserDetail(this.userId);
     }
-    const { level } = this.$store.state.fepUserInfo;
     this.userTypeList = this.userTypeList.filter(user => user.key >= level);
   },
   methods: {
@@ -376,7 +372,7 @@ export default {
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
-            // this.getRoleSettingsById();
+            this.$router.go(-1);
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
@@ -437,6 +433,14 @@ export default {
         this.isLoading = false;
       });
     },
+    getCompanyList() {
+      this.$api.getCompanyList({
+        pageCurrent: 1,
+        pageSize: 1000,
+      }).then((res) => {
+        this.companyList = res.dataList;
+      });
+    },
     getUserDetail(id) {
       this.$api.getUserById({
         id,
@@ -489,22 +493,6 @@ export default {
   }
   .con-tab {
     margin-bottom: 10px;
-    /deep/ .el-tabs__nav-wrap::after {
-      height: 0;
-    }
-    /deep/ .el-tabs__active-bar {
-      background-color: #ffc000;
-      border-radius: 2px;
-    }
-    /deep/ .el-tabs__item.is-active {
-      color: #000000;
-    }
-    /deep/ .el-tabs__item {
-      color: #76879d;
-      &:hover {
-        color: #000000;
-      }
-    }
   }
   .bot-menu {
       margin-top: 20px;

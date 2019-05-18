@@ -120,12 +120,7 @@ export default {
       isLoading: false,
       list: [],
       expandNodes: [], // 树的展开情况
-      roleTypes: [],
       roleSettings: [],
-      settingType: null,
-      roleSettingId: null,
-      cotent: null,
-      contentRole: null,
       form: {
         status: 1,
         name: '',
@@ -145,7 +140,6 @@ export default {
         }],
       },
       confirmButtonLoading: false,
-      permIds: [],
     };
   },
   watch: {
@@ -263,33 +257,6 @@ export default {
         };
         getKey(permTrees);
         this.$refs.tree.setCheckedKeys(keys);
-      });
-    },
-    addRolSetting() {
-      this.$api.addRolSetting({
-        roleId: this.roleId,
-        settingType: this.settingType,
-        content: this.content,
-      }).then(() => {
-        this.$message.success('新增成功');
-      });
-    },
-    updateRolSetting(roleSettingId, content) {
-      this.$prompt('请输入内容', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputValue: content,
-        inputPattern: /.+/,
-        inputErrorMessage: '不能为空',
-      }).then(({ value }) => {
-        this.$message('修改中');
-        this.$api.updateRolSetting({
-          roleSettingId,
-          content: value,
-        }).then(() => {
-          this.$message.success('保存成功');
-          this.getRoleSettingsById();
-        });
       });
     },
   },

@@ -65,11 +65,11 @@ export default {
           element.children.map((ele) => {
             ele.parentPath = element.path;
             // todo  改成递归方式
-            // if (ele.children) {
-            //   ele.children.forEach((e) => {
-            //     e.parentPath = ele.path;
-            //   });
-            // }
+            if (ele.children) {
+              ele.children.forEach((e) => {
+                e.parentPath = ele.path;
+              });
+            }
             return ele;
           });
         }

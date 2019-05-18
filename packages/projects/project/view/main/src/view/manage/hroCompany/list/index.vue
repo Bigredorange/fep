@@ -3,37 +3,37 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>登陆账号：</span>
+          <span>HRO编号：</span>
           <el-input
-            v-model="form.username"
-            placeholder="请输入登陆账号"
+            v-model="form.enterpriseNum"
+            placeholder="请输入HRO编号"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>姓名：</span>
-          <el-input
-            v-model="form.name"
-            placeholder="请输入姓名"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>手机号码：</span>
-          <el-input
-            v-model="form.mobile"
-            placeholder="请输入手机号码"
-            style="width: 200px;"
-          />
-        </div>
-        <!-- <div class="item">
-          <span>部门名称：</span>
+          <span>HRO名称：</span>
           <el-input
             v-model="form.companyName"
-            placeholder="请输入部门名称"
+            placeholder="请输入HRO名称"
             style="width: 200px;"
           />
-        </div> -->
+        </div>
+        <div class="item">
+          <span>联系人：</span>
+          <el-input
+            v-model="form.legalRepresentative"
+            placeholder="请输入联系人"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>联系方式：</span>
+          <el-input
+            v-model="form.contactPhone"
+            placeholder="请输入联系方式"
+            style="width: 200px;"
+          />
+        </div>
         <div class="item">
           <span>状态：</span>
           <el-select
@@ -50,7 +50,7 @@
             />
           </el-select>
         </div>
-        <!-- <div class="item">
+        <div class="item">
           <span>创建日期：</span>
           <el-date-picker
             v-model="createTime"
@@ -62,7 +62,7 @@
             value-format="yyyy-MM-dd"
             @change="selectDate"
           />
-        </div> -->
+        </div>
         <el-button
           type="primary"
           icon="el-icon-search"
@@ -94,29 +94,34 @@
         :loading="listLoading"
       >
         <el-table-column
-          prop="username"
+          prop="enterpriseNum"
           align="center"
-          label="登陆账号"
+          label="HRO编号"
         />
         <el-table-column
-          prop="name"
-          align="center"
-          label="姓名"
-        />
-        <el-table-column
-          prop="mobile"
-          align="center"
-          label="手机号码"
-        />
-        <!-- <el-table-column
           prop="companyName"
           align="center"
-          label="部门名称"
-        /> -->
+          label="HRO名称"
+        />
         <el-table-column
-          prop="roleNames"
+          prop="industry"
           align="center"
-          label="角色名称"
+          label="所属行业"
+        />
+        <el-table-column
+          prop="legalRepresentative"
+          align="center"
+          label="联系人"
+        />
+        <el-table-column
+          prop="contactPhone"
+          align="center"
+          label="联系方式"
+        />
+        <el-table-column
+          prop="area"
+          align="center"
+          label="区域"
         />
         <el-table-column
           prop="status"
@@ -126,14 +131,24 @@
           <template
             slot-scope="{ row }"
           >
-            <img :src="require(`../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-            <span
-              :class="{'grey': row.status === 0}"
+            <div
+              class="mouse"
+              @click.stop="disable(row)"
             >
-              {{ row.status === 1 ? '启用' : '禁用' }}
-            </span>
+              <img :src="require(`../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <span
+                :class="{'grey': row.status === 0}"
+              >
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </span>
+            </div>
           </template>
         </el-table-column>
+        <!-- <el-table-column
+          prop="area"
+          align="center"
+          label="创建人"
+        /> -->
         <el-table-column
           prop="createTime"
           align="center"
@@ -141,12 +156,22 @@
         />
         <el-table-column
           label="操作"
+          align="center"
         >
           <template
             slot-scope="{ row }"
           >
             <el-button
+              v-if="!row.hroId"
               type="text"
+              class="primary"
+              @click="$router.push({ path: '/manage/sys/user/edit', query:{ companyId: row.id } })"
+            >
+              分配账号
+            </el-button>
+            <el-button
+              type="text"
+              class="primary"
               @click="edit(row)"
             >
               编辑
@@ -181,11 +206,11 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        username: null,
-        name: null,
-        mobile: null,
+        enterpriseNum: null,
         companyName: null,
-        status: 1,
+        legalRepresentative: null,
+        contactPhone: null,
+        status: 99,
         pageCurrent: 1,
         pageSize: 20,
         startTime: null,
@@ -219,9 +244,8 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getAccountList({
+      this.$api.getCompanyList({
         ...this.form,
-        level: this.$store.state.fepUserInfo.level,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -234,7 +258,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', params: { userId: row.id } });
+      this.$router.push({ path: 'edit', query: { id: row.id } });
     },
     selectDate(val) {
       const [start, end] = val;
@@ -243,6 +267,21 @@ export default {
     },
     add() {
       this.$router.push('edit');
+    },
+    disable(item) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+        onOk: () => {
+          this.$api.disableCompany({
+            id: item.id,
+            status: Number(!item.status),
+          }).then(() => {
+            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+            this.getList();
+          });
+        },
+      });
     },
   },
 };
@@ -259,6 +298,9 @@ export default {
   }
   .grey {
     color: #999999;
+  }
+  .mouse {
+    cursor: pointer;
   }
 }
 </style>

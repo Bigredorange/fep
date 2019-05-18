@@ -2,37 +2,70 @@
   <div class="con">
     <div class="con-base">
       <div class="title">
-        <label>{{ !userId ? '新增用户' : '设置用户' }}</label>
+        <label>{{ !companyId ? '新增企业' : '编辑企业' }}</label>
       </div>
       <div class="area">
         <div class="label">
           <i class="line" />
-          <label>{{ !userId ? '填写基本信息' : '基本信息' }}</label>
+          <label>{{ !companyId ? '填写基本信息' : '基本信息' }}</label>
           <el-form
             ref="formUser"
             :model="form"
             :rules="rules"
-            label-width="100px"
+            label-width="140px"
             style="margin-left: 120px;"
             inline
+            class="ui-form three-col"
           >
             <el-form-item
-              label="登录账号"
-              prop="username"
+              label="HRO企业编号"
+              prop="enterpriseNum"
+            >
+              <p
+                :class="{'grey': !form.enterpriseNum}"
+              >
+                {{ form.enterpriseNum || '此编号系统自动生成' }}
+              </p>
+            </el-form-item>
+            <el-form-item
+              label="HRO名称"
+              prop="companyName"
             >
               <el-input
-                v-model="form.username"
-                placeholder="请输入登录账号"
+                v-model="form.companyName"
+                placeholder="请输入HRO名称"
               />
             </el-form-item>
             <el-form-item
-              label="密码"
-              prop="password"
+              label="行业"
+              prop="industry"
             >
-              <el-input
-                v-model="form.password"
-                placeholder="请输入密码"
-              />
+              <el-select
+                v-model="form.industry"
+                placeholder="请选择行业"
+              >
+                <el-option
+                  v-for="item in rolesList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="企业性质"
+            >
+              <el-select
+                v-model="form.enterpriseNature"
+                placeholder="请选择企业性质"
+              >
+                <el-option
+                  v-for="item in rolesList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
             </el-form-item>
             <el-form-item
               label="状态"
@@ -54,35 +87,59 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item
-              label="姓名"
-              prop="name"
+              label="企业法人"
+              prop="legalRepresentative"
             >
               <el-input
-                v-model="form.name"
-                placeholder="请输入姓名"
+                v-model="form.legalRepresentative"
+                placeholder="请输入企业法人"
               />
             </el-form-item>
             <el-form-item
-              label="手机号"
-              prop="mobile"
+              label="统一社会信用代码"
+              prop="uscc"
             >
               <el-input
-                v-model="form.mobile"
-                placeholder="请输入手机号"
+                v-model="form.uscc"
+                placeholder="请输入统一社会信用代码"
               />
             </el-form-item>
-            <!-- <el-form-item
-              label="创建时间"
-            >
-              <span>{{ form.createTime }}</span>
-            </el-form-item> -->
             <el-form-item
-              label="邮箱"
-              prop="email"
+              label="联系电话"
+              prop="contactPhone"
             >
               <el-input
-                v-model="form.email"
-                placeholder="请输入邮箱"
+                v-model="form.contactPhone"
+                placeholder="请输入联系电话"
+              />
+            </el-form-item>
+            <el-form-item
+              label="座机"
+              prop="landline"
+            >
+              <el-input
+                v-model="form.landline"
+                placeholder="请输入座机"
+              />
+            </el-form-item>
+            <el-form-item
+              label="区域"
+              prop="area"
+            >
+              <el-input
+                v-model="form.companyArea"
+                placeholder="请输入区域"
+              />
+            </el-form-item>
+            <el-form-item
+              label="详细地址"
+              prop="companyAddress"
+            >
+              <el-input
+                v-model="form.companyAddress"
+                placeholder="请输入详细地址"
+                type="textarea"
+                :rows="2"
               />
             </el-form-item>
             <el-form-item
@@ -93,73 +150,10 @@
                 v-model="form.remark"
                 placeholder="请输入备注"
                 type="textarea"
-                style="width: 200px;"
-                :rows="3"
+                :rows="2"
               />
             </el-form-item>
-            <el-form-item
-              label="角色"
-            >
-              <el-select
-                v-model="form.status"
-                style="width: 200px;"
-                placeholder="请选择角色"
-                multiple
-              >
-                <el-option
-                  v-for="item in rolesList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
           </el-form>
-        </div>
-      </div>
-      <div class="con-tab">
-        <div>
-          <el-tabs
-            v-model="tabName"
-            @tab-click="handleTabClick"
-          >
-            <el-tab-pane
-              label="组织设置"
-              name="org"
-            >
-              <el-tree
-                ref="tree"
-                :props="{
-                  children: 'children',
-                  label: 'name',
-                }"
-                node-key="id"
-                show-checkbox
-                :default-expanded-keys="expandNodes"
-                :data="departList"
-                @node-expand="expandNode"
-                @node-collapse="collapseNode"
-              >
-                <span
-                  slot-scope="{ node, data }"
-                  class="title"
-                >
-                  <i :class="data.type === 0 ? 'icon-menu' : 'icon-btn'" />
-                  <span
-                    class="node-name"
-                    @click.stop="edit(data, node)"
-                  >{{ data.name }}</span>
-                </span>
-              </el-tree>
-              <!-- <org-tree :list="departList" /> -->
-            </el-tab-pane>
-            <el-tab-pane
-              label="工作授权"
-              name="work"
-            >
-              work
-            </el-tab-pane>
-          </el-tabs>
         </div>
       </div>
       <div class="bot-menu">
@@ -178,49 +172,32 @@
   </div>
 </template>
 <script>
-// import OrgTree from './OrgTree.vue';
 
 export default {
-  // components: {
-  //   OrgTree,
-  // },
   data() {
     return {
       rules: {
-        username: [{
+        companyName: [{
           required: true,
-          message: '请输入登陆账号',
+          message: '请输入HRO名称',
           trigger: 'blur',
         }],
-        password: [{
+        legalRepresentative: [{
           required: true,
-          message: '请输入密码',
+          message: '请输入企业法人',
           trigger: 'blur',
         }],
-        name: [{
+        industry: [{
           required: true,
-          message: '请输入姓名',
+          message: '请选择行业',
           trigger: 'blur',
         }],
-        mobile: [{
+        contactPhone: [{
           required: true,
-          message: '请输入手机号码',
           trigger: 'blur',
           validator: (rule, value, callback) => {
             if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的手机号'));
-            } else {
-              callback();
-            }
-          },
-        }],
-        email: [{
-          required: false,
-          message: '请输入正确的邮箱',
-          trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'em')) {
-              callback(new Error('请输入正确的邮箱'));
+              callback(new Error('请输入正确的联系电话'));
             } else {
               callback();
             }
@@ -228,58 +205,51 @@ export default {
         }],
       },
       form: {
-        username: null,
-        password: null,
-        name: null,
-        mobile: null,
+        enterpriseNum: null,
         companyName: null,
+        industry: null,
+        enterpriseNature: null,
         status: 1,
-        level: null,
+        legalRepresentative: null,
         remark: null,
+        uscc: null,
+        contactPhone: null,
+        landline: null,
+        companyArea: null,
+        companyAddress: null,
       },
       confirmButtonLoading: false,
-      tabName: 'org',
-      departList: [],
-      expandNodes: [], // 树的展开情况
       rolesList: [],
-      userId: null,
+      companyId: null,
     };
   },
   mounted() {
-    this.getUserDepartTree();
     this.getRolesList();
-    this.userId = this.$route.params.userId;
-    if (!this.userId) {
-      this.form.username = null;
-      this.form.password = null;
-    } else {
-      this.getUserDetail();
+    this.companyId = this.$route.query.id;
+    if (this.companyId) {
+      this.getDetail(this.companyId);
     }
   },
   methods: {
     submit() {
-      const halfIds = this.$refs.tree.getHalfCheckedKeys();
-      const checkedIds = this.$refs.tree.getCheckedKeys();
-      const resourcesIds = halfIds.concat(checkedIds);
       this.$refs.formUser.validate((valid) => {
         if (valid) {
           this.confirmButtonLoading = true;
           let api = '';
           let param = null;
-          this.form.deptIds = resourcesIds;
-          if (!this.userId) {
-            api = 'addRole';
+          if (!this.companyId) {
+            api = 'addCompany';
             param = this.form;
           } else {
-            api = 'updateRole';
+            api = 'updateCompany';
             param = {
               ...this.form,
-              id: this.userId,
+              id: this.companyId,
             };
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
-            // this.getRoleSettingsById();
+            this.$router.push('list');
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
@@ -287,47 +257,6 @@ export default {
           this.$message.info('请按提示填写');
         }
       });
-    },
-    handleTabClick() {
-
-    },
-    getUserDepartTree() {
-      this.$api.getUserDepartTree().then((res) => {
-        this.departList = res;
-        const keys = [];
-        const getKey = (list) => {
-          list.forEach((item) => {
-            if (item.children && item.children.length) {
-              getKey(item.children);
-            } else if (item.checked) {
-              keys.push(item.id);
-            }
-          });
-        };
-        getKey(res);
-        this.$refs.tree.setCheckedKeys(keys);
-      });
-    },
-    expandNode(data, node) {
-      this.expandSwitch(true, data, node);
-    },
-    collapseNode(data, node) {
-      this.expandSwitch(false, data, node);
-    },
-    expandSwitch(isExpand, { id }, node) {
-      // 控制节点展开关闭
-      const idx = this.expandNodes.indexOf(id);
-      if (isExpand) {
-        if (idx === -1) {
-          this.expandNodes.push(id);
-        }
-        node.expanded = true;
-      } else {
-        if (idx > -1) {
-          this.expandNodes.splice(idx, 1);
-        }
-        node.expanded = false;
-      }
     },
     getRolesList() {
       this.isLoading = true;
@@ -340,8 +269,10 @@ export default {
         this.isLoading = false;
       });
     },
-    getUserDetail() {
-      // this.$api.get
+    getDetail(id) {
+      this.$api.getCompany({ id }).then((res) => {
+        this.form = res;
+      });
     },
   },
 };
@@ -378,16 +309,16 @@ export default {
         font-size: 14px;
       }
       /deep/ .label {
-        width: 60%;
+        width: 80%;
       }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;
         border-color: #356fb8;
       }
+      .grey {
+        color: #999999;
+      }
     }
-  }
-  .con-tab {
-    margin-bottom: 10px;
   }
   .bot-menu {
       margin-top: 20px;

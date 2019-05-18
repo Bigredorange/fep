@@ -88,7 +88,7 @@
             height="14"
             width="14"
           >
-          <span>{{ $store.state.fepUserInfo.username || '张果果' }}</span>
+          <span>{{ $store.state.fepUserInfo.username }}</span>
           <img
             src="../../assets/icon/drop-down2.png"
             alt=""

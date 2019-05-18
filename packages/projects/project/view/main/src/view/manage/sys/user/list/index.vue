@@ -141,12 +141,14 @@
         />
         <el-table-column
           label="操作"
+          align="center"
         >
           <template
             slot-scope="{ row }"
           >
             <el-button
               type="text"
+              class="primary"
               @click="edit(row)"
             >
               编辑
@@ -185,7 +187,7 @@ export default {
         name: null,
         mobile: null,
         companyName: null,
-        status: 1,
+        status: 99,
         pageCurrent: 1,
         pageSize: 20,
         startTime: null,

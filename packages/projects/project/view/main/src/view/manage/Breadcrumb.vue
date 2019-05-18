@@ -61,19 +61,13 @@ export default {
       const obj = {};
       if (arr) {
         arr.forEach((element) => {
-          if (element.path === path) {
+          if (element.path === path && this.$route.path.includes(element.parentPath)) {
             obj.path = path;
             obj.title = element.meta.title;
             if (element.parentPath) {
               obj.parentPath = element.parentPath;
             }
             this.breadcrumbList.push(obj);
-            if (this.breadcrumbList.every((ele) => {
-              const flag = path !== ele.path && element.parentPath === obj.parentPath;
-              return flag;
-            })) {
-              // this.breadcrumbList.push(obj);
-            }
           } else {
             this.getTitle(element.children, path);
           }

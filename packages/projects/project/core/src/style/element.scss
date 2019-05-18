@@ -19,6 +19,9 @@
     &.orange {
       color: #eb7515;
     }
+    &.primary {
+      color: #1b559d;
+    }
   }
   // 通过 与 未通过
   &.pass, &.refuse {

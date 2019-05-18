@@ -70,5 +70,34 @@ const api = {
   getPermission: ({ id, ...arg }) => get(`sys/permission/${id}`, arg),
   // 4.6 根据用户级别查询权限
   getRolePermission: args => get('sys/permission', args),
+
+  /*
+    HRO企业管理
+  */
+  // 5.1 HRO企业列表
+  getCompanyList: args => get('company', args),
+  // 5.2 添加企业
+  addCompany: args => postJson('company', args),
+  // 5.3 编辑企业
+  updateCompany: ({ id, ...arg }) => putJson(`company/${id}`, arg),
+  // 5.4 启用/禁用企业
+  disableCompany: ({ id, status, ...arg }) => putJson(`company/${id}/${status}`, arg),
+  // 5.5 查询企业
+  getCompany: ({ id, ...arg }) => get(`company/${id}`, arg),
+  // 5.6 生成企业二维码
+  createCompany: ({ id, ...arg }) => postJson(`company/qrcode/${id}`, arg),
+  /*
+    客户管理
+  */
+  // 6.1 客户列表
+  getCustomerList: args => get('customer', args),
+  // 6.2 添加客户
+  addCustomer: args => postJson('customer', args),
+  // 6.3 编辑客户
+  updateCustomer: ({ id, ...arg }) => putJson(`customer/${id}`, arg),
+  // 6.4 启用/禁用客户
+  disableCustomer: ({ id, status, ...arg }) => putJson(`customer/${id}/${status}`, arg),
+  // 6.5 查询客户
+  getCustomer: ({ id, ...arg }) => get(`customer/${id}`, arg),
 };
 module.exports = api;
