@@ -99,5 +99,25 @@ const api = {
   disableCustomer: ({ id, status, ...arg }) => putJson(`customer/${id}/${status}`, arg),
   // 6.5 查询客户
   getCustomer: ({ id, ...arg }) => get(`customer/${id}`, arg),
+  /*
+    客户管理 合同管理
+  */
+  // 6.6 合同列表
+  getCusContractList: args => get('cuscontract', args),
+  // 6.7 添加合同
+  addCusContract: args => postJson('cuscontract', args),
+  // 6.8 编辑合同
+  updateCusContract: ({ id, ...arg }) => putJson(`cuscontract/${id}`, arg),
+  // 6.9 查询合同
+  getCusContract: ({ id, ...arg }) => get(`cuscontract/${id}`, arg),
+  /*
+    客户管理 余额管理
+  */
+  // 6.10 余额列表
+  getCusBalanceList: args => get('cusbalance', args),
+  // 6.11 添加余额
+  addCusBalance: ({ id, money, ...arg }) => postJson(`cusbalance/${id}/${money}`, arg),
+  // 6.12 查看记录
+  getCusBalanceRecord: ({ id, ...arg }) => get(`cusbalance/${id}/operate`, arg),
 };
 module.exports = api;

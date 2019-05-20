@@ -13,6 +13,25 @@
       label-width="80px"
     >
       <el-form-item
+        label="组织类型"
+        prop="orgType"
+      >
+        <el-radio-group
+          v-model="form.orgType"
+        >
+          <el-radio-button
+            label="1"
+          >
+            公司
+          </el-radio-button>
+          <el-radio-button
+            label="0"
+          >
+            部门
+          </el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item
         prop="name"
         label="名称"
       >
@@ -53,6 +72,12 @@ export default {
           trigger: 'blur',
           required: true,
           message: '请输入名称',
+        }],
+        orgType: [{
+          trigger: 'blur',
+          required: true,
+          message: '请选择组织类型',
+          type: 'number',
         }],
         // sort: [{
         //   trigger: 'blur',
@@ -105,3 +130,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+/deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+  background-color: #356fb8;
+  border-color: #356fb8;
+}
+</style>

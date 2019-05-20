@@ -6,5 +6,5 @@
   },
   "entryOutputPublicPath": "",
   "messageSocket": "ws://localhost:8700",
-  "baseURL": "//localhost:8080/"
+  "baseURL": "//10.1.6.67:8080/"
 }

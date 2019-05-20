@@ -3,7 +3,7 @@
     <div class="container">
       <div>
         <el-button
-          type="success"
+          type="primary"
           size="small"
           @click="addLevelOne"
         >
@@ -116,8 +116,8 @@ export default {
       return data.name.indexOf(value) !== -1;
     },
     edit(data, node) {
-      let selectedList = node.parent.childNodes.map(child => child.data.path);
-      selectedList = selectedList.filter(path => path !== data.path);
+      let selectedList = node.parent.childNodes.map(child => child.data.code);
+      selectedList = selectedList.filter(code => code !== data.code);
       const form = {
         pid: data.pid,
         id: data.id,
@@ -134,11 +134,12 @@ export default {
       });
     },
     add(data, node) {
-      const selectedList = node.childNodes.map(child => child.data.path);
+      console.log(node);
+      const selectedList = node.childNodes.map(child => child.data.code);
       const form = {
-        parentId: data.id,
-        title: null,
-        path: null,
+        pid: data.id,
+        name: null,
+        code: null,
         sort: null,
         sysNum: 1,
       };

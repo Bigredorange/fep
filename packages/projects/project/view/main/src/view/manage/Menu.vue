@@ -1,15 +1,17 @@
 <template>
   <div>
     <ul class="menu">
-      <li
-        v-for="menu in menuList"
-        :key="menu.path"
-        class="menu-item"
-        :class="{'active': isActiveMenu(menu.path)}"
-        @click="$router.push(`/manage/${menu.path}`)"
-      >
-        {{ menu.meta.title }}
-      </li>
+      <template v-for="menu in menuList">
+        <li
+          v-if="showMenu(menu)"
+          :key="menu.path"
+          class="menu-item"
+          :class="{'active': isActiveMenu(menu.path)}"
+          @click="$router.push(`/manage/${menu.path}`)"
+        >
+          {{ menu.meta.title }}
+        </li>
+      </template>
     </ul>
   </div>
 </template>
@@ -24,6 +26,14 @@ export default {
   methods: {
     isActiveMenu(path) {
       return this.$route.path.includes(path);
+    },
+    showMenu(menu) { // 是否显示菜单
+      const isRight = (route) => { // 是否有权限访问
+        console.log(`/manage/${route.path}`);
+        const path = `/manage/${route.path}`;
+        return this.$p(path);
+      };
+      return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
     },
   },
 };

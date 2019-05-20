@@ -86,25 +86,83 @@ const asyncRoutes = [{
     {
       path: 'customer',
       component: RouterView,
-      redirect: 'customer/list',
+      redirect: 'customer/cus',
       icon: 'sys',
       meta: {
         title: '客户管理',
       },
       children: [
         {
-          path: 'list',
+          path: 'cus',
+          component: RouterView,
+          redirect: 'cus/list',
           meta: {
-            title: '列表',
+            title: '客户',
           },
-          component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/list/index.vue'),
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/cus/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/cus/edit/index.vue'),
+            },
+          ],
         },
         {
-          path: 'edit',
+          path: 'balance',
+          component: RouterView,
+          redirect: 'balance/list',
           meta: {
-            title: '详情',
+            title: '余额管理',
           },
-          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-balance" */ '../view/manage/customer/balance/list/index.vue'),
+            },
+            {
+              path: 'record',
+              meta: {
+                title: '记录',
+              },
+              component: () => import(/* webpackChunkName: "v-record" */ '../view/manage/customer/balance/record/index.vue'),
+            },
+          ],
+        },
+        {
+          path: 'contract',
+          component: RouterView,
+          redirect: 'contract/list',
+          meta: {
+            title: '合同管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/customer/contract/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/contract/edit/index.vue'),
+            },
+          ],
         },
       ],
     },

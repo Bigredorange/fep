@@ -1,5 +1,14 @@
 <template>
   <section class="org-tree">
+    <div class="container">
+      <el-button
+        type="primary"
+        size="small"
+        @click="addLevelOne"
+      >
+        +新增一级节点
+      </el-button>
+    </div>
     <el-tree
       ref="orgTree"
       default-expand-all
@@ -47,6 +56,7 @@
               name: data.name,
               level: data.level,
               pid: data.pid,
+              orgType: data.orgType,
             })"
           >
             修改
@@ -125,6 +135,14 @@ export default {
         name: data.name,
         level: data.level,
         pid: data.pid,
+        orgType: data.orgType,
+      });
+    },
+    addLevelOne() {
+      this.$refs.modifyModal.open({
+        orgType: 1,
+        level: 1,
+        pid: 0,
       });
     },
   },
@@ -132,7 +150,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.container {
+  padding: 20px;
+}
 .org-tree {
   width: 50%;
   height: 100%;

@@ -67,7 +67,7 @@ export default {
             // todo  改成递归方式
             if (ele.children) {
               ele.children.forEach((e) => {
-                e.parentPath = ele.path;
+                e.parentPath = `${ele.parentPath}/${ele.path}`;
               });
             }
             return ele;

@@ -149,6 +149,8 @@ export default {
     return {
       isLoading: false,
       isShow: false,
+      asyncRoutes: [],
+      allRoutes: [],
       routes: [], // init函数获得
       selectedList: [], // 已选路由，用于筛选
       parentPath: '', // 父级路径
@@ -192,6 +194,12 @@ export default {
       },
     };
   },
+  watch: {
+    asyncRoutes(val) {
+      this.setParentPath(val);
+      // this.allRoutes = this.getRoutes(this.asyncRoutes);
+    },
+  },
   methods: {
     reset() {
       this.$utils.initData.call(this);
@@ -216,17 +224,18 @@ export default {
     init() {
       // 获取可选项列表
       // 初始化路由列表,必须将所有路由展示到列表中,以至于可以根据路由路径进行权限判断
-      let allRoutes = asyncRoutes[0].children;
+      this.asyncRoutes = asyncRoutes[0].children;
+      let allRoutes = this.asyncRoutes;
       const getRoutes = routes => routes.map((route) => {
         if (!route.children || !route.children.length) {
           return {
             title: route.meta ? route.meta.title : null,
-            path: route.path,
+            path: `${route.parentPath}/${route.path}`,
           };
         }
         return {
           title: route.meta ? route.meta.title : null,
-          path: route.path,
+          path: `${route.parentPath}/${route.path}`,
           children: getRoutes(route.children),
         };
       });
@@ -236,11 +245,11 @@ export default {
       let parentPath = '';
       const takeParentPath = (children, url = '') => children.some((route) => {
         if (route.id === pid) {
-          parentPath = (`${url},${route.path}`).slice(1);
+          parentPath = (`${url},${route.code}`).slice(1);
           return true;
         }
         if (!route.children) return false;
-        return takeParentPath(route.children, `${url},${route.path}`);
+        return takeParentPath(route.children, `${url},${route.code}`);
       });
       if (pid) {
         takeParentPath(this.list);
@@ -249,8 +258,10 @@ export default {
       // 根据完整url,获取当前可选url
       let options = [];
       const parentPathArr = parentPath ? parentPath.split(',') : [];
+      console.log(parentPathArr);
       const takeRoutes = (children, level) => children.some((route) => {
-        if (route.path === parentPathArr[level]) {
+        console.log(`${route.path}`);
+        if (`${route.path}` === parentPathArr[level]) {
           if (parentPathArr.length === (level + 1)) {
             if (route.children) {
               options = [...route.children].filter(child => !this.selectedList.includes(child.path));
@@ -306,6 +317,38 @@ export default {
         this.isLoading = false;
       });
     },
+    setParentPath(arr) {
+      arr.forEach((element) => {
+        element.parentPath = '/manage';
+        if (element.children) {
+          element.children.map((ele) => {
+            ele.parentPath = `${element.parentPath}/${element.path}`;
+            // todo  改成递归方式
+            if (ele.children) {
+              ele.children.forEach((e) => {
+                e.parentPath = `${ele.parentPath}/${ele.path}`;
+              });
+            }
+            return ele;
+          });
+        }
+      });
+    },
+    getRoutes(routes) {
+      routes.map((route) => {
+        if (!route.children || !route.children.length) {
+          return {
+            title: route.meta ? route.meta.title : null,
+            path: `${route.parentPath}/${route.path}`,
+          };
+        }
+        return {
+          title: route.meta ? route.meta.title : null,
+          path: `${route.parentPath}/${route.path}`,
+          children: this.getRoutes(route.children),
+        };
+      });
+    },
   },
 };
 </script>
@@ -315,6 +358,14 @@ export default {
   width: 300px;
   /deep/ .el-select {
     width: 100%;
+  }
+  /deep/ .el-input-number__decrease, .el-input-number__increase {
+    top: 3px;
+    height: 33px;
+  }
+  /deep/ .el-input-number__increase {
+    top: 3px;
+    height: 33px;
   }
 }
 </style>

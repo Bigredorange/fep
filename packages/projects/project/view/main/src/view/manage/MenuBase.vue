@@ -29,7 +29,7 @@
             >
               <template v-for="item in menu.children">
                 <li
-                  v-if="showMenu(item, menu)"
+                  v-if="showSubMenu(item)"
                   :key="item.path"
                 >
                   <router-link
@@ -107,9 +107,17 @@ export default {
     },
     showMenu(menu, parentMenu) { // 是否显示菜单
       const isRight = (route) => { // 是否有权限访问
-        const path = parentMenu ? `/${parentMenu.path}/${route.path}` : `/${route.path}`;
-        // return this.$p(path);
-        return path;
+        const path = parentMenu ? `${parentMenu.path}/${route.path}` : `${route.path}`;
+        return this.$p(`/manage/${menu.parentPath}/${path}`);
+        // return path;
+      };
+      return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
+    },
+    showSubMenu(menu) { // 是否显示菜单
+      const isRight = (route) => { // 是否有权限访问
+        const path = `/manage/${menu.parentPath}/${route.path}`;
+        return this.$p(path);
+        // return path;
       };
       return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
     },

@@ -27,10 +27,22 @@ const validateRight = (to) => {
 /**
  * 初始化数据
  */
-const initData = () => {
-  // const userInfo = JSON.parse(sessionStorage.getItem('fepUserInfo'));
-  // store.commit('setFepUserInfo', userInfo);
-  store.dispatch('getUserInfo');
+let inited = false;
+const initData = async () => {
+  if (!inited) {
+    inited = true;
+    await Promise.all([
+      store.dispatch('getUserInfo'),
+      store.dispatch('getClientHeight'), // 获取客户端高度
+    ]).catch(() => { // 初始化失败时显示刷新按钮
+      NProgress.done();
+      document.querySelector('#global-loading').style.display = 'none';
+      document.querySelector('#global-reload').style.display = 'block';
+      throw (new Error('init failed'));
+    });
+    // const vm = new Vue();
+    // vm.$router.push('/manage');
+  }
 };
 // let inited = false;
 // const initData = async () => {
@@ -94,13 +106,13 @@ export default () => {
       return;
     }
 
-    initData(); // 初始化数据
+    await initData(); // 初始化数据
 
     if (validateRight(to)) { // 是否通过路由权限验证
       next();
     } else {
-      // next(false);
-      next();
+      next(false);
+      // next();
       // NProgress.done();
     }
   });

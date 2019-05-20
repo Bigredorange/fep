@@ -45,7 +45,6 @@ module.exports = () => {
   if (process.env.NODE_ENV === 'development') {
     // 监听routes变化并生成路由
     const routesPath = views.map(name => path.join(__dirname, `../node_modules/${name}/src/router/routes.js`));
-    console.log(routesPath);
     // const routesPath = path.join(__dirname, '../node_modules/@fep-project-lib/routes/src/routes.json');
     launch.watch(routesPath, (filePath) => {
       create(views);

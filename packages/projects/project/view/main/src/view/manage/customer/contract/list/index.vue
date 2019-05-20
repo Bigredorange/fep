@@ -19,18 +19,10 @@
           />
         </div>
         <div class="item">
-          <span>联系人：</span>
+          <span>合同名称：</span>
           <el-input
-            v-model="form.contactName"
-            placeholder="请输入联系人"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>联系方式：</span>
-          <el-input
-            v-model="form.contactPhone"
-            placeholder="请输入联系方式"
+            v-model="form.contractName"
+            placeholder="请输入合同名称"
             style="width: 200px;"
           />
         </div>
@@ -109,9 +101,9 @@
           label="所属行业"
         />
         <el-table-column
-          prop="contactName"
+          prop="contractName"
           align="center"
-          label="联系人"
+          label="合同名称"
         />
         <el-table-column
           prop="contactPhone"
@@ -135,7 +127,7 @@
               class="mouse"
               @click.stop="disable(row)"
             >
-              <img :src="require(`../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
               <span
                 :class="{'grey': row.status === 0}"
               >
@@ -200,9 +192,9 @@ export default {
       form: {
         customerNo: null,
         customerName: null,
-        contactName: null,
-        contactPhone: null,
-        status: 99,
+        contractName: null,
+        signingDate: null,
+        contractState: 99,
         pageCurrent: 1,
         pageSize: 20,
         startTime: null,
@@ -212,11 +204,15 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '禁用',
+          label: '终止',
         },
         {
           key: 1,
-          label: '启用',
+          label: '正常',
+        },
+        {
+          key: 2,
+          label: '异常',
         },
         {
           key: 99,
