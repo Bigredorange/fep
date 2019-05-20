@@ -108,9 +108,7 @@ module.exports = function (config, option) {
     // 脚本
     config.plugins.push(new UglifyJsPlugin({
       uglifyOptions: {
-        compress: {
-          warnings: false
-        },
+        warnings: false,
         output: {
           comments: false,
           beautify: false,
