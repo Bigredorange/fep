@@ -81,6 +81,38 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'dictionary',
+          meta: {
+            title: '数据字典',
+          },
+          component: () => import(/* webpackChunkName: "v-dictionary" */ '../view/manage/sys/dictionary/index.vue'),
+        },
+        {
+          path: 'protocol',
+          component: RouterView,
+          redirect: 'protocol/list',
+          icon: 'sys',
+          meta: {
+            title: '协议管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-protocol" */ '../view/manage/sys/protocol/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sys/protocol/edit/index.vue'),
+            },
+          ],
+        },
       ],
     },
     {
@@ -102,7 +134,7 @@ const asyncRoutes = [{
         {
           path: 'edit',
           meta: {
-            title: '详情',
+            title: '新增',
           },
           component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/edit/index.vue'),
         },

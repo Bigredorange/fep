@@ -99,5 +99,31 @@ const api = {
   disableCustomer: ({ id, status, ...arg }) => putJson(`customer/${id}/${status}`, arg),
   // 6.5 查询客户
   getCustomer: ({ id, ...arg }) => get(`customer/${id}`, arg),
+  /**
+   * 协议
+   */
+  // 协议列表
+  getProtocolList: args => get('protocol/list', args),
+  // 新增协议
+  addProtocol: args => postJson('protocol', args),
+  // 协议详情
+  getProtocolDetails: ({ id, ...arg }) => get(`protocol/${id}`, arg),
+  // 更新协议
+  updateProtocol: ({ id, ...arg }) => putJson(`protocol/${id}`, arg),
+  // 删除协议
+  deleteProtocol: ({ id, ...arg }) => del(`/protocol/${id}`, arg),
+  /**
+   * 数据字典
+   */
+  // 根据字典码获取字典
+  getDictListByCode: args => get('dict/list', args),
+  // 新增字典
+  addDict: args => postJson('dict', args),
+  // 更新字典
+  updateDict: ({ id, ...arg }) => putJson(`dict/${id}`, arg),
+  // 删除字典
+  deleteDict: ({ id, ...arg }) => del(`dict/${id}`, arg),
+  // 数据字典列表
+  getDictList: args => get('dict', args),
 };
 module.exports = api;

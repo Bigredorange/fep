@@ -20,7 +20,7 @@ import UploadDetail from './components/UploadDetail/index.vue';
 import Affix from './components/Affix';
 import SelfInfo from './components/SelfInfo';
 import ModifyPassword from './components/ModifyPassword';
-// import Editor from './components/Editor';
+import Editor from './components/Editor';
 
 /**
  * 指令
@@ -49,7 +49,7 @@ const components = {
   Affix,
   ModifyPassword,
   SelfInfo,
-  // Editor,
+  Editor,
 };
 
 module.exports = {
