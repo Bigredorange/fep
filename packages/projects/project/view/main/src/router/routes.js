@@ -81,6 +81,20 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'dictionary',
+          meta: {
+            title: '数据字典',
+          },
+          component: () => import(/* webpackChunkName: "v-dictionary" */ '../view/manage/sys/dictionary/index.vue'),
+        },
+        {
+          path: 'protocol',
+          meta: {
+            title: '协议管理',
+          },
+          component: () => import(/* webpackChunkName: "v-protocol" */ '../view/manage/sys/protocol/index.vue'),
+        },
       ],
     },
     {
