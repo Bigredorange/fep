@@ -2,7 +2,7 @@
   <div class="con">
     <div class="con-base">
       <div class="title">
-        <label>{{ form.id ? '修改协议' : '新增协议' }}</label>
+        <label>{{ form.id ? '编辑协议' : '新增协议' }}</label>
       </div>
       <div class="area">
         <div class="label">
@@ -27,6 +27,7 @@
             </el-form-item>
             <el-form-item
               label="协议内容"
+              class="top-direction"
               prop="content"
             >
               <Editor
@@ -39,6 +40,13 @@
       </div>
       <div class="bot-menu">
         <el-button
+          type="primary"
+          icon="el-icon-mobile-phone"
+          @click="perview"
+        >
+          预览效果
+        </el-button>
+        <el-button
           v-loading="isLoading"
           type="primary"
           @click="submit"
@@ -50,10 +58,25 @@
         </el-button>
       </div>
     </div>
+    <Perview
+      ref="Perview"
+      :value="form.content"
+    />
   </div>
 </template>
 <script>
+import Perview from './Perview.vue';
+
 export default {
+  components: {
+    Perview,
+  },
+  props: {
+    protocolId: {
+      type: [Number, String],
+      default: null,
+    },
+  },
   data() {
     return {
       rules: {
@@ -75,16 +98,25 @@ export default {
       isLoading: false,
     };
   },
-  mounted() {
-    const { id } = this.$route.query;
-    this.form.id = id;
-    if (!id) {
-      this.$utils.initData.call(this, { include: ['form'] });
-    } else {
-      this.getProtocolDetail(id);
-    }
+  watch: {
+    protocolId(value) {
+      this.$refs.form.clearValidate();
+      if (!value) {
+        this.reset();
+      } else {
+        this.getProtocolDetail(value);
+      }
+    },
   },
   methods: {
+    reset() {
+      this.form = {
+        id: null,
+        name: null,
+        content: '',
+      };
+      this.$refs.Editor.setHtml('');
+    },
     async submit() {
       if (!this.form.content) {
         this.$message.warning('请输入协议内容');
@@ -97,19 +129,29 @@ export default {
         ...this.form,
       }).then(() => {
         this.$message.success(this.form.id ? '修改成功' : '新增成功');
-        this.$router.go(-1);
+        this.$emit('getList');
+        if (!this.form.id) this.reset();
       }).finally(() => {
         this.isLoading = false;
       });
     },
-    getProtocolDetail(id) {
+    getProtocolDetail(protocolId) {
       this.$api.getProtocolDetails({
-        id,
+        id: protocolId,
       }).then((res) => {
-        const { name, content } = res;
+        const { name, content, id } = res;
         this.form.name = name;
+        this.form.id = id;
         this.form.content = content;
+        this.$refs.Editor.setHtml(content);
       });
+    },
+    perview() {
+      if (!this.form.content) {
+        this.$message.warning('请输入协议内容');
+        return;
+      }
+      this.$refs.Perview.open();
     },
   },
 };
@@ -124,6 +166,9 @@ export default {
     border-radius: 10px;
     .one-col .el-form-item{
       width: 100% !important;
+    }
+    .top-direction {
+      align-items: inherit;
     }
     .title {
       color: #70829a;
@@ -158,6 +203,7 @@ export default {
     }
   }
 }
+
 .bot-menu {
   margin-top: 20px;
   display: flex;

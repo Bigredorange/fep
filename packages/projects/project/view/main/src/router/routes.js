@@ -90,28 +90,10 @@ const asyncRoutes = [{
         },
         {
           path: 'protocol',
-          component: RouterView,
-          redirect: 'protocol/list',
-          icon: 'sys',
           meta: {
             title: '协议管理',
           },
-          children: [
-            {
-              path: 'list',
-              meta: {
-                title: '列表',
-              },
-              component: () => import(/* webpackChunkName: "v-protocol" */ '../view/manage/sys/protocol/list/index.vue'),
-            },
-            {
-              path: 'edit',
-              meta: {
-                title: '详情',
-              },
-              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sys/protocol/edit/index.vue'),
-            },
-          ],
+          component: () => import(/* webpackChunkName: "v-protocol" */ '../view/manage/sys/protocol/index.vue'),
         },
       ],
     },

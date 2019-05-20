@@ -29,13 +29,6 @@ export default {
       inited: false,
     };
   },
-  watch: {
-    value(value) {
-      if (this.inited) return;
-      this.inited = true;
-      this.setHtml(value);
-    },
-  },
   mounted() {
     const editor = new Wangeditor(this.$refs.editor);
     this.setConfig(editor);
