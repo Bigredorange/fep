@@ -9,7 +9,7 @@
           <div
             class="menu-submenu-title"
             :class="{
-              'active': isActiveMenu(menu.path),
+              'active': isActiveMainMenu(menu.path),
               'rotate': curIndex === index,
             }"
             @click="selectSubmenu(menu, index)"
@@ -101,9 +101,11 @@ export default {
       // return new RegExp(`^${path}(/{1}.*)?$`).test(this.$route.path);
       return this.$route.path.includes(path);
     },
-    isActiveMainMenu(menu) { // 主菜单是否激活
-      const isEntry = !menu.children || !menu.children.length || menu.noDropdown;
-      return isEntry && this.isActiveMenu(`/${menu.path}`);
+    isActiveMainMenu(pathMenu) { // 主菜单是否激活
+      const { path } = this.$route;
+      const pathArr = path.split('/');
+      const flag = pathArr.indexOf(pathMenu) !== -1;
+      return flag;
     },
     showMenu(menu, parentMenu) { // 是否显示菜单
       const isRight = (route) => { // 是否有权限访问

@@ -3,33 +3,41 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>客户名称：</span>
+          <span>工单编号：</span>
           <el-input
-            v-model="form.customerName"
-            placeholder="请输入客户名称"
+            v-model="form.workOrderNo"
+            placeholder="请输入工单编号"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>合同编号：</span>
+          <span>工单名称：</span>
           <el-input
-            v-model="form.contractNo"
-            placeholder="请输入合同编号"
+            v-model="form.workOrderName"
+            placeholder="请输入工单名称"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>合同名称：</span>
-          <el-input
-            v-model="form.contractName"
-            placeholder="请输入合同名称"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>合同状态：</span>
+          <span>薪资结算：</span>
           <el-select
-            v-model="form.contractState"
+            v-model="form.paySettlement"
+            style="width: 200px;"
+            placeholder="请选择薪资结算"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>状态：</span>
+          <el-select
+            v-model="form.status"
             style="width: 200px;"
             placeholder="请选择状态"
             @change="getList"
@@ -41,6 +49,59 @@
               :value="item.key"
             />
           </el-select>
+        </div>
+        <div class="item">
+          <span>有效期限：</span>
+          <el-select
+            v-model="form.validityPeriod"
+            style="width: 200px;"
+            placeholder="请选择有效期限"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>工种：</span>
+          <el-select
+            v-model="form.workType"
+            style="width: 200px;"
+            placeholder="请选择工种"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>客户名称：</span>
+          <el-input
+            v-model="form.customerName"
+            placeholder="请输入客户名称"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>创建日期：</span>
+          <el-date-picker
+            v-model="createTime"
+            style="width: 260px;"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            @change="selectDate"
+          />
         </div>
         <el-button
           type="primary"
@@ -73,19 +134,34 @@
         :loading="listLoading"
       >
         <el-table-column
+          prop="workOrderNo"
+          align="center"
+          label="工单编号"
+        />
+        <el-table-column
+          prop="workOrderName"
+          align="center"
+          label="工单名称"
+        />
+        <el-table-column
+          prop="industry"
+          align="center"
+          label="所属行业"
+        />
+        <el-table-column
+          prop="contactName"
+          align="center"
+          label="联系人"
+        />
+        <el-table-column
           prop="customerName"
           align="center"
-          label="客户名称"
+          label="联系方式"
         />
         <el-table-column
-          prop="contractNo"
+          prop="area"
           align="center"
-          label="合同编号"
-        />
-        <el-table-column
-          prop="contractName"
-          align="center"
-          label="合同名称"
+          label="区域"
         />
         <el-table-column
           prop="status"
@@ -97,45 +173,22 @@
           >
             <div
               class="mouse"
+              @click.stop="disable(row)"
             >
+              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
               <span
-                v-if="row.contractState === 0"
+                :class="{'grey': row.status === 0}"
               >
-                终止
-              </span>
-              <span
-                v-else-if="row.contractState === 1"
-              >
-                正常
-              </span>
-              <span
-                v-else-if="row.contractState === 2"
-              >
-                异常
+                {{ row.status === 1 ? '启用' : '禁用' }}
               </span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="signingDate"
-          align="center"
-          label="签约时间"
-        />
-        <el-table-column
-          prop="contractStartDate"
-          align="center"
-          label="合作开始日期"
-        />
-        <el-table-column
-          prop="contractEndDate"
-          align="center"
-          label="合作截止日期"
-        />
-        <el-table-column
-          prop="creator"
+        <!-- <el-table-column
+          prop="area"
           align="center"
           label="创建人"
-        />
+        /> -->
         <el-table-column
           prop="createTime"
           align="center"
@@ -185,11 +238,15 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        contractNo: null,
+        workOrderNo: null,
+        workOrderName: null,
+        contactName: null,
         customerName: null,
-        contractName: null,
-        signingDate: null,
-        contractState: 99,
+        status: 99,
+        validityPeriod: null,
+        workPlanStartTime: null,
+        workPlanEndTime: null,
+        workType: null,
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -197,15 +254,11 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '终止',
+          label: '禁用',
         },
         {
           key: 1,
-          label: '正常',
-        },
-        {
-          key: 2,
-          label: '异常',
+          label: '启用',
         },
         {
           key: 99,
@@ -225,7 +278,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getCusContractList({
+      this.$api.getCustomerList({
         ...this.form,
       }).then((res) => {
         this.list = res.dataList;
@@ -241,8 +294,28 @@ export default {
     edit(row) {
       this.$router.push({ path: 'edit', query: { id: row.id } });
     },
+    selectDate(val) {
+      const [start, end] = val;
+      this.form.workPlanStartTime = start;
+      this.form.workPlanEndTime = end;
+    },
     add() {
       this.$router.push('edit');
+    },
+    disable(item) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+        onOk: () => {
+          this.$api.disableCustomer({
+            id: item.id,
+            status: Number(!item.status),
+          }).then(() => {
+            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+            this.getList();
+          });
+        },
+      });
     },
   },
 };

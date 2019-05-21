@@ -1,0 +1,420 @@
+<template>
+  <div>
+    <top-bar>
+      <section>
+        <div class="item">
+          <span>工单编号：</span>
+          <el-input
+            v-model="form.workOrderNo"
+            placeholder="请输入工单编号"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>工单名称：</span>
+          <el-input
+            v-model="form.workOrderName"
+            placeholder="请输入工单名称"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>薪资结算：</span>
+          <el-select
+            v-model="form.paySettlement"
+            style="width: 200px;"
+            placeholder="请选择薪资结算"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>状态：</span>
+          <el-select
+            v-model="form.status"
+            style="width: 200px;"
+            placeholder="请选择状态"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>有效期限：</span>
+          <el-select
+            v-model="form.validityPeriod"
+            style="width: 200px;"
+            placeholder="请选择有效期限"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>工种：</span>
+          <el-select
+            v-model="form.workType"
+            style="width: 200px;"
+            placeholder="请选择工种"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>客户名称：</span>
+          <el-input
+            v-model="form.customerName"
+            placeholder="请输入客户名称"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>工作计划日期：</span>
+          <el-date-picker
+            v-model="createTime"
+            style="width: 260px;"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            @change="selectDate"
+          />
+        </div>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          style="margin-left:20px;"
+          @click="getList"
+        >
+          查询
+        </el-button>
+        <el-button
+          @click="reset"
+        >
+          重置
+        </el-button>
+      </section>
+    </top-bar>
+    <div class="con-table">
+      <div class="buttons">
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="add"
+        >
+          新增
+        </el-button>
+        <el-button>导出</el-button>
+      </div>
+      <el-table
+        :data="list"
+        :loading="listLoading"
+      >
+        <el-table-column
+          prop="customerName"
+          align="center"
+          label="客户名称"
+        />
+        <el-table-column
+          prop="workOrderNo"
+          align="center"
+          label="工单编号"
+        />
+        <el-table-column
+          prop="workOrderName"
+          align="center"
+          label="工单名称"
+        />
+        <el-table-column
+          prop="workOrderFee"
+          align="center"
+          label="工单费用"
+        />
+        <el-table-column
+          prop="contactName"
+          align="center"
+          label="状态"
+          :formatter="({ status }) => getStatusName(status)"
+        />
+        <el-table-column
+          prop="customerName"
+          align="center"
+          label="招聘人数"
+        />
+        <el-table-column
+          prop="area"
+          align="center"
+          label="薪资结算"
+        />
+        <el-table-column
+          prop="status"
+          align="center"
+          label="状态"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <div
+              class="mouse"
+              @click.stop="disable(row)"
+            >
+              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <span
+                :class="{'grey': row.status === 0}"
+              >
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="金额(元)"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="单位"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="工种"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="工作计划日期"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="有效期限"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="开始日期"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="截止日期"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="工作区域"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="申请人"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="申请时间"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="审核人"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="审核时间"
+        />
+        <el-table-column
+          label="操作"
+          align="center"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <el-button
+              type="text"
+              class="primary"
+              @click="edit(row)"
+            >
+              编辑
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <affix
+        direction="bottom"
+        :offset="0"
+      >
+        <el-pagination
+          class="ui-pagination"
+          :current-page.sync="form.pageCurrent"
+          :page-size="form.pageSize"
+          :page-sizes="[20, 40, 60, 80, 100]"
+          layout="slot, sizes, prev, pager, next"
+          :total="total"
+          @current-change="getList"
+          @size-change="sizeChange"
+        >
+          <span class="total">{{ total }} 条记录，共 {{ Math.ceil(total / form.pageSize) }} 页</span>
+        </el-pagination>
+      </affix>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      list: [],
+      listLoading: false,
+      form: {
+        workOrderNo: null,
+        workOrderName: null,
+        contactName: null,
+        customerName: null,
+        status: 99,
+        validityPeriod: null,
+        workPlanStartTime: null,
+        workPlanEndTime: null,
+        workType: null,
+        pageCurrent: 1,
+        pageSize: 20,
+      },
+      total: 0,
+      statusList: [
+        {
+          key: 0,
+          label: '禁用',
+        },
+        {
+          key: 1,
+          label: '启用',
+        },
+        {
+          key: 99,
+          label: '全部',
+        },
+      ],
+      createTime: [],
+    };
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    reset() {
+      this.$utils.initData.call(this, { include: ['form'] });
+      this.getList();
+    },
+    getList() {
+      this.listLoading = true;
+      this.$api.getWorkOrderList({
+        ...this.form,
+      }).then((res) => {
+        this.list = res.dataList;
+        this.total = res.allCount;
+      }).finally(() => {
+        this.listLoading = false;
+      });
+    },
+    sizeChange(n) {
+      this.form.pageSize = n;
+      this.getList();
+    },
+    edit(row) {
+      this.$router.push({ path: 'edit', query: { id: row.id } });
+    },
+    selectDate(val) {
+      const [start, end] = val;
+      this.form.workPlanStartTime = start;
+      this.form.workPlanEndTime = end;
+    },
+    add() {
+      this.$router.push('edit');
+    },
+    disable(item) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+        onOk: () => {
+          this.$api.disableCustomer({
+            id: item.id,
+            status: Number(!item.status),
+          }).then(() => {
+            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+            this.getList();
+          });
+        },
+      });
+    },
+    getStatusName(status) {
+      let name = '';
+      switch (status) {
+        case 0:
+          name = '创建客户';
+          break;
+        case 1:
+          name = '电销分配销售专员';
+          break;
+        case 2:
+          name = '客户转移';
+          break;
+        case 3:
+          name = '退回公海池';
+          break;
+        case 4:
+          name = '认领公海池客户';
+          break;
+        case 6:
+          name = '输单';
+          break;
+      }
+      return name;
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.con-table {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin: 0px 8px 8px;
+  .buttons {
+    display: flex;
+    margin-bottom: 16px;
+  }
+  .grey {
+    color: #999999;
+  }
+  .mouse {
+    cursor: pointer;
+  }
+}
+</style>

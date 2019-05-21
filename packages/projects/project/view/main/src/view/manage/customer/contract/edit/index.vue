@@ -2,12 +2,12 @@
   <div class="con">
     <div class="con-base">
       <div class="title">
-        <label>{{ !customerId ? '新增客户' : '编辑客户' }}</label>
+        <label>{{ !contractId ? '新增合同' : '编辑合同' }}</label>
       </div>
       <div class="area">
         <div class="label">
           <i class="line" />
-          <label>{{ !customerId ? '填写基本信息' : '基本信息' }}</label>
+          <label>{{ !contractId ? '填写基本信息' : '基本信息' }}</label>
           <el-form
             ref="form"
             :model="form"
@@ -18,122 +18,54 @@
             class="ui-form three-col"
           >
             <el-form-item
-              label="客户编号"
-              prop="customerNo"
-            >
-              <p
-                :class="{'grey': !form.customerNo}"
-              >
-                {{ form.customerNo || '此编号系统自动生成' }}
-              </p>
-            </el-form-item>
-            <el-form-item
-              label="客户名称"
-              prop="customerName"
-            >
-              <el-input
-                v-model="form.customerName"
-                placeholder="请输入客户名称"
-              />
-            </el-form-item>
-            <el-form-item
-              label="行业"
-              prop="industry"
+              label="客户"
+              prop="customerId"
             >
               <el-select
-                v-model="form.industry"
-                placeholder="请选择行业"
+                v-model="form.customerId"
+                placeholder="请选择客户"
               >
                 <el-option
-                  v-for="item in rolesList"
+                  v-for="item in customerList"
                   :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :label="item.customerName"
+                  :value="item.id"
                 />
               </el-select>
             </el-form-item>
             <el-form-item
-              label="状态"
-              prop="status"
+              label="合同编号"
+              prop="contractNo"
             >
-              <el-radio-group
-                v-model="form.status"
+              <el-input
+                v-model="form.contractNo"
+                placeholder="请输入合同编号"
+              />
+            </el-form-item>
+            <el-form-item
+              label="合同名称"
+              prop="contractName"
+            >
+              <el-input
+                v-model="form.contractName"
+                placeholder="请输入合同名称"
+              />
+            </el-form-item>
+            <el-form-item
+              label="合同状态"
+              prop="contractState"
+            >
+              <el-select
+                v-model="form.contractState"
+                placeholder="请选择状态"
               >
-                <el-radio-button
-                  :label="1"
-                >
-                  启用
-                </el-radio-button>
-                <el-radio-button
-                  :label="0"
-                >
-                  禁用
-                </el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item
-              label="联系人"
-              prop="contactName"
-            >
-              <el-input
-                v-model="form.contactName"
-                placeholder="请输入联系人"
-              />
-            </el-form-item>
-            <el-form-item
-              label="联系电话"
-              prop="contactPhone"
-            >
-              <el-input
-                v-model="form.contactPhone"
-                placeholder="请输入联系电话"
-              />
-            </el-form-item>
-            <el-form-item
-              label="座机"
-              prop="landline"
-            >
-              <el-input
-                v-model="form.landline"
-                placeholder="请输入座机"
-              />
-            </el-form-item>
-            <el-form-item
-              label="传真"
-              prop="fax"
-            >
-              <el-input
-                v-model="form.fax"
-                placeholder="请输入传真"
-              />
-            </el-form-item>
-            <el-form-item
-              label="区域"
-              prop="area"
-            >
-              <el-input
-                v-model="form.area"
-                placeholder="请输入区域"
-              />
-            </el-form-item>
-            <el-form-item
-              label="是否启用余额控制"
-              prop="balanceLimit"
-            >
-              <el-radio-group
-                v-model="form.balanceLimit"
-              >
-                <el-radio-button
-                  :label="1"
-                >
-                  启用
-                </el-radio-button>
-                <el-radio-button
-                  :label="0"
-                >
-                  禁用
-                </el-radio-button>
-              </el-radio-group>
+                <el-option
+                  v-for="item in statusList"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                />
+              </el-select>
             </el-form-item>
             <el-form-item
               label="详细地址"
@@ -147,6 +79,40 @@
               />
             </el-form-item>
             <el-form-item
+              label="签约时间"
+              prop="signingDate"
+            >
+              <el-date-picker
+                v-model="form.signingDate"
+                type="date"
+                placeholder="选择签约时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+            <el-form-item
+              label="合作开始时间"
+              prop="contractStartDate"
+            >
+              <el-date-picker
+                v-model="form.contractStartDate"
+                type="date"
+                placeholder="选择合作开始时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+            <el-form-item
+              label="合作截止时间"
+              prop="contractEndDate"
+            >
+              <el-date-picker
+                v-model="form.contractEndDate"
+                type="date"
+                placeholder="选择合作截止时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+
+            <el-form-item
               label="备注"
               prop="remark"
             >
@@ -157,193 +123,50 @@
                 :rows="2"
               />
             </el-form-item>
-          </el-form>
-        </div>
-      </div>
-      <div class="con-tab">
-        <div>
-          <el-tabs
-            v-model="tabName"
-            @tab-click="handleTabClick"
-          >
-            <el-tab-pane
-              label="注册信息"
-              name="register"
+            <el-form-item
+              label="合同附件"
+              prop="attachment"
+              style="width: 66%"
             >
-              <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-width="140px"
-                inline
-                class="ui-form three-col"
-                style="margin-left: 120px;width: 80%;"
-              >
-                <el-form-item
-                  label="成立日期"
+              <div class="file-upload">
+                <el-button
+                  type="primary"
+                  :loading="attachLoading"
+                  class="upload-btn"
+                  size="small"
+                  @click="upload"
                 >
-                  <!-- <el-date-picker
-                    v-model="form.establishmentDate"
-                    placeholder="请选择成立日期"
-                    value-format="yyyy-MM-dd"
-                  /> -->
-                  <el-date-picker
-                    v-model="form.establishmentDate"
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="法人代表"
-                >
-                  <el-input
-                    v-model="form.legalRepresentative"
-                    placeholder="请输入法人代表"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册城市"
-                >
-                  <el-input
-                    v-model="form.registeredCity"
-                    placeholder="请输入注册城市"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册地址"
-                >
-                  <el-input
-                    v-model="form.registeredAddress"
-                    :rows="2"
-                    placeholder="请输入注册地址"
-                    type="textarea"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册资金"
-                  prop="registeredCapital"
-                >
-                  <el-input
-                    v-model="form.registeredCapital"
-                    placeholder="请输入注册资金"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="工商局注册号"
-                >
-                  <el-input
-                    v-model="form.gsgRegisterNo"
-                    placeholder="请输入工商局注册号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="统一社会信用代码"
-                >
-                  <el-input
-                    v-model="form.uscc"
-                    placeholder="请输入统一社会信用代码"
-                  />
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-            <el-tab-pane
-              label="开票信息"
-              name="invoice"
-            >
-              <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-width="140px"
-                inline
-                class="ui-form three-col"
-                style="margin-left: 120px;width: 80%;"
-              >
-                <el-form-item
-                  label="成立日期"
-                >
-                  <el-select
-                    v-model="form.invoiceAptitude"
-                    placeholder="请选择开票类型"
+                  点击上传
+                </el-button>
+                <span>备注：限制上传格式Word 或 PDF文档，  单个附件必须小于5M，最多5个；</span>
+                <ul>
+                  <li
+                    v-for="(item,index) in fileList"
+                    :key="item.id"
+                    class="file"
                   >
-                    <el-option
-                      v-for="item in inoviceTypeList"
-                      :key="item.key"
-                      :label="item.label"
-                      :value="item.key"
-                    />
-                  </el-select>
-                </el-form-item>
-                <el-form-item
-                  label="开票名称"
-                >
-                  <el-input
-                    v-model="form.invoiceName"
-                    placeholder="请输入开票名称"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="购方税号"
-                >
-                  <el-input
-                    v-model="form.buyerTaxNum"
-                    placeholder="请输入购方税号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="开户行名称"
-                >
-                  <el-input
-                    v-model="form.openBankName"
-                    :rows="2"
-                    placeholder="请输入开户行名称"
-                    type="textarea"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="开户行账号"
-                  prop="openBankAccount"
-                >
-                  <el-input
-                    v-model="form.openBankAccount"
-                    placeholder="请输入开户行账号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="地址"
-                >
-                  <el-input
-                    v-model="form.invoiceAddress"
-                    placeholder="请输入地址"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="电话"
-                >
-                  <el-input
-                    v-model="form.tel"
-                    placeholder="电话"
-                  />
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-            <el-tab-pane
-              label="公司介绍"
-              name="company"
-            >
-              <div>
-                <!-- <p>公司介绍</p> -->
-                <el-input
-                  v-model="form.introduction"
-                  :rows="5"
-                  placeholder="请输入公司详情"
-                  type="textarea"
-                  style="width: 60%;margin-left:120px"
-                />
+                    <img
+                      class="delete-btn"
+                      src="../../../../../assets/icon/deleteMinus.png"
+                      width="16"
+                      height="16"
+                      @click="deleteFile(index)"
+                    >
+                    <div
+                      class="fileDesc"
+                      @click="downloadFile(item)"
+                    >
+                      <span class="name">{{ item.fileName }}</span>
+                      <span class="action">
+                        <span>操作人: {{ item.userName }} </span>
+                      <!-- <span v-if="item.insertTime">| 操作时间: {{item.insertTime}}</span> -->
+                      </span>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </el-tab-pane>
-          </el-tabs>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
       <div class="bot-menu">
@@ -367,107 +190,111 @@ export default {
   data() {
     return {
       rules: {
-        customerName: [{
+        contractName: [{
           required: true,
-          message: '请输入客户名称',
+          message: '请输入合同名称',
           trigger: 'blur',
         }],
-        contactName: [{
+        contractNo: [{
           required: true,
-          message: '请输入联系人',
+          message: '请输入合同编号',
           trigger: 'blur',
         }],
-        industry: [{
+        customerId: [{
           required: true,
-          message: '请选择行业',
+          message: '请选择客户',
           trigger: 'blur',
         }],
-        contactPhone: [{
+        signingDate: [{
           required: true,
+          message: '请选择签约时间',
           trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的联系电话'));
-            } else {
-              callback();
-            }
-          },
+        }],
+        contractStartDate: [{
+          required: true,
+          message: '请选择合作开始时间',
+          trigger: 'blur',
+        }],
+        contractEndDate: [{
+          required: true,
+          message: '请选择合作结束时间',
+          trigger: 'blur',
+        }],
+        attachment: [{
+          required: true,
+          message: '请上传文件',
+          trigger: 'change',
         }],
       },
       form: {
-        customerNo: null,
+        customerId: null,
+        contractNo: null,
+        contractState: 1,
+        contractName: null,
         customerName: null,
-        industry: null,
-        status: 1,
-        contactName: null,
         remark: null,
-        fax: null,
-        contactPhone: null,
-        landline: null,
-        area: null,
-        address: null,
-        establishmentDate: null,
-        legalRepresentative: null,
-        registeredCity: null,
-        registeredAddress: null,
-        registeredCapital: null,
-        gsgRegisterNo: null,
-        uscc: null,
-        invoiceAptitude: 1,
-        invoiceName: null,
-        buyerTaxNum: null,
-        openBankName: null,
-        openBankAccount: null,
-        invoiceAddress: null,
-        tel: null,
-        introduction: null,
+        signingDate: null,
+        contractStartDate: null,
+        contractEndDate: null,
+        attachment: null,
       },
       confirmButtonLoading: false,
-      rolesList: [],
-      customerId: null,
-      tabName: 'register',
-      inoviceTypeList: [
+      customerList: [],
+      contractId: null,
+      statusList: [
         {
           key: 0,
-          label: '一般纳税人',
+          label: '终止',
         },
         {
           key: 1,
-          label: '小规模纳税人',
+          label: '正常',
+        },
+        {
+          key: 2,
+          label: '异常',
         },
       ],
+      attachLoading: false,
+      fileList: [],
+      file: {
+        fileName: null,
+        path: null,
+        userName: null,
+      },
     };
   },
   mounted() {
-    this.getRolesList();
-    this.customerId = this.$route.query.id;
-    if (this.customerId) {
-      this.getDetail(this.customerId);
+    this.getCustomerList();
+    this.contractId = this.$route.query.id;
+    if (this.contractId) {
+      this.getDetail(this.contractId);
     }
   },
   methods: {
     submit() {
+      this.form.attachment = JSON.stringify(this.fileList.map(item => item.path));
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.confirmButtonLoading = true;
           let api = '';
           let param = null;
           this.form.companyId = this.$store.state.fepUserInfo.companyId;
-          if (!this.customerId) {
-            api = 'addCustomer';
+          if (!this.contractId) {
+            api = 'addCusContract';
             param = {
               ...this.form,
             };
           } else {
-            api = 'updateCustomer';
+            api = 'updateCusContract';
             param = {
               ...this.form,
-              id: this.customerId,
+              id: this.contractId,
             };
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
-            // this.$router.push('list');
+            this.$router.push('list');
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
@@ -476,24 +303,50 @@ export default {
         }
       });
     },
-    getRolesList() {
+    getCustomerList() {
       this.isLoading = true;
-      this.$api.getAllRole({
-        name: '',
-        status: 1,
+      this.$api.getCustomerList({
+        pageSize: 1000,
+        pageCurrent: 1,
       }).then((res) => {
-        this.rolesList = res;
+        this.customerList = res.dataList;
       }).finally(() => {
         this.isLoading = false;
       });
     },
     getDetail(id) {
-      this.$api.getCustomer({ id }).then((res) => {
+      this.$api.getCusContract({ id }).then((res) => {
         this.form = res;
       });
     },
-    handleTabClick() {
-
+    async upload() {
+      this.$utils.initData.call(this, { include: ['file'] });
+      this.$upload({
+        multiple: false,
+      }).then(([fileObj]) => {
+        this.attachLoading = true;
+        console.log(fileObj);
+        this.$api.fileUpload({
+          file: fileObj.file,
+          type: 'CUS_CONTRACT',
+        }).then((res) => {
+          this.file.fileName = fileObj.name;
+          this.file.path = res;
+          this.file.userName = this.$store.state.fepUserInfo.name;
+          this.fileList.push(this.file);
+        }).finally(() => {
+          this.attachLoading = false;
+        });
+      });
+    },
+    deleteFile(index) {
+      this.fileList.splice(index, 1);
+    },
+    downloadFile(item) {
+      this.$api.fileDownloadUpload({
+        filePath: item.path,
+        type: 'CUS_CONTRACT',
+      }, item.fileName);
     },
   },
 };
@@ -546,5 +399,45 @@ export default {
       display: flex;
       justify-content: center;
   }
+  .file-upload {
+  .upload-btn {
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  .file {
+    .delete-btn {
+      margin: auto 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    display: flex;
+    color: #7b848e;
+    margin-bottom: 5px;
+    .fileDesc {
+      &:hover {
+        cursor: pointer;
+      }
+      width: 60%;
+      background-color: #ffffff;
+      border: solid 1px #f0f0f0;
+      height: 41px;
+      margin: 0 10px;
+      line-height: 41px;
+      font-size: 12px;
+      padding: 0 10px;
+      .name {
+        color: #000000;
+      }
+      .action {
+        color: #7b848e;
+        float:right;
+      }
+    }
+  }
+  .width66 {
+    width: 66%;
+  }
+}
 }
 </style>

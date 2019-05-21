@@ -29,7 +29,6 @@ export default {
     },
     showMenu(menu) { // 是否显示菜单
       const isRight = (route) => { // 是否有权限访问
-        console.log(`/manage/${route.path}`);
         const path = `/manage/${route.path}`;
         return this.$p(path);
       };

@@ -30,7 +30,6 @@ const asyncRoutes = [{
       path: 'sys',
       component: RouterView,
       redirect: 'sys/org',
-      icon: 'sys',
       meta: {
         title: '系统管理',
       },
@@ -60,7 +59,6 @@ const asyncRoutes = [{
           path: 'user',
           component: RouterView,
           redirect: 'user/list',
-          icon: 'sys',
           meta: {
             title: '用户管理',
           },
@@ -101,7 +99,6 @@ const asyncRoutes = [{
       path: 'customer',
       component: RouterView,
       redirect: 'customer/cus',
-      icon: 'sys',
       meta: {
         title: '客户管理',
       },
@@ -184,7 +181,6 @@ const asyncRoutes = [{
       path: 'hroCompany',
       component: RouterView,
       redirect: 'hroCompany/list',
-      icon: 'sys',
       meta: {
         title: 'HRO企业管理',
       },
@@ -205,13 +201,64 @@ const asyncRoutes = [{
         },
       ],
     },
-    // {
-    //   path: 'home',
-    //   component: () => import(/* webpackChunkName: "v-home" */ '../view/manage/home/index.vue'),
-    //   meta: {
-    //     title: '首页',
-    //   },
-    // },
+    {
+      path: 'workOrder',
+      component: RouterView,
+      redirect: 'workOrder/order',
+      meta: {
+        title: '工单管理',
+      },
+      children: [
+        {
+          path: 'order',
+          component: RouterView,
+          redirect: 'order/list',
+          meta: {
+            title: '工单管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-order" */ '../view/manage/workOrder/order/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/workOrder/order/edit/index.vue'),
+            },
+          ],
+        },
+        {
+          path: 'check',
+          component: RouterView,
+          redirect: 'check/list',
+          meta: {
+            title: '工单审核',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-check" */ '../view/manage/workOrder/check/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/workOrder/check/edit/index.vue'),
+            },
+          ],
+        },
+      ],
+    },
   ],
 }];
 const routes = [
@@ -220,6 +267,9 @@ const routes = [
   {
     path: '/404',
     component: () => import(/* webpackChunkName: "v-404" */ '../view/404/index.vue'),
+    meta: {
+      isRight: true,
+    },
   },
   {
     path: '/',

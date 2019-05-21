@@ -1,8 +1,10 @@
+import $utils from './utils';
+
 const {
   get,
   // post,
   // put,
-  // postForm,
+  postForm,
   del,
   postJson,
   // postBlob,
@@ -145,5 +147,33 @@ const api = {
   deleteDict: ({ id, ...arg }) => del(`dict/${id}`, arg),
   // 数据字典列表
   getDictList: args => get('dict', args),
+  /**
+   * 文件
+   */
+  // 文件上传
+  fileUpload: args => postForm('file/upload', args),
+  // 根据ID下载上传的文件
+  fileDownloadById: (args, name) => getBlob('file/download', args).then((blob) => {
+    $utils.autoLoad(new Blob([blob]), name);
+  }),
+  // 下载上传的文件
+  fileDownloadUpload: (args, name) => getBlob('file/download_upload', args).then((blob) => {
+    $utils.autoLoad(new Blob([blob]), name);
+  }),
+  /**
+   * 工单管理
+   */
+  // 根据id获取工单
+  getWorkOrder: args => get('work_order/list', args),
+  // 新增工单
+  addWorkOrder: args => postJson('work_order', args),
+  // 更新工单
+  updateWorkOrder: ({ id, ...arg }) => putJson(`work_order/${id}`, arg),
+  // 更新工单状态
+  changeWorkOrder: ({ id, ...arg }) => del(`work_order/${id}/change_status`, arg),
+  // 工单列表
+  getWorkOrderList: args => get('work_order', args),
+  // 导出工单
+  exportWorkOrder: args => postJson('work_order/export', args),
 };
 module.exports = api;
