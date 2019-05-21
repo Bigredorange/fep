@@ -5,6 +5,7 @@
         <list
           ref="list"
           @select="$event => protocolId = $event"
+          @resetEdit="resetEdit"
         />
       </div>
       <div class="right">
@@ -36,6 +37,9 @@ export default {
     getList() {
       this.$refs.list.getList();
     },
+    resetEdit() {
+      this.$refs.edit.reset();
+    },
   },
 };
 </script>
@@ -63,7 +67,7 @@ export default {
   justify-content: space-between;
   margin: 0 auto;
   max-width: 1890px;
-  width: 100%;
+  margin-top: 10px;
   > .left {
     flex-shrink: 0;
     margin-right: 36px;

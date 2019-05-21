@@ -92,6 +92,9 @@ export default {
           id: row.id,
         }),
         onResolve: () => {
+          if (row.id === this.protocolId) {
+            this.$emit('resetEdit');
+          }
           this.$message.success('删除成功');
           this.getList();
         },
