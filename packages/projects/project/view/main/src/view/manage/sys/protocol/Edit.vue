@@ -51,7 +51,7 @@
           type="primary"
           @click="submit"
         >
-          保存
+          {{ form.id ? '保存' : '新增' }}
         </el-button>
         <el-button>
           取消
