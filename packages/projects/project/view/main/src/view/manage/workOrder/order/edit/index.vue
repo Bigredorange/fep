@@ -2,12 +2,12 @@
   <div class="con">
     <div class="con-base">
       <div class="title">
-        <label>{{ !customerId ? '新增客户' : '编辑客户' }}</label>
+        <label>{{ !workOrderId ? '新增工单' : '编辑工单' }}</label>
       </div>
       <div class="area">
         <div class="label">
           <i class="line" />
-          <label>{{ !customerId ? '填写基本信息' : '基本信息' }}</label>
+          <label>{{ !workOrderId ? '填写基本信息' : '基本信息' }}</label>
           <el-form
             ref="form"
             :model="form"
@@ -18,31 +18,12 @@
             class="ui-form three-col"
           >
             <el-form-item
-              label="客户编号"
-              prop="customerNo"
-            >
-              <p
-                :class="{'grey': !form.customerNo}"
-              >
-                {{ form.customerNo || '此编号系统自动生成' }}
-              </p>
-            </el-form-item>
-            <el-form-item
               label="客户名称"
-              prop="customerName"
-            >
-              <el-input
-                v-model="form.customerName"
-                placeholder="请输入客户名称"
-              />
-            </el-form-item>
-            <el-form-item
-              label="行业"
-              prop="industry"
+              prop="customerId"
             >
               <el-select
-                v-model="form.industry"
-                placeholder="请选择行业"
+                v-model="form.customerId"
+                placeholder="请选择客户"
               >
                 <el-option
                   v-for="item in rolesList"
@@ -53,108 +34,207 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              label="状态"
-              prop="status"
+              label="工单编号"
+              prop="customerNo"
             >
-              <el-radio-group
-                v-model="form.status"
+              <p
+                :class="{'grey': !form.customerNo}"
               >
-                <el-radio-button
-                  :label="1"
-                >
-                  启用
-                </el-radio-button>
-                <el-radio-button
-                  :label="0"
-                >
-                  禁用
-                </el-radio-button>
-              </el-radio-group>
+                {{ form.customerNo || '此编号系统自动生成' }}
+              </p>
             </el-form-item>
             <el-form-item
-              label="联系人"
-              prop="contactName"
+              label="工单名称"
+              prop="workOrderName"
             >
               <el-input
-                v-model="form.contactName"
-                placeholder="请输入联系人"
+                v-model="form.workOrderName"
+                placeholder="请输入工单名称"
               />
             </el-form-item>
             <el-form-item
-              label="联系电话"
+              label="薪资结算"
+              prop="paySettlement"
+            >
+              <el-select
+                v-model="form.paySettlement"
+                placeholder="请选择薪资结算"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="金额(元)"
+              prop="amount"
+            >
+              <el-input
+                v-model="form.amount"
+                placeholder="请输入金额"
+              />
+            </el-form-item>
+            <el-form-item
+              label="单位"
+              prop="unit"
+            >
+              <el-select
+                v-model="form.unit"
+                placeholder="请选择单位"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="有效期限"
+              prop="validityPeriod"
+            >
+              <el-select
+                v-model="form.validityPeriod"
+                placeholder="请选择有效期限"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="有效日期"
               prop="contactPhone"
             >
-              <el-input
-                v-model="form.contactPhone"
-                placeholder="请输入联系电话"
+              <el-date-picker
+                v-model="createTime"
+                style="width: 260px;"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+                @change="selectDate"
               />
             </el-form-item>
             <el-form-item
-              label="座机"
-              prop="landline"
+              label="工作区域"
+              prop="workArea"
             >
               <el-input
-                v-model="form.landline"
-                placeholder="请输入座机"
+                v-model="form.workArea"
+                placeholder="请输入工作区域"
               />
             </el-form-item>
             <el-form-item
-              label="传真"
-              prop="fax"
+              label="工作地址"
+              prop="workAddress"
             >
               <el-input
-                v-model="form.fax"
-                placeholder="请输入传真"
+                v-model="form.workAddress"
+                placeholder="请输入工作地址"
+                type="textarea"
+                :rows="2"
               />
             </el-form-item>
             <el-form-item
-              label="区域"
-              prop="area"
+              label="工作计划日期"
+              prop="workPlanDate"
             >
-              <el-input
-                v-model="form.area"
-                placeholder="请输入区域"
+              <el-date-picker
+                v-model="form.workPlanDate"
+                type="date"
+                placeholder="选择工作计划日期"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
             <el-form-item
-              label="是否启用余额控制"
-              prop="balanceLimit"
+              label="性别要求"
+              prop="genderRequirement"
             >
-              <el-radio-group
-                v-model="form.balanceLimit"
+              <el-select
+                v-model="form.genderRequirement"
+                placeholder="请选择性别要求"
               >
-                <el-radio-button
-                  :label="1"
-                >
-                  启用
-                </el-radio-button>
-                <el-radio-button
-                  :label="0"
-                >
-                  禁用
-                </el-radio-button>
-              </el-radio-group>
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
             </el-form-item>
             <el-form-item
-              label="详细地址"
-              prop="address"
+              label="学历要求"
+              prop="academicRequirement"
+            >
+              <el-select
+                v-model="form.academicRequirement"
+                placeholder="请选择学历要求"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="经验"
+              prop="expr"
+            >
+              <el-select
+                v-model="form.expr"
+                placeholder="请选择经验"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="招聘人数"
+              prop="recruitsNumber"
             >
               <el-input
-                v-model="form.address"
-                placeholder="请输入详细地址"
-                type="textarea"
-                :rows="2"
+                v-model="form.recruitsNumber"
+                placeholder="请输入招聘人数"
               />
             </el-form-item>
             <el-form-item
-              label="备注"
-              prop="remark"
+              label="工种"
+              prop="workType"
+            >
+              <el-select
+                v-model="form.workType"
+                placeholder="请选择工种"
+              >
+                <el-option
+                  v-for="item in $opt('paySettlement')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="工单费用"
+              prop="workOrderFee"
             >
               <el-input
-                v-model="form.remark"
-                placeholder="请输入备注"
-                type="textarea"
-                :rows="2"
+                v-model="form.workOrderFee"
+                placeholder="请输入工单费用"
               />
             </el-form-item>
           </el-form>
@@ -167,181 +247,116 @@
             @tab-click="handleTabClick"
           >
             <el-tab-pane
-              label="注册信息"
-              name="register"
-            >
-              <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-width="140px"
-                inline
-                class="ui-form three-col"
-                style="margin-left: 120px;width: 80%;"
-              >
-                <el-form-item
-                  label="成立日期"
-                >
-                  <!-- <el-date-picker
-                    v-model="form.establishmentDate"
-                    placeholder="请选择成立日期"
-                    value-format="yyyy-MM-dd"
-                  /> -->
-                  <el-date-picker
-                    v-model="form.establishmentDate"
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="法人代表"
-                >
-                  <el-input
-                    v-model="form.legalRepresentative"
-                    placeholder="请输入法人代表"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册城市"
-                >
-                  <el-input
-                    v-model="form.registeredCity"
-                    placeholder="请输入注册城市"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册地址"
-                >
-                  <el-input
-                    v-model="form.registeredAddress"
-                    :rows="2"
-                    placeholder="请输入注册地址"
-                    type="textarea"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="注册资金"
-                  prop="registeredCapital"
-                >
-                  <el-input
-                    v-model="form.registeredCapital"
-                    placeholder="请输入注册资金"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="工商局注册号"
-                >
-                  <el-input
-                    v-model="form.gsgRegisterNo"
-                    placeholder="请输入工商局注册号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="统一社会信用代码"
-                >
-                  <el-input
-                    v-model="form.uscc"
-                    placeholder="请输入统一社会信用代码"
-                  />
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-            <el-tab-pane
-              label="开票信息"
-              name="invoice"
-            >
-              <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-width="140px"
-                inline
-                class="ui-form three-col"
-                style="margin-left: 120px;width: 80%;"
-              >
-                <el-form-item
-                  label="成立日期"
-                >
-                  <el-select
-                    v-model="form.invoiceAptitude"
-                    placeholder="请选择开票类型"
-                  >
-                    <el-option
-                      v-for="item in inoviceTypeList"
-                      :key="item.key"
-                      :label="item.label"
-                      :value="item.key"
-                    />
-                  </el-select>
-                </el-form-item>
-                <el-form-item
-                  label="开票名称"
-                >
-                  <el-input
-                    v-model="form.invoiceName"
-                    placeholder="请输入开票名称"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="购方税号"
-                >
-                  <el-input
-                    v-model="form.buyerTaxNum"
-                    placeholder="请输入购方税号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="开户行名称"
-                >
-                  <el-input
-                    v-model="form.openBankName"
-                    :rows="2"
-                    placeholder="请输入开户行名称"
-                    type="textarea"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="开户行账号"
-                  prop="openBankAccount"
-                >
-                  <el-input
-                    v-model="form.openBankAccount"
-                    placeholder="请输入开户行账号"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="地址"
-                >
-                  <el-input
-                    v-model="form.invoiceAddress"
-                    placeholder="请输入地址"
-                  />
-                </el-form-item>
-                <el-form-item
-                  label="电话"
-                >
-                  <el-input
-                    v-model="form.tel"
-                    placeholder="电话"
-                  />
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-            <el-tab-pane
-              label="公司介绍"
-              name="company"
+              label="职位详情"
+              name="jobDetail"
             >
               <div>
                 <!-- <p>公司介绍</p> -->
                 <el-input
-                  v-model="form.introduction"
+                  v-model="form.jobDetail"
                   :rows="5"
-                  placeholder="请输入公司详情"
+                  placeholder="请输入职位详情"
                   type="textarea"
                   style="width: 60%;margin-left:120px"
                 />
               </div>
+            </el-tab-pane>
+            <el-tab-pane
+              label="工作时间"
+              name="workTime"
+            >
+              <el-table
+                :data="woSchedules"
+              >
+                <el-table-column
+                  label="时间段"
+                  prop="period"
+                />
+                <el-table-column
+                  label="星期一"
+                  prop="woSchedulesmonChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulesmonChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期二"
+                  prop="woSchedulestueChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulestueChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期三"
+                  prop="woScheduleswebChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woScheduleswebChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期四"
+                  prop="woSchedulesthurChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulesthurChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期五"
+                  prop="woSchedulesfriChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulesfriChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期六"
+                  prop="woSchedulessatChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulessatChecked"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="星期七"
+                  prop="woSchedulessunChecked"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <el-checkbox
+                      v-model="row.woSchedulessunChecked"
+                    />
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -367,65 +382,92 @@ export default {
   data() {
     return {
       rules: {
-        customerName: [{
+        workOrderName: [{
           required: true,
-          message: '请输入客户名称',
+          message: '请输入工单名称',
           trigger: 'blur',
         }],
-        contactName: [{
+        amount: [{
+          required: true,
+          message: '请输入金额',
+          trigger: 'blur',
+        }],
+        customerId: [{
           required: true,
           message: '请输入联系人',
           trigger: 'blur',
         }],
-        industry: [{
+        workArea: [{
           required: true,
-          message: '请选择行业',
+          message: '请输入工作区域',
           trigger: 'blur',
         }],
-        contactPhone: [{
+        workAddress: [{
           required: true,
+          message: '请输入工作地址',
           trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的联系电话'));
-            } else {
-              callback();
-            }
-          },
+        }],
+        recruitsNumber: [{
+          required: true,
+          message: '请选择招聘人数',
+          trigger: 'blur',
+        }],
+        validityPeriod: [{
+          required: true,
+          message: '请选择有效期限',
+          trigger: 'blur',
+        }],
+        unit: [{
+          required: true,
+          message: '请选择单位',
+          trigger: 'blur',
+        }],
+        workType: [{
+          required: true,
+          message: '请选择工种',
+          trigger: 'blur',
+        }],
+        workPlanDate: [{
+          required: true,
+          message: '请选择工作计划日期',
+          trigger: 'blur',
+        }],
+        startDate: [{
+          required: true,
+          message: '请选择有效日期',
+          trigger: 'blur',
+        }],
+        endDate: [{
+          required: true,
+          message: '请选择截止日期',
+          trigger: 'blur',
         }],
       },
       form: {
         customerNo: null,
-        customerName: null,
-        industry: null,
-        status: 1,
+        workOrderName: null,
+        customerId: null,
+        paySettlement: 1,
         contactName: null,
-        remark: null,
-        fax: null,
-        contactPhone: null,
-        landline: null,
-        area: null,
-        address: null,
-        establishmentDate: null,
-        legalRepresentative: null,
-        registeredCity: null,
-        registeredAddress: null,
-        registeredCapital: null,
-        gsgRegisterNo: null,
-        uscc: null,
-        invoiceAptitude: 1,
-        invoiceName: null,
-        buyerTaxNum: null,
-        openBankName: null,
-        openBankAccount: null,
-        invoiceAddress: null,
-        tel: null,
-        introduction: null,
+        unit: null,
+        startDate: null,
+        endDate: null,
+        workArea: null,
+        workAddress: null,
+        workPlanDate: null,
+        genderRequirement: null,
+        academicRequirement: null,
+        expr: null,
+        recruitsNumber: null,
+        workType: null,
+        workOrderFee: null,
+        jobDetail: null,
       },
       confirmButtonLoading: false,
       rolesList: [],
-      customerId: null,
-      tabName: 'register',
+      workOrderId: null,
+      tabName: 'jobDetail',
+      createTime: null,
       inoviceTypeList: [
         {
           key: 0,
@@ -436,13 +478,45 @@ export default {
           label: '小规模纳税人',
         },
       ],
+      woSchedules: [
+        {
+          period: '上午',
+          woSchedulesmonChecked: 0,
+          woSchedulestueChecked: 0,
+          woScheduleswebChecked: 0,
+          woSchedulesthurChecked: 0,
+          woSchedulesfriChecked: 0,
+          woSchedulessatChecked: 0,
+          woSchedulessunChecked: 0,
+        },
+        {
+          period: '下午',
+          woSchedulesmonChecked: 0,
+          woSchedulestueChecked: 0,
+          woScheduleswebChecked: 0,
+          woSchedulesthurChecked: 0,
+          woSchedulesfriChecked: 0,
+          woSchedulessatChecked: 0,
+          woSchedulessunChecked: 0,
+        },
+        {
+          period: '晚上',
+          woSchedulesmonChecked: 0,
+          woSchedulestueChecked: 0,
+          woScheduleswebChecked: 0,
+          woSchedulesthurChecked: 0,
+          woSchedulesfriChecked: 0,
+          woSchedulessatChecked: 0,
+          woSchedulessunChecked: 0,
+        },
+      ],
     };
   },
   mounted() {
     this.getRolesList();
-    this.customerId = this.$route.query.id;
-    if (this.customerId) {
-      this.getDetail(this.customerId);
+    this.workOrderId = this.$route.query.id;
+    if (this.workOrderId) {
+      this.getDetail(this.workOrderId);
     }
   },
   methods: {
@@ -453,16 +527,16 @@ export default {
           let api = '';
           let param = null;
           this.form.companyId = this.$store.state.fepUserInfo.companyId;
-          if (!this.customerId) {
-            api = 'addCustomer';
+          if (!this.workOrderId) {
+            api = 'addWorkOrder';
             param = {
               ...this.form,
             };
           } else {
-            api = 'updateCustomer';
+            api = 'updateWorkOrder';
             param = {
               ...this.form,
-              id: this.customerId,
+              id: this.workOrderId,
             };
           }
           this.$api[api](param).then(() => {
@@ -488,12 +562,17 @@ export default {
       });
     },
     getDetail(id) {
-      this.$api.getCustomer({ id }).then((res) => {
+      this.$api.getWorkOrder({ id }).then((res) => {
         this.form = res;
       });
     },
     handleTabClick() {
 
+    },
+    selectDate(val) {
+      const [start, end] = val;
+      this.form.startDate = start;
+      this.form.endDate = end;
     },
   },
 };

@@ -8,7 +8,7 @@ Object.keys(dictionary).forEach((key) => {
   initDictionary[key] = dictionary[key].value || [];
 });
 
-// const fetchKeys = []; // 记录已发起字典查询的key，防止重复查询字典
+const fetchKeys = []; // 记录已发起字典查询的key，防止重复查询字典
 
 export default {
   namespaced: true,
@@ -52,20 +52,18 @@ export default {
     //     });
     //   });
     // },
-    // getDataDictionary({ state, commit }, key) {
-    //   if ((state[key] && state[key].length) || fetchKeys.includes(key)) return;
-    //   fetchKeys.push(key);
-    //   Vue.prototype.$api.codeDictionaryGetCodeDictionary({
-    //     types: key,
-    //   }).then((res) => {
-    //     res.forEach((item) => {
-    //       commit('setOption', {
-    //         key: item.type,
-    //         value: item.dataList || [],
-    //       });
-    //     });
-    //   });
-    // },
+    getDataDictionary({ state, commit }, key) {
+      if ((state[key] && state[key].length) || fetchKeys.includes(key)) return;
+      fetchKeys.push(key);
+      Vue.prototype.$api.getDictListByCode({
+        code: key,
+      }).then((res) => {
+        commit('setOption', {
+          key,
+          value: res || [],
+        });
+      });
+    },
     setDefaultSignCompanyId({ state }) {
       if (!$db('signCompanyId')) {
         $db('signCompanyId', state.signCompanys[0].id);

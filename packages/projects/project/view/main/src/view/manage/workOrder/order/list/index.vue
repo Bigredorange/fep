@@ -91,7 +91,7 @@
           />
         </div>
         <div class="item">
-          <span>工作计划日期：</span>
+          <span>计划日期：</span>
           <el-date-picker
             v-model="createTime"
             style="width: 260px;"
@@ -160,77 +160,56 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="customerName"
+          prop="recruitsNumber"
           align="center"
           label="招聘人数"
         />
         <el-table-column
-          prop="area"
+          prop="paySettlement"
           align="center"
           label="薪资结算"
         />
         <el-table-column
-          prop="status"
-          align="center"
-          label="状态"
-        >
-          <template
-            slot-scope="{ row }"
-          >
-            <div
-              class="mouse"
-              @click.stop="disable(row)"
-            >
-              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-              <span
-                :class="{'grey': row.status === 0}"
-              >
-                {{ row.status === 1 ? '启用' : '禁用' }}
-              </span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
+          prop="amount"
           align="center"
           label="金额(元)"
         />
         <el-table-column
-          prop="createTime"
+          prop="unit"
           align="center"
           label="单位"
         />
         <el-table-column
-          prop="createTime"
+          prop="workType"
           align="center"
           label="工种"
         />
         <el-table-column
-          prop="createTime"
+          prop="workPlanDate"
           align="center"
           label="工作计划日期"
         />
         <el-table-column
-          prop="createTime"
+          prop="validityPeriod"
           align="center"
           label="有效期限"
         />
         <el-table-column
-          prop="createTime"
+          prop="startDate"
           align="center"
           label="开始日期"
         />
         <el-table-column
-          prop="createTime"
+          prop="endDate"
           align="center"
           label="截止日期"
         />
         <el-table-column
-          prop="createTime"
+          prop="workArea"
           align="center"
           label="工作区域"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="createTime"
           align="center"
           label="申请人"
@@ -249,7 +228,7 @@
           prop="createTime"
           align="center"
           label="审核时间"
-        />
+        /> -->
         <el-table-column
           label="操作"
           align="center"
@@ -376,23 +355,14 @@ export default {
     getStatusName(status) {
       let name = '';
       switch (status) {
-        case 0:
-          name = '创建客户';
-          break;
         case 1:
-          name = '电销分配销售专员';
+          name = '待审核';
           break;
         case 2:
-          name = '客户转移';
+          name = '已审核';
           break;
         case 3:
-          name = '退回公海池';
-          break;
-        case 4:
-          name = '认领公海池客户';
-          break;
-        case 6:
-          name = '输单';
+          name = '已驳回';
           break;
       }
       return name;

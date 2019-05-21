@@ -138,7 +138,7 @@ const api = {
    * 数据字典
    */
   // 根据字典码获取字典
-  getDictListByCode: args => get('dict/list', args),
+  getDictListByCode: args => get('dict', args),
   // 新增字典
   addDict: args => postJson('dict', args),
   // 更新字典
@@ -146,7 +146,7 @@ const api = {
   // 删除字典
   deleteDict: ({ id, ...arg }) => del(`dict/${id}`, arg),
   // 数据字典列表
-  getDictList: args => get('dict', args),
+  getDictList: args => get('dict/list', args),
   /**
    * 文件
    */
@@ -164,7 +164,7 @@ const api = {
    * 工单管理
    */
   // 根据id获取工单
-  getWorkOrder: args => get('work_order/list', args),
+  getWorkOrder: args => get('work_ordert', args),
   // 新增工单
   addWorkOrder: args => postJson('work_order', args),
   // 更新工单
@@ -172,7 +172,7 @@ const api = {
   // 更新工单状态
   changeWorkOrder: ({ id, ...arg }) => del(`work_order/${id}/change_status`, arg),
   // 工单列表
-  getWorkOrderList: args => get('work_order', args),
+  getWorkOrderList: args => get('work_order/list', args),
   // 导出工单
   exportWorkOrder: args => postJson('work_order/export', args),
 };
