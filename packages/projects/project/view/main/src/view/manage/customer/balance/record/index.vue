@@ -20,7 +20,7 @@
         </div>
         <div class="item">
           <span>操作时间：</span>
-          <el-date-picker
+          <el-date-pickerel-date-picker
             v-model="createTime"
             style="width: 260px;"
             type="daterange"

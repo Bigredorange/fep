@@ -259,6 +259,30 @@ const asyncRoutes = [{
         },
       ],
     },
+    {
+      path: 'employee',
+      component: RouterView,
+      redirect: 'employee/list',
+      meta: {
+        title: '灵工管理',
+      },
+      children: [
+        {
+          path: 'list',
+          meta: {
+            title: '列表',
+          },
+          component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
+        },
+        {
+          path: 'edit',
+          meta: {
+            title: '详情',
+          },
+          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
+        },
+      ],
+    },
   ],
 }];
 const routes = [

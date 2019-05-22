@@ -69,13 +69,7 @@ export default {
     getList() {
       this.listLoading = true;
       this.$api.getProtocolList({}).then((res) => {
-        this.list = res.map((item) => {
-          const updateTime = this.$utils.formatDate(item.updateTime);
-          return {
-            ...item,
-            updateTime,
-          };
-        });
+        this.list = res;
       }).finally(() => {
         this.listLoading = false;
       });
