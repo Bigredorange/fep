@@ -1,5 +1,11 @@
 {
   "paySettlement":	{
     "name": "薪资结算"
+  },
+  "DocumentType":	{
+    "name": "证件类型"
+  },
+  "Sex":	{
+    "name": "性别"
   }
 }

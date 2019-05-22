@@ -45,7 +45,7 @@
                 placeholder="请选择证件类型"
               >
                 <el-option
-                  v-for="item in certificateTypeList"
+                  v-for="item in $opt('DocumentType')"
                   :key="item.id"
                   :label="item.dictValue"
                   :value="item.dictKey"
@@ -69,7 +69,7 @@
                 v-model="form.sex"
               >
                 <el-radio
-                  v-for="item in sexList"
+                  v-for="item in $opt('Sex')"
                   :key="item.id"
                   :label="item.dictKey"
                 >
@@ -214,6 +214,7 @@
                   :loading="attachLoading"
                   class="upload-btn"
                   size="small"
+                  :disabled="extraFileList.length >= 5 ? true : false"
                   @click="upload('extra')"
                 >
                   点击上传
@@ -249,56 +250,19 @@
           </el-form>
         </div>
       </div>
-      <div class="title">
-        <label>工作履历</label>
-      </div>
-      <div class="area">
-        <WorkList :employee-id="empId" />
-      </div>
-      <div class="title">
-        <label>任务完成情况</label>
-      </div>
-      <div class="area">
-        <el-table
-          :data="list"
-          :loading="listLoading"
-        >
-          <el-table-column
-            prop="event"
-            align="center"
-            label="任务编号"
-          />
-          <el-table-column
-            prop="operator"
-            align="center"
-            label="服务客户"
-          />
-          <el-table-column
-            prop="contactPhone"
-            align="center"
-            label="工作区域"
-          />
-          <el-table-column
-            prop="area"
-            align="center"
-            label="工种"
-          />
-          <el-table-column
-            prop="createTime"
-            align="center"
-            label="开始日期"
-          />
-          <el-table-column
-            prop="createTime"
-            align="center"
-            label="结束日期"
-          />
-          <el-table-column
-            prop="cost"
-            align="center"
-            label="所获报酬"
-          />
-        </el-table>
+      <div v-if="empCompanyId">
+        <div class="title">
+          <label>工作履历</label>
+        </div>
+        <div class="area">
+          <WorkList :employee-id="empId" />
+        </div>
+        <div class="title">
+          <label>任务完成情况</label>
+        </div>
+        <div class="area">
+          <Task :list="list" />
+        </div>
       </div>
       <div class="bot-menu">
         <el-button
@@ -317,10 +281,12 @@
 </template>
 <script>
 import WorkList from './WorkList';
+import Task from './Task';
 
 export default {
   components: {
     WorkList,
+    Task,
   },
   data() {
     return {
@@ -352,7 +318,8 @@ export default {
           required: true,
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            const isIdentity = this.$optDicLabel('certificateTypeList', this.form.certificateNum).indexOf('身份证') !== -1;
+            const label = this.$optDicLabel('DocumentType', this.form.certificateType) || '';
+            const isIdentity = label.indexOf('身份证') !== -1;
             if (!value) {
               callback(new Error('请输入证件号码'));
             } else if (isIdentity && !this.$utils.regExp(value, 'identity')) {
@@ -376,7 +343,9 @@ export default {
           required: true,
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'bank')) {
+            if (!value) {
+              callback(new Error('请输入银行卡号'));
+            } else if (value && /\D+/.test(value)) {
               callback(new Error('请输入正确的银行卡账号'));
             } else {
               callback();
@@ -387,6 +356,16 @@ export default {
           required: true,
           message: '请输入开户支行',
           trigger: 'blur',
+        }],
+        email: [{
+          trigger: 'blur',
+          validator: (rule, value, callback) => {
+            if (value && !this.$utils.regExp(value, 'em')) {
+              callback(new Error('请输入正确的邮箱'));
+            } else {
+              callback();
+            }
+          },
         }],
       },
       form: {
@@ -436,7 +415,6 @@ export default {
     };
   },
   mounted() {
-    this.getDicts();
     this.empId = this.$route.query.empId;
     this.empCompanyId = this.$route.query.id;
     if (this.empCompanyId) {
@@ -444,18 +422,6 @@ export default {
     }
   },
   methods: {
-    getDicts() {
-      this.$api.getDictListByCode({
-        code: 'DocumentType',
-      }).then((res) => {
-        this.certificateTypeList = res;
-      });
-      this.$api.getDictListByCode({
-        code: 'Sex',
-      }).then((res) => {
-        this.sexList = res;
-      });
-    },
     submit() {
     //   this.form.avatar = JSON.stringify(this.avatarFileList.map(item => item.path));
     //   this.form.annex = JSON.stringify(this.extraFileList.map(item => item.path));
@@ -500,7 +466,6 @@ export default {
     },
     getDetail(id) {
       this.$api.getEmployeeDetails({ id }).then((res) => {
-        console.log(res);
         this.form = res;
       });
     },
@@ -549,7 +514,8 @@ export default {
       this.$api.fileDownloadUpload({
         filePath: item.path,
         type: 'CUS_CONTRACT',
-      }, item.fileName);
+        name: item.fileName,
+      });
     },
   },
 };
@@ -611,16 +577,17 @@ export default {
     }
   }
   .avatar-image {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     position: relative;
     overflow: hidden;
     padding: 5px;
     border: solid 1px #f0f0f0;
     margin: 0 5px;
     img {
-      width: 50px;
+      width: 40px;
       position: absolute;
+      cursor: pointer;
       top:50%;
       left:50%;
       transform: translate(-50%,-50%);

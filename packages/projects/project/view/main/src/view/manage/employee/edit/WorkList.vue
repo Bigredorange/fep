@@ -17,19 +17,20 @@
         align="center"
         label="工种"
       >
-        <template slot-scope="{ $index }">
+        <template slot-scope="{ $index, row }">
           <el-select
+            v-if="row.isEdit"
             v-model="list[$index].workType"
             placeholder="请选择证件类型"
           >
             <el-option
-              v-for="item in workTypeItems"
+              v-for="item in $opt('DocumentType')"
               :key="item.id"
               :label="item.dictValue"
               :value="item.dictKey"
             />
           </el-select>
-          <!-- <span v-else></span> -->
+          <span v-else>{{ $optDicLabel('DocumentType', row.workType) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -92,9 +93,9 @@
             v-if="row.isEdit"
             type="text"
             class="success"
-            @click="save(row, $index)"
+            @click="save(row)"
           >
-            {{ row.id ? '保存' : '新增' }}
+            {{ row.id + row.id ? '保存' : '新增' }}
           </el-button>
           <el-button
             v-else
@@ -131,25 +132,11 @@ export default {
       },
     };
   },
-  watch: {
-    employeeId(val) {
-      if (val) {
-        this.getWorkList();
-      }
-    },
-  },
   mounted() {
-    this.getWorkTypeItems();
+    this.getList();
   },
   methods: {
-    getWorkTypeItems() {
-      this.$api.getDictListByCode({
-        code: 'typeofwork',
-      }).then((res) => {
-        this.workTypeItems = res;
-      });
-    },
-    getWorkList() {
+    getList() {
       this.listLoading = true;
       this.$api
         .getEmployeeWorkList({
@@ -162,7 +149,7 @@ export default {
           this.listLoading = false;
         });
     },
-    save(row, index) {
+    save(row) {
       let api;
       let params = {};
       if (row.id) {
@@ -178,8 +165,7 @@ export default {
       this.$api[api](params)
         .then(() => {
           this.$message.success(row.id ? '修改成功' : '添加成功');
-          this.list[index].isEdit = false;
-          this.$set(this.list, index, this.list[index]);
+          this.getList();
         })
         .finally(() => {});
     },

@@ -191,7 +191,7 @@ const api = {
   // 新增灵工工作履历
   addEmployeeWork: ({ id, ...arg }) => postJson(`employee/empwork/${id}`, arg),
   // 编辑灵工
-  updateEmployee: args => putJson('employee', args),
+  updateEmployee: ({ id, ...arg }) => putJson(`employee/${id}`, arg),
   // 导出灵工
   exportEmployee: args => postJson('employee/export', args),
   // 获取灵工详情

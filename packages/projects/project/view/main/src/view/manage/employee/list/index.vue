@@ -6,7 +6,7 @@
           <span>姓名：</span>
           <el-input
             v-model="form.empName"
-            placeholder="请输入工单编号"
+            placeholder="请输入姓名"
             style="width: 200px;"
           />
         </div>
@@ -14,7 +14,7 @@
           <span>手机号码：</span>
           <el-input
             v-model="form.mobile"
-            placeholder="请输入工单名称"
+            placeholder="请输入手机号码"
             style="width: 200px;"
           />
         </div>
@@ -22,7 +22,7 @@
           <span>证件号码：</span>
           <el-input
             v-model="form.certificateNum"
-            placeholder="请输入工单名称"
+            placeholder="请输入证件号码"
             style="width: 200px;"
           />
         </div>
@@ -59,7 +59,7 @@
           <span>灵工来源：</span>
           <el-input
             v-model="form.source"
-            placeholder="请输入客户名称"
+            placeholder="请输入灵工来源"
             style="width: 200px;"
           />
         </div>
@@ -125,7 +125,7 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="source"
+          prop="companyName"
           align="center"
           label="来源"
         />
@@ -140,7 +140,7 @@
           label="是否在线"
         />
         <el-table-column
-          prop="workType"
+          prop="createTime"
           align="center"
           label="创建日期"
         />
@@ -229,7 +229,14 @@ export default {
       this.$api.getEmployeeList({
         ...this.form,
       }).then((res) => {
-        this.list = res.dataList;
+        this.list = res.dataList.map((item) => {
+          const workTypeStr = item.workType || '';
+          const workType = workTypeStr.split(',').map(t => this.$optDicLabel('typeofwork', t)).join('，');
+          return {
+            ...item,
+            workType,
+          };
+        });
         this.total = res.allCount;
       }).finally(() => {
         this.listLoading = false;
