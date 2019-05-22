@@ -35,38 +35,6 @@
           </el-select>
         </div>
         <div class="item">
-          <span>状态：</span>
-          <el-select
-            v-model="form.status"
-            style="width: 200px;"
-            placeholder="请选择状态"
-            @change="getList"
-          >
-            <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
-        </div>
-        <div class="item">
-          <span>有效期限：</span>
-          <el-select
-            v-model="form.validityPeriod"
-            style="width: 200px;"
-            placeholder="请选择有效期限"
-            @change="getList"
-          >
-            <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
-        </div>
-        <div class="item">
           <span>工种：</span>
           <el-select
             v-model="form.workType"
@@ -90,49 +58,41 @@
             style="width: 200px;"
           />
         </div>
-        <div class="item">
-          <span>创建日期：</span>
-          <el-date-picker
-            v-model="createTime"
-            style="width: 260px;"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd"
-            @change="selectDate"
-          />
+        <div
+          class="item"
+        >
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getList"
+          >
+            查询
+          </el-button>
+          <el-button
+            @click="reset"
+          >
+            重置
+          </el-button>
         </div>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left:20px;"
-          @click="getList"
-        >
-          查询
-        </el-button>
-        <el-button
-          @click="reset"
-        >
-          重置
-        </el-button>
       </section>
     </top-bar>
     <div class="con-table">
       <div class="buttons">
         <el-button
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
+          @click="exportData"
         >
-          新增
+          导出
         </el-button>
-        <el-button>导出</el-button>
       </div>
       <el-table
         :data="list"
         :loading="listLoading"
       >
+        <el-table-column
+          prop="customerName"
+          align="center"
+          label="客户名称"
+        />
         <el-table-column
           prop="workOrderNo"
           align="center"
@@ -144,59 +104,84 @@
           label="工单名称"
         />
         <el-table-column
-          prop="industry"
+          prop="workOrderFee"
           align="center"
-          label="所属行业"
+          label="工单费用"
         />
         <el-table-column
-          prop="contactName"
+          prop="recruitsNumber"
           align="center"
-          label="联系人"
+          label="招聘人数"
         />
         <el-table-column
-          prop="customerName"
+          prop="paySettlement"
           align="center"
-          label="联系方式"
+          label="薪资结算"
         />
         <el-table-column
-          prop="area"
+          prop="amount"
           align="center"
-          label="区域"
+          label="金额(元)"
         />
         <el-table-column
-          prop="status"
+          prop="unit"
           align="center"
-          label="状态"
-        >
-          <template
-            slot-scope="{ row }"
-          >
-            <div
-              class="mouse"
-              @click.stop="disable(row)"
-            >
-              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-              <span
-                :class="{'grey': row.status === 0}"
-              >
-                {{ row.status === 1 ? '启用' : '禁用' }}
-              </span>
-            </div>
-          </template>
-        </el-table-column>
+          label="单位"
+        />
+        <el-table-column
+          prop="workType"
+          align="center"
+          label="工种"
+        />
+        <el-table-column
+          prop="workPlanDate"
+          align="center"
+          label="工作计划日期"
+        />
+        <el-table-column
+          prop="validityPeriod"
+          align="center"
+          label="有效期限"
+        />
+        <el-table-column
+          prop="startDate"
+          align="center"
+          label="开始日期"
+        />
+        <el-table-column
+          prop="endDate"
+          align="center"
+          label="截止日期"
+        />
+        <el-table-column
+          prop="workArea"
+          align="center"
+          label="工作区域"
+        />
+        <el-table-column
+          prop="applicantName"
+          align="center"
+          label="申请人"
+        />
+        <el-table-column
+          prop="applicationTime"
+          align="center"
+          label="申请时间"
+        />
         <!-- <el-table-column
-          prop="area"
+          prop="createTime"
           align="center"
-          label="创建人"
-        /> -->
+          label="审核人"
+        />
         <el-table-column
           prop="createTime"
           align="center"
-          label="创建时间"
-        />
+          label="审核时间"
+        /> -->
         <el-table-column
           label="操作"
           align="center"
+          width="200"
         >
           <template
             slot-scope="{ row }"
@@ -204,9 +189,23 @@
             <el-button
               type="text"
               class="primary"
+              @click="check(row)"
+            >
+              审核
+            </el-button>
+            <el-button
+              type="text"
+              class="primary"
+              @click="revoke(row)"
+            >
+              驳回
+            </el-button>
+            <el-button
+              type="text"
+              class="primary"
               @click="edit(row)"
             >
-              编辑
+              详情
             </el-button>
           </template>
         </el-table-column>
@@ -242,7 +241,7 @@ export default {
         workOrderName: null,
         contactName: null,
         customerName: null,
-        status: 99,
+        status: 1,
         validityPeriod: null,
         workPlanStartTime: null,
         workPlanEndTime: null,
@@ -253,12 +252,16 @@ export default {
       total: 0,
       statusList: [
         {
-          key: 0,
-          label: '禁用',
+          key: 1,
+          label: '待审核',
         },
         {
-          key: 1,
-          label: '启用',
+          key: 2,
+          label: '已驳回',
+        },
+        {
+          key: 3,
+          label: '已通过',
         },
         {
           key: 99,
@@ -278,8 +281,9 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getCustomerList({
+      this.$api.getWorkOrderList({
         ...this.form,
+        companyId: this.$store.state.fepUserInfo.companyId,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -299,23 +303,57 @@ export default {
       this.form.workPlanStartTime = start;
       this.form.workPlanEndTime = end;
     },
-    add() {
-      this.$router.push('edit');
+    exportData() {
+      this.$api.exportWorkOrder({
+        ...this.form,
+      }).then((res) => {
+        this.$api.fileDownloadById({
+          fileId: res,
+          name: '工单.xlsx',
+        });
+      });
     },
-    disable(item) {
+    check(row) {
       this.$dialogs.confirm({
         title: '提示',
-        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+        content: '确定要审核通过吗？',
         onOk: () => {
-          this.$api.disableCustomer({
-            id: item.id,
-            status: Number(!item.status),
-          }).then(() => {
-            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
-            this.getList();
-          });
+          this.changeWorkOrder(row.id, 2);
         },
       });
+    },
+    revoke(row) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要驳回吗？',
+        onOk: () => {
+          this.changeWorkOrder(row.id, 3);
+        },
+      });
+    },
+    changeWorkOrder(id, status) {
+      this.$api.changeWorkOrder({
+        id,
+        status,
+      }).then(() => {
+        this.$message.success(`${status === 2 ? '通过' : '驳回'}成功`);
+        this.getList();
+      });
+    },
+    getStatusName(status) {
+      let name = '';
+      switch (status) {
+        case 1:
+          name = '待审核';
+          break;
+        case 2:
+          name = '已审核';
+          break;
+        case 3:
+          name = '已驳回';
+          break;
+      }
+      return name;
     },
   },
 };

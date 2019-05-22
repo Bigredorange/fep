@@ -54,10 +54,10 @@ export default {
           width: 20%;
           min-width: 260px;
           padding: 8px 0;
+          margin-right: 15px;
           span {
             line-height: 35px;
             min-width: 80px;
-            margin-left: 20px;
           }
         }
       }

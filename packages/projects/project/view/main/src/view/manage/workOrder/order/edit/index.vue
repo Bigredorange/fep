@@ -26,10 +26,10 @@
                 placeholder="请选择客户"
               >
                 <el-option
-                  v-for="item in rolesList"
+                  v-for="item in customerList"
                   :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :label="item.customerName"
+                  :value="item.id"
                 />
               </el-select>
             </el-form-item>
@@ -64,7 +64,7 @@
                   v-for="item in $opt('paySettlement')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -86,10 +86,10 @@
                 placeholder="请选择单位"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('orderUnit')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -102,26 +102,33 @@
                 placeholder="请选择有效期限"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('Expirydate')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
             <el-form-item
-              label="有效日期"
-              prop="contactPhone"
+              label="有效开始日期"
+              prop="startDate"
             >
               <el-date-picker
-                v-model="createTime"
-                style="width: 260px;"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                v-model="form.startDate"
+                type="date"
+                placeholder="选择有效开始日期"
                 value-format="yyyy-MM-dd"
-                @change="selectDate"
+              />
+            </el-form-item>
+            <el-form-item
+              label="有效结束日期"
+              prop="endDate"
+            >
+              <el-date-picker
+                v-model="form.endDate"
+                type="date"
+                placeholder="选择有效结束日期"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
             <el-form-item
@@ -164,10 +171,10 @@
                 placeholder="请选择性别要求"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('Sex')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -180,10 +187,10 @@
                 placeholder="请选择学历要求"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('Education')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -196,10 +203,10 @@
                 placeholder="请选择经验"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('Experience')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -221,10 +228,10 @@
                 placeholder="请选择工种"
               >
                 <el-option
-                  v-for="item in $opt('paySettlement')"
+                  v-for="item in $opt('typeofwork')"
                   :key="item.dictKey"
                   :label="item.dictValue"
-                  :value="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -345,7 +352,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="星期七"
+                  label="星期日"
                   prop="woSchedulessunChecked"
                 >
                   <template
@@ -354,6 +361,20 @@
                     <el-checkbox
                       v-model="row.woSchedulessunChecked"
                     />
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="全选"
+                >
+                  <template
+                    slot-scope="{ row }"
+                  >
+                    <div>
+                      <el-checkbox
+                        v-model="row.flag"
+                        @change.native="handleCheck(row)"
+                      />
+                    </div>
                   </template>
                 </el-table-column>
               </el-table>
@@ -417,6 +438,11 @@ export default {
           message: '请选择有效期限',
           trigger: 'blur',
         }],
+        paySettlement: [{
+          required: true,
+          message: '请选择薪资结算',
+          trigger: 'blur',
+        }],
         unit: [{
           required: true,
           message: '请选择单位',
@@ -447,8 +473,9 @@ export default {
         customerNo: null,
         workOrderName: null,
         customerId: null,
-        paySettlement: 1,
+        paySettlement: null,
         contactName: null,
+        amount: null,
         unit: null,
         startDate: null,
         endDate: null,
@@ -464,7 +491,7 @@ export default {
         jobDetail: null,
       },
       confirmButtonLoading: false,
-      rolesList: [],
+      customerList: [],
       workOrderId: null,
       tabName: 'jobDetail',
       createTime: null,
@@ -481,39 +508,42 @@ export default {
       woSchedules: [
         {
           period: '上午',
-          woSchedulesmonChecked: 0,
-          woSchedulestueChecked: 0,
-          woScheduleswebChecked: 0,
-          woSchedulesthurChecked: 0,
-          woSchedulesfriChecked: 0,
-          woSchedulessatChecked: 0,
-          woSchedulessunChecked: 0,
+          monChecked: false,
+          tueChecked: false,
+          webChecked: false,
+          thurChecked: false,
+          friChecked: false,
+          satChecked: false,
+          sunChecked: false,
+          flag: false,
         },
         {
           period: '下午',
-          woSchedulesmonChecked: 0,
-          woSchedulestueChecked: 0,
-          woScheduleswebChecked: 0,
-          woSchedulesthurChecked: 0,
-          woSchedulesfriChecked: 0,
-          woSchedulessatChecked: 0,
-          woSchedulessunChecked: 0,
+          monChecked: false,
+          tueChecked: false,
+          webChecked: false,
+          thurChecked: false,
+          friChecked: false,
+          satChecked: false,
+          sunChecked: false,
+          flag: false,
         },
         {
           period: '晚上',
-          woSchedulesmonChecked: 0,
-          woSchedulestueChecked: 0,
-          woScheduleswebChecked: 0,
-          woSchedulesthurChecked: 0,
-          woSchedulesfriChecked: 0,
-          woSchedulessatChecked: 0,
-          woSchedulessunChecked: 0,
+          monChecked: false,
+          tueChecked: false,
+          webChecked: false,
+          thurChecked: false,
+          friChecked: false,
+          satChecked: false,
+          sunChecked: false,
+          flag: false,
         },
       ],
     };
   },
   mounted() {
-    this.getRolesList();
+    this.getCustomerAll();
     this.workOrderId = this.$route.query.id;
     if (this.workOrderId) {
       this.getDetail(this.workOrderId);
@@ -523,10 +553,15 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
+          if (!this.form.jobDetail) {
+            this.$message.info('请输入职位详情');
+            return;
+          }
           this.confirmButtonLoading = true;
           let api = '';
           let param = null;
           this.form.companyId = this.$store.state.fepUserInfo.companyId;
+          this.form.woSchedules = this.woSchedules;
           if (!this.workOrderId) {
             api = 'addWorkOrder';
             param = {
@@ -550,13 +585,10 @@ export default {
         }
       });
     },
-    getRolesList() {
+    getCustomerAll() {
       this.isLoading = true;
-      this.$api.getAllRole({
-        name: '',
-        status: 1,
-      }).then((res) => {
-        this.rolesList = res;
+      this.$api.getCustomerAll().then((res) => {
+        this.customerList = res;
       }).finally(() => {
         this.isLoading = false;
       });
@@ -573,6 +605,17 @@ export default {
       const [start, end] = val;
       this.form.startDate = start;
       this.form.endDate = end;
+    },
+    handleCheck(row) {
+      const keys = Object.keys(row);
+      this.$nextTick(() => {
+        keys.forEach((key) => {
+          if (key !== 'period') {
+            row[key] = row.flag;
+          }
+        });
+        console.log(row);
+      });
     },
   },
 };

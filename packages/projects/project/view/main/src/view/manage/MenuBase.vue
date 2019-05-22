@@ -10,19 +10,18 @@
             class="menu-submenu-title"
             :class="{
               'active': isActiveMainMenu(menu.path),
-              'rotate': curIndex === index,
             }"
             @click="selectSubmenu(menu, index)"
           >
             <span>
               {{ menu.meta.title | getTitle }}
             </span>
-            <i
+            <!-- <i
               v-if="menu.children && !menu.noDropdown"
               class="arrow"
-            />
+            /> -->
           </div>
-          <transition name="menu-slide">
+          <!-- <transition name="menu-slide">
             <ul
               v-show="curIndex === index && !menu.noDropdown"
               class="menu"
@@ -43,7 +42,7 @@
                 </li>
               </template>
             </ul>
-          </transition>
+          </transition> -->
         </li>
       </template>
     </ul>
@@ -92,9 +91,9 @@ export default {
     },
     selectSubmenu(menu, index) {
       // 当数据含路径参数，则跳转相应路由
-      if (!menu.children || menu.noDropdown) {
-        this.$router.push(`/manage/${menu.parentPath}/${menu.path}`);
-      }
+      this.$router.push(`/manage/${menu.parentPath}/${menu.path}`);
+      // if (!menu.children || menu.noDropdown) {
+      // }
       this.curIndex = index === this.curIndex ? null : index;
     },
     isActiveMenu(path) { // 子菜单是否激活

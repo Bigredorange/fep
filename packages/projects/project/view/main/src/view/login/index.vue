@@ -3,19 +3,11 @@
     <section>
       <div class="bg" />
       <div class="container">
-        <div
-          v-if="$config.system.envName"
-          class="env"
-        >
-          {{ $config.system.envName }}
-        </div>
         <div class="form">
-          <div class="logo-container">
-            <figure :class="['logo', `logo-${$config.system.alias}`]">
-              <img :src="require(`../../assets/other/${$config.system.alias}.jpg`)">
-            </figure>
-          </div>
           <h1>欢迎，登录<b>{{ $config.system.name }}</b></h1>
+          <p class="grey">
+            Welcome to Flexible Employment
+          </p>
           <el-form
             ref="form"
             :model="form"
@@ -44,7 +36,7 @@
               />
             </el-form-item>
             <el-form-item prop="captcha">
-              <i class="password" />
+              <i class="captcha" />
               <el-input
                 ref="captcha"
                 v-model.trim="form.captcha"
@@ -79,9 +71,6 @@
         </div>
       </div>
     </section>
-    <p class="copyright">
-      深圳易博 | 技术支持
-    </p>
   </div>
 </template>
 
@@ -199,12 +188,14 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: auto;
-  background-color: #f8f8f8;
+  background: #538CD3;
   > section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 115px;
+    padding: 80px 100px;
+    background: #f8f8f8;
+    border-radius: 10px;
   }
   /deep/ .el-form-item__content {
     margin-left: 0 !important;
@@ -212,22 +203,27 @@ export default {
 }
 .bg {
   margin-right: 157px;
-  width: 768px;
+  width: 600px;
   height: 550px;
   background: {
-    image: url('../../assets/other/bg.png');
+    image: url('../../assets/icon/login_bg.png');
     repeat:  no-repeat;
     size: cover;
   }
 }
 h1 {
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
   font-size: 22px;
   line-height: 1;
   color: #34495e;
   b {
     color: #2d8cf0;
   }
+}
+.grey {
+  margin-top: 10px;
+  color: #d4d7da;
+  margin-bottom: 24px;
 }
 .container {
   padding-top: 36px;
@@ -312,7 +308,7 @@ h1 {
       margin-bottom: 0;
     }
   }
-  .account, .password {
+  .account, .password, .captcha {
     position: absolute;
     top: 8px;
     left: 0px;
@@ -328,6 +324,9 @@ h1 {
   }
   .password {
     background-image: url('../../assets/icon/login_passw.png');
+  }
+  .captcha {
+    background-image: url('../../assets/icon/login_code.png');
   }
   /deep/ .el-input__inner {
     padding-left: 35px;

@@ -27,10 +27,10 @@
             @change="getList"
           >
             <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
+              v-for="item in $opt('paySettlement')"
+              :key="item.dictKey"
+              :label="item.dictValue"
+              :value="item.dictKey"
             />
           </el-select>
         </div>
@@ -59,10 +59,10 @@
             @change="getList"
           >
             <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
+              v-for="item in $opt('Expirydate')"
+              :key="item.dictKey"
+              :label="item.dictValue"
+              :value="item.dictKey"
             />
           </el-select>
         </div>
@@ -75,10 +75,10 @@
             @change="getList"
           >
             <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
+              v-for="item in $opt('typeofwork')"
+              :key="item.dictKey"
+              :label="item.dictValue"
+              :value="item.dictKey"
             />
           </el-select>
         </div>
@@ -103,19 +103,22 @@
             @change="selectDate"
           />
         </div>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left:20px;"
-          @click="getList"
+        <div
+          class="item"
         >
-          查询
-        </el-button>
-        <el-button
-          @click="reset"
-        >
-          重置
-        </el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getList"
+          >
+            查询
+          </el-button>
+          <el-button
+            @click="reset"
+          >
+            重置
+          </el-button>
+        </div>
       </section>
     </top-bar>
     <div class="con-table">
@@ -127,7 +130,11 @@
         >
           新增
         </el-button>
-        <el-button>导出</el-button>
+        <el-button
+          @click="exportData"
+        >
+          导出
+        </el-button>
       </div>
       <el-table
         :data="list"
@@ -168,6 +175,7 @@
           prop="paySettlement"
           align="center"
           label="薪资结算"
+          :formatter="({ paySettlement }) => $optDicLabel('paySettlement', paySettlement)"
         />
         <el-table-column
           prop="amount"
@@ -178,11 +186,13 @@
           prop="unit"
           align="center"
           label="单位"
+          :formatter="({ unit }) => $optDicLabel('orderUnit', unit)"
         />
         <el-table-column
           prop="workType"
           align="center"
           label="工种"
+          :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
         />
         <el-table-column
           prop="workPlanDate"
@@ -193,6 +203,7 @@
           prop="validityPeriod"
           align="center"
           label="有效期限"
+          :formatter="({ validityPeriod }) => $optDicLabel('Expirydate', validityPeriod)"
         />
         <el-table-column
           prop="startDate"
@@ -209,33 +220,42 @@
           align="center"
           label="工作区域"
         />
-        <!-- <el-table-column
-          prop="createTime"
+        <el-table-column
+          prop="applicantName"
           align="center"
           label="申请人"
         />
         <el-table-column
-          prop="createTime"
+          prop="applicationTime"
           align="center"
           label="申请时间"
         />
         <el-table-column
-          prop="createTime"
+          prop="reviewName"
           align="center"
           label="审核人"
         />
         <el-table-column
-          prop="createTime"
+          prop="reviewTime"
           align="center"
           label="审核时间"
-        /> -->
+        />
         <el-table-column
           label="操作"
           align="center"
+          width="160"
         >
           <template
             slot-scope="{ row }"
           >
+            <el-button
+              v-if="row.status === 0"
+              type="text"
+              class="primary"
+              @click="submit(row)"
+            >
+              提交审核
+            </el-button>
             <el-button
               type="text"
               class="primary"
@@ -288,12 +308,16 @@ export default {
       total: 0,
       statusList: [
         {
-          key: 0,
-          label: '禁用',
+          key: 1,
+          label: '待审核',
         },
         {
-          key: 1,
-          label: '启用',
+          key: 2,
+          label: '已驳回',
+        },
+        {
+          key: 3,
+          label: '已通过',
         },
         {
           key: 99,
@@ -337,21 +361,6 @@ export default {
     add() {
       this.$router.push('edit');
     },
-    disable(item) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
-        onOk: () => {
-          this.$api.disableCustomer({
-            id: item.id,
-            status: Number(!item.status),
-          }).then(() => {
-            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
-            this.getList();
-          });
-        },
-      });
-    },
     getStatusName(status) {
       let name = '';
       switch (status) {
@@ -366,6 +375,34 @@ export default {
           break;
       }
       return name;
+    },
+    submit(row) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要提交审核吗？',
+        onOk: () => {
+          this.changeWorkOrder(row.id, 1);
+        },
+      });
+    },
+    changeWorkOrder(id, status) {
+      this.$api.changeWorkOrder({
+        id,
+        status,
+      }).then(() => {
+        this.$message.success('提交成功');
+        this.getList();
+      });
+    },
+    exportData() {
+      this.$api.exportWorkOrder({
+        ...this.form,
+      }).then((res) => {
+        this.$api.fileDownloadById({
+          fileId: res,
+          name: '工单.xlsx',
+        });
+      });
     },
   },
 };

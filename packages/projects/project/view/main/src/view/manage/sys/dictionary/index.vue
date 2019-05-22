@@ -26,32 +26,22 @@
             style="width: 200px;"
           />
         </div>
-        <!-- <div class="item">
-          <span>创建日期：</span>
-          <el-date-picker
-            v-model="createTime"
-            style="width: 260px;"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd"
-            @change="selectDate"
-          />
-        </div> -->
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left:20px;"
-          @click="getList"
+        <div
+          class="item"
         >
-          查询
-        </el-button>
-        <el-button
-          @click="reset"
-        >
-          重置
-        </el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getList"
+          >
+            查询
+          </el-button>
+          <el-button
+            @click="reset"
+          >
+            重置
+          </el-button>
+        </div>
       </section>
     </top-bar>
     <div class="con-table">
