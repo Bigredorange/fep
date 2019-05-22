@@ -29,7 +29,6 @@
             菜单
           </el-radio>
           <el-radio
-            :disabled="!routes.length"
             :label="1"
           >
             按钮
@@ -54,7 +53,7 @@
           />
         </el-select>
         <el-input
-          v-else-if="form.type === 0"
+          v-else-if="form.type === 1"
           v-model="form.code"
           placeholder="请输入唯一码"
         />
@@ -200,6 +199,9 @@ export default {
       // this.allRoutes = this.getRoutes(this.asyncRoutes);
     },
   },
+  mounted() {
+    this.asyncRoutes = asyncRoutes[0].children;
+  },
   methods: {
     reset() {
       this.$utils.initData.call(this);
@@ -224,7 +226,7 @@ export default {
     init() {
       // 获取可选项列表
       // 初始化路由列表,必须将所有路由展示到列表中,以至于可以根据路由路径进行权限判断
-      this.asyncRoutes = asyncRoutes[0].children;
+      // this.asyncRoutes = asyncRoutes[0].children;
       let allRoutes = this.asyncRoutes;
       const getRoutes = routes => routes.map((route) => {
         if (!route.children || !route.children.length) {

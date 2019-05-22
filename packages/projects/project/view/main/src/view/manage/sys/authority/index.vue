@@ -108,7 +108,7 @@ export default {
       });
     },
     addLevelOne() {
-      const selectedList = this.list.map(item => item.path);
+      const selectedList = this.list.map(item => item.code);
       this.$refs.modifyResource.open({ selectedList });
     },
     filterNode(value, data) {

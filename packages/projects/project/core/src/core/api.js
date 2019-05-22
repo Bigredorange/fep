@@ -27,6 +27,14 @@ const api = {
   updateUser: ({ id, ...arg }) => putJson(`user/${id}`, arg),
   // 1.7 根据ID查用户
   getUserById: ({ id, ...arg }) => get(`user/${id}`, arg),
+  // 查询用户未拥有的客户
+  getCustomerNotOwn: ({ id, ...arg }) => get(`user/${id}/customer/not_own`, arg),
+  // 查询用户拥有的客户
+  getCustomerOwn: ({ id, ...arg }) => get(`user/${id}/customer/own`, arg),
+  // 分配客户给用户
+  assignCustomer: ({ id, arr }) => postJson(`user/${id}/customer/assign`, arr),
+  // 取消用户已分配的客户
+  delAssginCustomer: ({ customerId, ...arg }) => del(`user/customer/assign/${customerId}`, arg),
   /*
     组织架构
   */
@@ -42,7 +50,6 @@ const api = {
   getDepart: ({ id, ...arg }) => get(`org/department/${id}`, arg),
   // 2.6 查询用户个人部门树
   getUserDepartTree: args => get('org/department/tree/for_personal', args),
-
   /*
     角色管理
   */
