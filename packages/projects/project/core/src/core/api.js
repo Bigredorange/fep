@@ -175,5 +175,24 @@ const api = {
   getWorkOrderList: args => get('work_order/list', args),
   // 导出工单
   exportWorkOrder: args => postJson('work_order/export', args),
+  /**
+   * 灵工管理
+   */
+  // 灵工列表
+  getEmployeeList: args => get('employee', args),
+  // 新增灵工
+  addEmployee: args => postJson('employee', args),
+  // 灵工工作履历列表
+  getEmployeeWorkList: ({ id, ...arg }) => get(`employee/empwork/${id}`, arg),
+  // 编辑灵工工作履历
+  updateEmployeeWork: ({ id, ...arg }) => putJson(`employee/empwork/${id}`, arg),
+  // 新增灵工工作履历
+  addEmployeeWork: ({ id, ...arg }) => postJson(`employee/empwork/${id}`, arg),
+  // 编辑灵工
+  updateEmployee: args => putJson('employee', args),
+  // 导出灵工
+  exportEmployee: args => postJson('employee/export', args),
+  // 获取灵工详情
+  getEmployeeDetails: ({ id, ...arg }) => get(`employee/${id}`, arg),
 };
 module.exports = api;

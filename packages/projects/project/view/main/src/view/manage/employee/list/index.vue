@@ -3,24 +3,48 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>事件：</span>
+          <span>姓名：</span>
           <el-input
-            v-model="form.event"
-            placeholder="请输入事件"
+            v-model="form.empName"
+            placeholder="请输入工单编号"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>操作人：</span>
+          <span>手机号码：</span>
           <el-input
-            v-model="form.operator"
-            placeholder="请输入操作人"
+            v-model="form.mobile"
+            placeholder="请输入工单名称"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>操作时间：</span>
-          <el-date-pickerel-date-picker
+          <span>证件号码：</span>
+          <el-input
+            v-model="form.certificateNum"
+            placeholder="请输入工单名称"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>状态：</span>
+          <el-select
+            v-model="form.status"
+            style="width: 200px;"
+            placeholder="请选择状态"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </div>
+        <div class="item">
+          <span>创建日期：</span>
+          <el-date-picker
             v-model="createTime"
             style="width: 260px;"
             type="daterange"
@@ -29,6 +53,14 @@
             end-placeholder="结束日期"
             value-format="yyyy-MM-dd"
             @change="selectDate"
+          />
+        </div>
+        <div class="item">
+          <span>灵工来源：</span>
+          <el-input
+            v-model="form.source"
+            placeholder="请输入客户名称"
+            style="width: 200px;"
           />
         </div>
         <el-button
@@ -62,40 +94,72 @@
         :loading="listLoading"
       >
         <el-table-column
-          prop="event"
+          prop="archivesNo"
           align="center"
-          label="事件"
+          label="档案编号"
         />
         <el-table-column
-          prop="operator"
+          prop="empName"
           align="center"
-          label="操作人"
+          label="姓名"
         />
         <el-table-column
-          prop="contactPhone"
+          prop="mobile"
           align="center"
-          label="联系方式"
+          label="手机号码"
         />
         <el-table-column
-          prop="area"
+          prop="certificateNum"
           align="center"
-          label="区域"
-        />
-        <!-- <el-table-column
-          prop="area"
-          align="center"
-          label="创建人"
-        /> -->
-        <el-table-column
-          prop="createTime"
-          align="center"
-          label="操作时间"
+          label="证件号码"
         />
         <el-table-column
-          prop="cost"
+          prop="sex"
           align="center"
-          label="费用"
+          label="性别"
         />
+        <el-table-column
+          prop="contactName"
+          align="center"
+          label="状态"
+          :formatter="({ status }) => getStatusName(status)"
+        />
+        <el-table-column
+          prop="source"
+          align="center"
+          label="来源"
+        />
+        <el-table-column
+          prop="workType"
+          align="center"
+          label="工种名称"
+        />
+        <el-table-column
+          prop="unit"
+          align="center"
+          label="是否在线"
+        />
+        <el-table-column
+          prop="workType"
+          align="center"
+          label="创建日期"
+        />
+        <el-table-column
+          label="操作"
+          align="center"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <el-button
+              type="text"
+              class="primary"
+              @click="edit(row)"
+            >
+              编辑
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <affix
         direction="bottom"
@@ -124,14 +188,31 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        event: null,
-        operator: null,
-        pageCurrent: 1,
-        pageSize: 20,
+        empName: null,
+        mobile: null,
+        certificateNum: null,
         startTime: null,
         endTime: null,
+        source: null,
+        status: '',
+        pageCurrent: 1,
+        pageSize: 20,
       },
       total: 0,
+      statusList: [
+        {
+          key: 0,
+          label: '禁用',
+        },
+        {
+          key: 1,
+          label: '启用',
+        },
+        {
+          key: '',
+          label: '全部',
+        },
+      ],
       createTime: [],
     };
   },
@@ -145,9 +226,8 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getCusBalanceRecord({
+      this.$api.getEmployeeList({
         ...this.form,
-        id: this.$route.query.id,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -160,7 +240,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', query: { id: row.id } });
+      this.$router.push({ path: 'edit', query: { id: row.id, empId: row.empId } });
     },
     selectDate(val) {
       const [start, end] = val;
@@ -184,6 +264,20 @@ export default {
           });
         },
       });
+    },
+    getStatusName(status) {
+      let name = '';
+      switch (status) {
+        case 0:
+          name = '禁用';
+          break;
+        case 1:
+          name = '启用';
+          break;
+        case '':
+          break;
+      }
+      return name;
     },
   },
 };
