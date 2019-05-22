@@ -101,6 +101,8 @@ const api = {
   disableCustomer: ({ id, status, ...arg }) => putJson(`customer/${id}/${status}`, arg),
   // 6.5 查询客户
   getCustomer: ({ id, ...arg }) => get(`customer/${id}`, arg),
+  // 客户下拉列表
+  getCustomerAll: args => get('customer/pullDownList', args),
   /*
     客户管理 合同管理
   */
@@ -153,24 +155,24 @@ const api = {
   // 文件上传
   fileUpload: args => postForm('file/upload', args),
   // 根据ID下载上传的文件
-  fileDownloadById: (args, name) => getBlob('file/download', args).then((blob) => {
+  fileDownloadById: ({ name, ...arg }) => getBlob('file/download', arg).then((blob) => {
     $utils.autoLoad(new Blob([blob]), name);
   }),
   // 下载上传的文件
-  fileDownloadUpload: (args, name) => getBlob('file/download_upload', args).then((blob) => {
+  fileDownloadUpload: ({ name, ...arg }) => getBlob('file/download_upload', arg).then((blob) => {
     $utils.autoLoad(new Blob([blob]), name);
   }),
   /**
    * 工单管理
    */
   // 根据id获取工单
-  getWorkOrder: args => get('work_ordert', args),
+  getWorkOrder: ({ id, ...arg }) => get(`work_order/${id}`, arg),
   // 新增工单
   addWorkOrder: args => postJson('work_order', args),
   // 更新工单
   updateWorkOrder: ({ id, ...arg }) => putJson(`work_order/${id}`, arg),
   // 更新工单状态
-  changeWorkOrder: ({ id, ...arg }) => del(`work_order/${id}/change_status`, arg),
+  changeWorkOrder: ({ id, ...arg }) => putJson(`work_order/${id}/change_status`, arg),
   // 工单列表
   getWorkOrderList: args => get('work_order/list', args),
   // 导出工单

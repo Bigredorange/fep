@@ -42,19 +42,22 @@
             />
           </el-select>
         </div>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left:20px;"
-          @click="getList"
+        <div
+          class="item"
         >
-          查询
-        </el-button>
-        <el-button
-          @click="reset"
-        >
-          重置
-        </el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getList"
+          >
+            查询
+          </el-button>
+          <el-button
+            @click="reset"
+          >
+            重置
+          </el-button>
+        </div>
       </section>
     </top-bar>
     <div class="con-table">

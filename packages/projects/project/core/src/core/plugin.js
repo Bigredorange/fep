@@ -35,8 +35,8 @@ export default {
     };
     Vue.prototype.$optDicLabel = (dicKey, value, conf = {}) => { // 根据某个数据字典的标识获取对应显示文本
       const {
-        labelKey = 'value', // 显示的文本的键
-        valueKey = 'id', // 传给后台的唯一标识
+        labelKey = 'dictValue', // 显示的文本的键
+        valueKey = 'dictKey', // 传给后台的唯一标识
       } = conf;
       const options = Array.isArray(dicKey) ? dicKey : store.state.options[dicKey];
       if (!Array.isArray(dicKey) && (!options || !options.length)) {
