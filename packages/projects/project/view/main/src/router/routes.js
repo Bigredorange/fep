@@ -180,24 +180,34 @@ const asyncRoutes = [{
     {
       path: 'hroCompany',
       component: RouterView,
-      redirect: 'hroCompany/list',
+      redirect: 'hroCompany/hro',
       meta: {
         title: 'HRO企业管理',
       },
       children: [
         {
-          path: 'list',
+          path: 'hro',
           meta: {
-            title: '列表',
+            title: 'hro企业',
           },
-          component: () => import(/* webpackChunkName: "v-hroCompany" */ '../view/manage/hroCompany/list/index.vue'),
-        },
-        {
-          path: 'edit',
-          meta: {
-            title: '详情',
-          },
-          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
+          redirect: 'hro/list',
+          component: RouterView,
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-hroCompany" */ '../view/manage/hroCompany/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
+            },
+          ],
         },
       ],
     },
@@ -262,24 +272,34 @@ const asyncRoutes = [{
     {
       path: 'employee',
       component: RouterView,
-      redirect: 'employee/list',
+      redirect: 'employee/emp',
       meta: {
         title: '灵工管理',
       },
       children: [
         {
-          path: 'list',
+          path: 'emp',
           meta: {
-            title: '列表',
+            title: '灵工',
           },
-          component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
-        },
-        {
-          path: 'edit',
-          meta: {
-            title: '详情',
-          },
-          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
+          redirect: 'emp/list',
+          component: RouterView,
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
+            },
+          ],
         },
       ],
     },

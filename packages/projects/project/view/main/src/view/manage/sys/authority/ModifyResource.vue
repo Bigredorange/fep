@@ -220,13 +220,13 @@ export default {
         pid: form ? form.pid : 0,
       };
       this.selectedList = selectedList || [];
-      this.init();
       this.isShow = true;
+      this.init();
     },
     init() {
       // 获取可选项列表
       // 初始化路由列表,必须将所有路由展示到列表中,以至于可以根据路由路径进行权限判断
-      // this.asyncRoutes = asyncRoutes[0].children;
+      this.asyncRoutes = asyncRoutes[0].children;
       let allRoutes = this.asyncRoutes;
       const getRoutes = routes => routes.map((route) => {
         if (!route.children || !route.children.length) {
