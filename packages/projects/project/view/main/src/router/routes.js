@@ -283,6 +283,33 @@ const asyncRoutes = [{
         },
       ],
     },
+    {
+      path: 'settle',
+      component: RouterView,
+      redirect: 'settle/service',
+      meta: {
+        title: '结算管理',
+      },
+      children: [
+        {
+          path: 'service',
+          component: RouterView,
+          redirect: 'service/list',
+          meta: {
+            title: '服务报酬',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-service" */ '../view/manage/settle/service/list/index.vue'),
+            },
+          ],
+        },
+      ],
+    },
   ],
 }];
 const routes = [
