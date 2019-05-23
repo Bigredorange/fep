@@ -132,7 +132,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              v-if="form.level === 1"
+              v-if="form.level === 2"
               label="企业"
               prop="companyId"
             >
@@ -149,7 +149,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              v-if="form.level === 2"
+              v-if="form.level === 3"
               label="客户"
               prop="customerId"
             >
@@ -209,6 +209,94 @@
               name="work"
             >
               work
+            </el-tab-pane>
+            <el-tab-pane
+              label="客户分配"
+              name="customer"
+            >
+              <div
+                v-if="tabName === 'customer'"
+                class="con-card"
+              >
+                <el-card
+                  class="left-card"
+                >
+                  <el-input
+                    v-model="cusNameNot"
+                    placeholder="请输入客户名称"
+                    class="con-input"
+                  />
+                  <el-table
+                    :data="customerNotOwn"
+                    @selection-change="(selection) => cusSelection = selection"
+                  >
+                    <el-table-column
+                      type="selection"
+                    />
+                    <el-table-column
+                      prop="customerNo"
+                      label="客户编号"
+                    />
+                    <el-table-column
+                      prop="customerName"
+                      label="客户名称"
+                    />
+                  </el-table>
+                </el-card>
+                <div class="center">
+                  <p
+                    class="grey"
+                  >
+                    添加至右边列表
+                  </p>
+                  <!-- <i
+                    class="el-icon-right"
+                  /> -->
+                  <el-button
+                    type="primary"
+                    :disabled="customerNotOwn.length === 0"
+                    @click="assignCus"
+                  >
+                    添加分配
+                  </el-button>
+                </div>
+                <el-card
+                  class="right-card"
+                >
+                  <el-input
+                    v-model="cusNameNot"
+                    placeholder="请输入客户名称"
+                    class="con-input"
+                  />
+                  <el-table
+                    :data="customerOwn"
+                  >
+                    <el-table-column
+                      prop="customerNo"
+                      label="客户编号"
+                    />
+                    <el-table-column
+                      prop="customerName"
+                      label="客户名称"
+                    />
+                    <el-table-column
+                      prop="usernames"
+                      label="授权人"
+                    />
+                    <el-table-column>
+                      <template slot-scope="{ row }">
+                        <el-button
+                          type="text"
+                          class="red"
+                          @click="delCus(row)"
+                        >
+                          删除
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-card>
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -325,12 +413,18 @@ export default {
       userId: null,
       customerList: [],
       companyList: [],
+      customerNotOwn: [],
+      customerOwn: [],
+      cusNameNot: null,
+      cusName: null,
+      cusSelection: [],
     };
   },
   mounted() {
     this.getUserDepartTree();
     this.getRolesList();
     this.getCompanyList();
+    this.getCustomerList();
     const { userId, companyId } = this.$route.query;
     const { level } = this.$store.state.fepUserInfo;
     this.userId = userId;
@@ -344,6 +438,8 @@ export default {
       this.getUserDetail(this.userId);
     }
     this.userTypeList = this.userTypeList.filter(user => user.key >= level);
+    this.getCustomerOwn();
+    this.getCustomerNotOwn();
   },
   methods: {
     submit() {
@@ -441,11 +537,51 @@ export default {
         this.companyList = res.dataList;
       });
     },
+    getCustomerList() {
+      this.$api.getCustomerAll().then((res) => {
+        this.customerList = res;
+      });
+    },
+    getCustomerNotOwn() {
+      this.$api.getCustomerNotOwn({
+        id: this.userId,
+        searchContent: this.cusNameNot,
+      }).then((res) => {
+        this.customerNotOwn = res.dataList;
+      });
+    },
+    getCustomerOwn() {
+      this.$api.getCustomerOwn({
+        id: this.userId,
+      }).then((res) => {
+        this.customerOwn = res.dataList;
+      });
+    },
     getUserDetail(id) {
       this.$api.getUserById({
         id,
       }).then((res) => {
         this.form = res;
+      });
+    },
+    assignCus() {
+      const arr = this.cusSelection.map(item => item.customerId);
+      this.$api.assignCustomer({
+        id: this.userId,
+        arr,
+      }).then(() => {
+        this.$message.success('分配成功');
+        this.getCustomerNotOwn();
+        this.getCustomerOwn();
+      });
+    },
+    delCus(row) {
+      this.$api.delAssginCustomer({
+        customerId: row.userCustomerId,
+      }).then(() => {
+        this.$message.success('已取消分配');
+        this.getCustomerOwn();
+        this.getCustomerNotOwn();
       });
     },
   },
@@ -498,6 +634,27 @@ export default {
       margin-top: 20px;
       display: flex;
       justify-content: center;
+  }
+  .con-card {
+    display: flex;
+    justify-content: space-between;
+    .con-input {
+      width: 200px;
+      margin-bottom: 10px;
+    }
+    .left-card {
+      flex: 5;
+    }
+    .right-card {
+      flex: 5,
+    }
+    .center {
+      margin: auto 20px;
+      p {
+        color:#cad0d7;
+        margin-bottom: 10px;
+      }
+    }
   }
 }
 </style>

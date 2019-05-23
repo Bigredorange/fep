@@ -110,6 +110,7 @@
           prop="industry"
           align="center"
           label="所属行业"
+          :formatter="({ industry }) => $optDicLabel('Industry', industry)"
         />
         <el-table-column
           prop="contactName"

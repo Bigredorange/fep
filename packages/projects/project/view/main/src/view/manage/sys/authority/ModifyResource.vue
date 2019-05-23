@@ -29,7 +29,6 @@
             菜单
           </el-radio>
           <el-radio
-            :disabled="!routes.length"
             :label="1"
           >
             按钮
@@ -54,7 +53,7 @@
           />
         </el-select>
         <el-input
-          v-else-if="form.type === 0"
+          v-else-if="form.type === 1"
           v-model="form.code"
           placeholder="请输入唯一码"
         />
@@ -200,6 +199,9 @@ export default {
       // this.allRoutes = this.getRoutes(this.asyncRoutes);
     },
   },
+  mounted() {
+    this.asyncRoutes = asyncRoutes[0].children;
+  },
   methods: {
     reset() {
       this.$utils.initData.call(this);
@@ -218,8 +220,8 @@ export default {
         pid: form ? form.pid : 0,
       };
       this.selectedList = selectedList || [];
-      this.init();
       this.isShow = true;
+      this.init();
     },
     init() {
       // 获取可选项列表

@@ -45,10 +45,10 @@
                 placeholder="请选择行业"
               >
                 <el-option
-                  v-for="item in rolesList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  v-for="item in $opt('Industry')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
