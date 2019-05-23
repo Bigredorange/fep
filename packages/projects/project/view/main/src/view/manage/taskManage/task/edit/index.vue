@@ -160,90 +160,86 @@
                   prop="period"
                 />
                 <el-table-column
-                  label="时间段"
-                  prop="period"
-                />
-                <el-table-column
                   label="星期一"
-                  prop="monChecked"
+                  prop="woSchedulesmonChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.monChecked"
+                      v-model="row.woSchedulesmonChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期二"
-                  prop="tueChecked"
+                  prop="woSchedulestueChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.tueChecked"
+                      v-model="row.woSchedulestueChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期三"
-                  prop="webChecked"
+                  prop="woScheduleswebChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.webChecked"
+                      v-model="row.woScheduleswebChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期四"
-                  prop="thurChecked"
+                  prop="woSchedulesthurChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.thurChecked"
+                      v-model="row.woSchedulesthurChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期五"
-                  prop="friChecked"
+                  prop="woSchedulesfriChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.friChecked"
+                      v-model="row.woSchedulesfriChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期六"
-                  prop="satChecked"
+                  prop="woSchedulessatChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.satChecked"
+                      v-model="row.woSchedulessatChecked"
                     />
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="星期日"
-                  prop="sunChecked"
+                  prop="woSchedulessunChecked"
                 >
                   <template
                     slot-scope="{ row }"
                   >
                     <el-checkbox
-                      v-model="row.sunChecked"
+                      v-model="row.woSchedulessunChecked"
                     />
                   </template>
                 </el-table-column>
@@ -329,7 +325,6 @@ export default {
     getDetail(id) {
       this.$api.getWorkOrder({ id }).then((res) => {
         this.form = res;
-        this.woSchedules = res.woSchedules;
       });
     },
     handleTabClick() {
