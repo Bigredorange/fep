@@ -44,7 +44,7 @@
         <div class="buttons">
           <el-button
             type="primary"
-            @click="exportData"
+            @click="goOnWork"
           >
             批量完成
           </el-button>
@@ -59,17 +59,17 @@
             align="center"
           />
           <el-table-column
-            prop="mobile"
+            prop="archivesNo"
             align="center"
             label="档案编号"
           />
           <el-table-column
-            prop="customerName"
+            prop="empName"
             align="center"
             label="姓名"
           />
           <el-table-column
-            prop="customerName"
+            prop="mobile"
             align="center"
             label="手机号码"
           />
@@ -107,6 +107,13 @@
                 @click="goOnWork(row)"
               >
                 完成
+              </el-button>
+              <el-button
+                type="text"
+                class="primary"
+                @click="cancel(row)"
+              >
+                取消上岗
               </el-button>
             </template>
           </el-table-column>
@@ -175,9 +182,6 @@ export default {
       this.form.pageSize = n;
       this.getList();
     },
-    edit(row) {
-      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
-    },
     finish(obj) {
       this.$dialogs.confirm({
         title: '提示',
@@ -192,6 +196,21 @@ export default {
           this.$api.finishEmpWorkTask({
             time: obj.date,
             empWorkTaskIds,
+          }).then(() => {
+            this.$refs.selectDate.close();
+            this.$message.success('操作成功');
+            this.getList();
+          });
+        },
+      });
+    },
+    cancel(row) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要取消上岗吗？',
+        onOk: () => {
+          this.$api.cancelEmpWorkTask({
+            empWorkTaskId: row.id,
           }).then(() => {
             this.$refs.selectDate.close();
             this.$message.success('操作成功');

@@ -202,6 +202,7 @@
           >
             <span
               class="link"
+              @click="$refs.finishTask.open(row.id, 'finish')"
             >
               {{ row.completedNum }}
             </span>

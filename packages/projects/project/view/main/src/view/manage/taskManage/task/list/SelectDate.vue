@@ -3,7 +3,7 @@
     :title="title"
     :visible.sync="isShow"
     append-to-body
-    width="400px"
+    width="600px"
   >
     <div class="center">
       <el-date-picker
@@ -11,7 +11,8 @@
         align="right"
         type="datetime"
         placeholder="选择日期"
-        value-format="yyyy-MM-dd hh:mm"
+        value-format="yyyy-MM-dd HH:mm"
+        format="yyyy-MM-dd HH:mm"
       />
     </div>
     <div slot="footer">

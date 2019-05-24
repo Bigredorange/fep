@@ -3,7 +3,8 @@
     <el-dialog
       :title="title"
       :visible.sync="isShow"
-      width="1000px"
+      width="1100px"
+      :close-on-click-modal="false"
       @close="reset"
     >
       <section class="con-top">
@@ -23,21 +24,6 @@
             style="width: 200px;"
           />
         </div>
-        <div class="item">
-          <span>状态：</span>
-          <el-select
-            v-model="form.state"
-            placeholder="请选择"
-            style="width: 200px;"
-          >
-            <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
-        </div>
         <div
           class="item"
         >
@@ -56,44 +42,24 @@
         </div>
       </section>
       <div class="con-table">
-        <div class="buttons">
-          <el-button
-            type="primary"
-            @click="exportData"
-          >
-            批量操作
-          </el-button>
-        </div>
         <el-table
           :data="list"
           :loading="listLoading"
-          @selection-change="(select) => selection = select"
         >
           <el-table-column
-            type="selection"
-            align="center"
-            :selectable="(row) => row.status === 0"
-          />
-          <el-table-column
-            prop="mobile"
+            prop="archivesNo"
             align="center"
             label="档案编号"
           />
           <el-table-column
-            prop="customerName"
+            prop="empName"
             align="center"
             label="姓名"
           />
           <el-table-column
-            prop="customerName"
+            prop="mobile"
             align="center"
             label="手机号码"
-          />
-          <el-table-column
-            prop="status"
-            align="center"
-            label="状态"
-            :formatter="({status}) => getStatusName(status)"
           />
           <el-table-column
             prop="assignTime"
@@ -106,37 +72,78 @@
             label="接单时间"
           />
           <el-table-column
-            prop="gotoWorkTime"
             align="center"
             label="上岗时间"
-          />
+            width="200"
+          >
+            <template
+              slot-scope="{ row }"
+            >
+              <el-date-picker
+                v-if="row.isEdit"
+                v-model="row.gotoWorkTime"
+                align="right"
+                type="datetime"
+                placeholder="选择日期"
+                style="width: 180px"
+                value-format="yyyy-MM-dd hh:mm"
+                format="yyyy-MM-dd HH:mm"
+              />
+              <span
+                v-else
+              >
+                {{ row.gotoWorkTime }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="completeTime"
             align="center"
             label="完成时间"
-          />
+            width="200"
+          >
+            <template
+              slot-scope="{ row }"
+            >
+              <el-date-picker
+                v-if="row.isEdit"
+                v-model="row.completeTime"
+                align="right"
+                type="datetime"
+                placeholder="选择日期"
+                style="width: 180px"
+                value-format="yyyy-MM-dd HH:mm"
+                format="yyyy-MM-dd HH:mm"
+              />
+              <span
+                v-else
+              >
+                {{ row.gotoWorkTime }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="操作"
             align="center"
             width="200"
           >
             <template
-              v-if="row.status === 0"
-              slot-scope="{ row }"
+              slot-scope="{ $index, row }"
             >
               <el-button
+                v-if="!row.isEdit"
                 type="text"
                 class="primary"
-                @click="revoke(row)"
+                @click="edit($index)"
               >
-                撤回
+                编辑
               </el-button>
               <el-button
+                v-else
                 type="text"
-                class="primary"
-                @click="finish(row.id)"
+                class="success"
+                @click="save(row)"
               >
-                完成
+                保存
               </el-button>
             </template>
           </el-table-column>
@@ -166,7 +173,6 @@ export default {
       form: {
         mobile: null,
         empName: null,
-        status: 99,
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -234,23 +240,10 @@ export default {
       this.form.pageSize = n;
       this.getList();
     },
-    edit(row) {
-      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
-    },
     selectDate(val) {
       const [start, end] = val;
       this.form.workPlanStartTime = start;
       this.form.workPlanEndTime = end;
-    },
-    exportData() {
-      this.$api.exportWorkOrder({
-        ...this.form,
-      }).then((res) => {
-        this.$api.fileDownloadById({
-          fileId: res,
-          name: '工单.xlsx',
-        });
-      });
     },
     finish(id) {
       this.$dialogs.confirm({
@@ -266,22 +259,17 @@ export default {
         },
       });
     },
-    revoke(row) {
+    save(row) {
       this.$dialogs.confirm({
         title: '提示',
-        content: '确定要撤回吗？',
+        content: '确定要保存吗？',
         onOk: () => {
-          let empWorkTaskIds = [];
-          if (row) {
-            empWorkTaskIds.push(row.id);
-          } else {
-            empWorkTaskIds = this.selection.map(item => item.id);
-          }
-          this.$api.revokeEmpWorkTask({
-            id: this.workTaskId,
-            empWorkTaskIds,
+          this.$api.updateEmpWorkTask({
+            empWorkTaskId: row.id,
+            onWorkTime: row.gotoWorkTime,
+            completeTime: row.completeTime,
           }).then(() => {
-            this.$message.success('撤回任务成功');
+            this.$message.success('更新任务成功');
             this.getList();
           });
         },
@@ -320,10 +308,9 @@ export default {
       }
       return temp;
     },
-    getStatusName(status) {
-      // const temp = this.statusList.findItem(item => item.status === status) || [];
-      // return temp.label || '';
-      return status;
+    edit(index) {
+      this.list[index].isEdit = true;
+      this.$set(this.list, index, this.list[index]);
     },
   },
 };

@@ -224,7 +224,9 @@ const api = {
   onWorkEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/gowork/${time}`, empWorkTaskIds),
   // 完成任务
   finishEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/finish/${time}`, empWorkTaskIds),
-  // 拒绝任务
-  refuseEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/refuse', empWorkTaskIds),
+  // 取消任务
+  cancelEmpWorkTask: ({ empWorkTaskId }) => putJson(`empworktask/gowork/${empWorkTaskId}/cancel`),
+  // 更新已完成和上岗时间
+  updateEmpWorkTask: ({ onWorkTime, completeTime, empWorkTaskId }) => putJson(`empworktask/${empWorkTaskId}/${onWorkTime}/${completeTime}/update`),
 };
 module.exports = api;
