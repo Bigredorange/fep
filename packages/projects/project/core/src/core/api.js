@@ -204,6 +204,21 @@ const api = {
   // 获取灵工详情
   getEmployeeDetails: ({ id, ...arg }) => get(`employee/${id}`, arg),
   /**
+   * 服务报酬
+   */
+  // 导入服务报酬
+  importServiceReward: args => postForm('service_reward/import', args, { noMessage: true }),
+  // 批量发送确认
+  batchSendServiceReward: ({ arr }) => postJson('service_reward/batch/send_confirm', arr),
+  // 批量删除服务报酬
+  batchDeleteServiceReward: ({ arr }) => postJson('service_reward/batch/delete', arr),
+  // 根据查询条件导出excel
+  exportServiceReward: args => postJson('service_reward/export', args),
+  // 查询服务报酬列表
+  getServiceRewardList: args => get('service_reward/list', args),
+  // 更新服务报酬
+  updateServiceReward: ({ id, ...arg }) => putJson(`/service_reward/${id}`, arg),
+  /**
    * 任务管理
    */
   // 任务列表

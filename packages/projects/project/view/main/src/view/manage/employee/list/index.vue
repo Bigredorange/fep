@@ -133,6 +133,7 @@
           prop="workType"
           align="center"
           label="工种名称"
+          :formatter="({ workType }) => getWorkType(workType)"
         />
         <el-table-column
           prop="unit"
@@ -229,18 +230,14 @@ export default {
       this.$api.getEmployeeList({
         ...this.form,
       }).then((res) => {
-        this.list = res.dataList.map((item) => {
-          const workTypeStr = item.workType || '';
-          const workType = workTypeStr.split(',').map(t => this.$optDicLabel('typeofwork', t)).join('，');
-          return {
-            ...item,
-            workType,
-          };
-        });
+        this.list = res.dataList;
         this.total = res.allCount;
       }).finally(() => {
         this.listLoading = false;
       });
+    },
+    getWorkType(workType) {
+      return workType.split(',').map(t => this.$optDicLabel('typeofwork', t)).join('，');
     },
     sizeChange(n) {
       this.form.pageSize = n;

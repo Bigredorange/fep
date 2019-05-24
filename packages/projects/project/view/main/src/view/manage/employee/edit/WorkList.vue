@@ -21,16 +21,16 @@
           <el-select
             v-if="row.isEdit"
             v-model="list[$index].workType"
-            placeholder="请选择证件类型"
+            placeholder="请选择工种类型"
           >
             <el-option
-              v-for="item in $opt('DocumentType')"
+              v-for="item in $opt('typeofwork')"
               :key="item.id"
               :label="item.dictValue"
               :value="item.dictKey"
             />
           </el-select>
-          <span v-else>{{ $optDicLabel('DocumentType', row.workType) }}</span>
+          <span v-else>{{ $optDicLabel('typeofwork', row.workType) }}</span>
         </template>
       </el-table-column>
       <el-table-column
