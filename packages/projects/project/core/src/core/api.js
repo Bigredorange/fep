@@ -7,7 +7,7 @@ const {
   postForm,
   del,
   postJson,
-  // postBlob,
+  postBlob,
   getBlob,
   putJson,
 } = require('./ajax');
@@ -94,7 +94,7 @@ const api = {
   // 5.5 查询企业
   getCompany: ({ id, ...arg }) => get(`company/${id}`, arg),
   // 5.6 生成企业二维码
-  createCompany: ({ id, ...arg }) => postJson(`company/qrcode/${id}`, arg),
+  createCompany: ({ id, ...arg }) => postBlob(`company/qrcode/${id}`, arg),
   /*
     客户管理
   */

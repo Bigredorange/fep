@@ -163,9 +163,7 @@ export default {
       }).then((res) => {
         const { token } = res;
         this.manageToken(token);
-        // sessionStorage.setItem('fepUserInfo', JSON.stringify(userInfo));
-        // this.$store.commit('setFepUserinfo', userInfo);
-        this.$router.push('/manage/sys');
+        this.$router.push('/manage/customer');
       }).catch(() => {}).finally(() => {
         this.loading = false;
       });

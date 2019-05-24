@@ -12,7 +12,7 @@
       class="form"
       :rules="rules"
       :model="form"
-      label-width="100px"
+      label-width="120px"
     >
       <el-form-item
         label="类型"
@@ -106,6 +106,25 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item
+        label="平台管理员可见"
+        prop="cusVisible"
+      >
+        <el-radio-group
+          v-model="form.platformVisible"
+        >
+          <el-radio
+            :label="1"
+          >
+            是
+          </el-radio>
+          <el-radio
+            :label="0"
+          >
+            否
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item
         label="排序"
         prop="sort"
       >
@@ -161,6 +180,7 @@ export default {
         sort: null,
         coVisible: 1,
         cusVisible: 1,
+        platformVisible: 1,
         remark: '',
       },
       rules: {
@@ -314,7 +334,7 @@ export default {
       }).then(() => {
         this.$emit('update');
         this.isShow = false;
-        this.$message.success(this.form.id ? '新增成功' : '修改成功');
+        this.$message.success(!this.form.id ? '新增成功' : '修改成功');
       }).finally(() => {
         this.isLoading = false;
       });

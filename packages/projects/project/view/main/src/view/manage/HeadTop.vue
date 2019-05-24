@@ -269,19 +269,19 @@ export default {
   padding: 10px;
   background-color: #629BE2;
   border-radius: 5px;
-  width: 120px;
+  // width: 140px;
   border-radius: 20px;
   cursor: pointer;
   span {
-    margin-left: 8px;
-    margin-right: 20px;
+    // margin-left: 8px;
+    // margin-right: 20px;
+    margin: 0 15px;
   }
 }
 // 右侧个人下拉菜单
 .dropdown-menu {
   position: absolute;
   top: 40px;
-  left: 10px;
   width: 100px;
   color: #333;
   background: #fff;

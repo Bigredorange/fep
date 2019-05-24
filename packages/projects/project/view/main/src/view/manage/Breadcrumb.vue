@@ -12,9 +12,9 @@
     <span class="loc">您的位置：</span>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
-        v-for="(item, index) in breadList"
+        v-for="(item, index) in breadcrumbList"
         :key="index"
-        :to="gotoPage(item.path, index)"
+        :to="gotoPage(item, index)"
       >
         {{ item.title }}
       </el-breadcrumb-item>
@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       breadcrumbList: [],
-      breadList: [],
     };
   },
   watch: {
@@ -55,7 +54,6 @@ export default {
       pathArr.forEach((pathEle) => {
         this.getTitle(this.menuList, pathEle);
       });
-      this.breadList = this.breadcrumbList.filter(ele => ele.parentPath);
     },
     getTitle(arr, path) {
       const obj = {};
@@ -75,14 +73,20 @@ export default {
       }
       return this.breadcrumbList;
     },
-    gotoPage(path, index) {
-      const obj = {};
-      if (index === 0) {
-        obj.path = `/manage/${path}`;
-      } else {
-        obj.path = `/manage/${this.breadcrumbList[0].path}/${path}`;
+    gotoPage(item, index) {
+      if (this.breadcrumbList.length - 1 === index) {
+        return '';
       }
-      return obj;
+      let path = '';
+      this.breadcrumbList.forEach((ele, i) => {
+        if (i <= index) {
+          path += `/${ele.parentPath}`;
+        }
+        if (i === index) {
+          path += `/${ele.path}`;
+        }
+      });
+      return path;
     },
   },
 };

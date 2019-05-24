@@ -156,6 +156,32 @@
           </el-form>
         </div>
       </div>
+      <div
+        v-if="companyId"
+        class="con-code"
+      >
+        <i class="line" />
+        <label>企业二维码</label>
+        <el-button
+          type="primary"
+          text="企业二维码"
+          class="btn"
+          @click="createCode"
+        >
+          企业二维码
+        </el-button>
+        <mask-code
+          v-if="qrcodeFlag"
+          :img="qrcodeSrc"
+          @click.native="qrcodeFlag=false"
+        >
+          <img
+            ref="qrcode"
+            :src="qrcodeSrc"
+            width="290"
+          >
+        </mask-code>
+      </div>
       <div class="bot-menu">
         <el-button
           v-loading="confirmButtonLoading"
@@ -172,8 +198,12 @@
   </div>
 </template>
 <script>
+import MaskCode from './Mask.vue';
 
 export default {
+  components: {
+    MaskCode,
+  },
   data() {
     return {
       rules: {
@@ -221,6 +251,8 @@ export default {
       confirmButtonLoading: false,
       rolesList: [],
       companyId: null,
+      qrcodeSrc: '',
+      qrcodeFlag: false,
     };
   },
   mounted() {
@@ -274,6 +306,15 @@ export default {
         this.form = res;
       });
     },
+    createCode() {
+      this.$api.createCompany({
+        id: this.companyId,
+      }).then((res) => {
+        this.qrcodeSrc = window.URL.createObjectURL(res);
+        this.qrcodeFlag = true;
+        // this.$refs.qrcode.src = this.qrcodeSrc;
+      });
+    },
   },
 };
 </script>
@@ -318,6 +359,26 @@ export default {
       .grey {
         color: #999999;
       }
+    }
+    .con-code {
+      padding: 10px 0;
+      i.line {
+          margin-right: 7px;
+          vertical-align: middle;
+          display: inline-block;
+          width: 4px;
+          height: 14px;
+          border-radius: 2px;
+          background-color: #ffc000;
+        }
+        label {
+          vertical-align: middle;
+          line-height: 16px;
+          font-size: 14px;
+        }
+        .btn {
+          margin-left: 20px;
+        }
     }
   }
   .bot-menu {
