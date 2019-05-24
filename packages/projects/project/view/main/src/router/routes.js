@@ -330,6 +330,47 @@ const asyncRoutes = [{
         },
       ],
     },
+    {
+      path: 'taskManage',
+      component: RouterView,
+      redirect: 'taskManage/task',
+      meta: {
+        title: '任务管理',
+      },
+      children: [
+        {
+          path: 'task',
+          meta: {
+            title: '任务',
+          },
+          redirect: 'task/list',
+          component: RouterView,
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/task/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/taskManage/task/edit/index.vue'),
+            },
+            {
+              path: 'assign',
+              meta: {
+                title: '指派任务',
+              },
+              component: () => import(/* webpackChunkName: "v-assgin" */ '../view/manage/taskManage/task/assign/index.vue'),
+            },
+          ],
+        },
+      ],
+    },
   ],
 }];
 const routes = [

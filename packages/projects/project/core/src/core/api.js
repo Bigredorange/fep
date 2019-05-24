@@ -218,5 +218,28 @@ const api = {
   getServiceRewardList: args => get('service_reward/list', args),
   // 更新服务报酬
   updateServiceReward: ({ id, ...arg }) => putJson(`/service_reward/${id}`, arg),
+  /**
+   * 任务管理
+   */
+  // 任务列表
+  getWorkTaskList: args => get('worktask', args),
+  // 任务撤回
+  revokeWorkTask: ({ id, ...arg }) => postJson(`worktask/${id}/revoke`, arg),
+  // 任务完成
+  finishWorkTask: ({ id, ...arg }) => postJson(`worktask/${id}/finish`, arg),
+  // 任务指派列表
+  getNotAssignList: ({ id, ...arg }) => get(`empworktask/${id}/assign`, arg),
+  // 任务指派后的列表
+  getAssignList: ({ id, type, ...arg }) => get(`empworktask/list/${id}/${type}`, arg),
+  // 指派任务
+  assignEmpWorkTask: ({ id, empIds }) => postJson(`empworktask/${id}/assign`, empIds),
+  // 撤回任务
+  revokeEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/revoke', empWorkTaskIds),
+  // 上岗
+  onWorkEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/gowork/${time}`, empWorkTaskIds),
+  // 完成任务
+  finishEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/finish/${time}`, empWorkTaskIds),
+  // 拒绝任务
+  refuseEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/refuse', empWorkTaskIds),
 };
 module.exports = api;

@@ -69,16 +69,6 @@
       </section>
     </top-bar>
     <div class="con-table">
-      <div class="buttons">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-        >
-          新增
-        </el-button>
-        <el-button>导出</el-button>
-      </div>
       <el-table
         :data="list"
         :loading="listLoading"

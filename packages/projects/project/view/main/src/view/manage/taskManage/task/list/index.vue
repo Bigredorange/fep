@@ -3,18 +3,18 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>工单编号：</span>
+          <span>任务编号：</span>
           <el-input
-            v-model="form.workOrderNo"
-            placeholder="请输入工单编号"
+            v-model="form.taskNo"
+            placeholder="请输入任务编号"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>工单名称：</span>
+          <span>任务名称：</span>
           <el-input
-            v-model="form.workOrderName"
-            placeholder="请输入工单名称"
+            v-model="form.taskName"
+            placeholder="请输入任务名称"
             style="width: 200px;"
           />
         </div>
@@ -51,18 +51,17 @@
           </el-select>
         </div>
         <div class="item">
-          <span>有效期限：</span>
+          <span>客户名称：</span>
           <el-select
-            v-model="form.validityPeriod"
+            v-model="form.customerId"
+            placeholder="请选择客户"
             style="width: 200px;"
-            placeholder="请选择有效期限"
-            @change="getList"
           >
             <el-option
-              v-for="item in $opt('Expirydate')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
+              v-for="item in customerList"
+              :key="item.id"
+              :label="item.customerName"
+              :value="item.id"
             />
           </el-select>
         </div>
@@ -81,27 +80,6 @@
               :value="item.dictKey"
             />
           </el-select>
-        </div>
-        <div class="item">
-          <span>客户名称：</span>
-          <el-input
-            v-model="form.customerName"
-            placeholder="请输入客户名称"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>计划日期：</span>
-          <el-date-picker
-            v-model="createTime"
-            style="width: 260px;"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd"
-            @change="selectDate"
-          />
         </div>
         <div
           class="item"
@@ -124,13 +102,6 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-        >
-          新增
-        </el-button>
-        <el-button
           @click="exportData"
         >
           导出
@@ -141,36 +112,101 @@
         :loading="listLoading"
       >
         <el-table-column
+          prop="taskNo"
+          align="center"
+          label="任务编号"
+        />
+        <el-table-column
           prop="customerName"
           align="center"
           label="客户名称"
         />
         <el-table-column
-          prop="workOrderNo"
+          prop="taskName"
           align="center"
-          label="工单编号"
-        />
+          label="任务名称"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="edit(row)"
+            >
+              {{ row.taskName }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="workOrderName"
-          align="center"
-          label="工单名称"
-        />
-        <el-table-column
-          prop="workOrderFee"
-          align="center"
-          label="工单费用"
-        />
-        <el-table-column
-          prop="contactName"
+          prop="status"
           align="center"
           label="状态"
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="recruitsNumber"
+          prop="completedNum"
           align="center"
-          label="招聘人数"
+          label="任务人数"
         />
+        <el-table-column
+          align="center"
+          label="已指派人数"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="$refs.assignTask.open(row.id, 'assigned')"
+            >
+              {{ row.assignedNum }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="待上岗人数"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="$refs.onWorkTask.open(row.id, 'onWork')"
+            >
+              {{ row.waitWorkNum }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="待完成人数"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="$refs.todoTask.open(row.id, 'todo')"
+            >
+              {{ row.pendingNum }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="已完成人数"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+            >
+              {{ row.completedNum }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="paySettlement"
           align="center"
@@ -180,7 +216,7 @@
         <el-table-column
           prop="amount"
           align="center"
-          label="金额(元)"
+          label="积分"
         />
         <el-table-column
           prop="unit"
@@ -195,9 +231,9 @@
           :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
         />
         <el-table-column
-          prop="workPlanDate"
+          prop="workStartTime"
           align="center"
-          label="工作计划日期"
+          label="工作开始日期"
         />
         <el-table-column
           prop="validityPeriod"
@@ -221,47 +257,34 @@
           label="工作区域"
         />
         <el-table-column
-          prop="applicantName"
-          align="center"
-          label="申请人"
-        />
-        <el-table-column
-          prop="applicationTime"
-          align="center"
-          label="申请时间"
-        />
-        <el-table-column
-          prop="reviewName"
-          align="center"
-          label="审核人"
-        />
-        <el-table-column
-          prop="reviewTime"
-          align="center"
-          label="审核时间"
-        />
-        <el-table-column
           label="操作"
           align="center"
-          width="160"
+          width="200"
         >
           <template
+            v-if="row.status === 0"
             slot-scope="{ row }"
           >
             <el-button
-              v-if="row.status === 0"
               type="text"
               class="primary"
-              @click="submit(row)"
+              @click="assign(row)"
             >
-              提交审核
+              指派
             </el-button>
             <el-button
               type="text"
               class="primary"
-              @click="edit(row)"
+              @click="revoke(row.id)"
             >
-              编辑
+              撤回
+            </el-button>
+            <el-button
+              type="text"
+              class="primary"
+              @click="finish(row.id)"
+            >
+              完成
             </el-button>
           </template>
         </el-table-column>
@@ -284,24 +307,42 @@
         </el-pagination>
       </affix>
     </div>
+    <assign-task
+      ref="assignTask"
+    />
+    <on-work-task
+      ref="onWorkTask"
+    />
+    <todo-task
+      ref="todoTask"
+    />
+    <finish-task
+      ref="finishTask"
+    />
   </div>
 </template>
 <script>
+import AssignTask from './AssignTask.vue';
+import OnWorkTask from './OnWorkTask.vue';
+import TodoTask from './TodoTask.vue';
+import FinishTask from './FinishTask.vue';
+
 export default {
+  components: {
+    AssignTask,
+    OnWorkTask,
+    TodoTask,
+    FinishTask,
+  },
   data() {
     return {
       list: [],
       listLoading: false,
       form: {
-        workOrderNo: null,
-        workOrderName: null,
-        contactName: null,
-        customerName: null,
+        taskNo: null,
+        taskName: null,
+        status: 1,
         paySettlement: null,
-        status: 99,
-        validityPeriod: null,
-        workPlanStartTime: null,
-        workPlanEndTime: null,
         workType: null,
         pageCurrent: 1,
         pageSize: 20,
@@ -309,27 +350,24 @@ export default {
       total: 0,
       statusList: [
         {
+          key: 0,
+          label: '待完成',
+        },
+        {
           key: 1,
-          label: '待审核',
+          label: '已完成',
         },
         {
           key: 2,
-          label: '已驳回',
-        },
-        {
-          key: 3,
-          label: '已通过',
-        },
-        {
-          key: 99,
-          label: '全部',
+          label: '已撤回',
         },
       ],
-      createTime: [],
+      customerList: [],
     };
   },
   mounted() {
     this.getList();
+    this.getCustomerAll();
   },
   methods: {
     reset() {
@@ -338,8 +376,9 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getWorkOrderList({
+      this.$api.getWorkTaskList({
         ...this.form,
+        companyId: this.$store.state.fepUserInfo.companyId,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -352,48 +391,12 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', query: { id: row.id } });
+      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
     },
     selectDate(val) {
       const [start, end] = val;
       this.form.workPlanStartTime = start;
       this.form.workPlanEndTime = end;
-    },
-    add() {
-      this.$router.push('edit');
-    },
-    getStatusName(status) {
-      let name = '';
-      switch (status) {
-        case 1:
-          name = '待审核';
-          break;
-        case 2:
-          name = '已审核';
-          break;
-        case 3:
-          name = '已驳回';
-          break;
-      }
-      return name;
-    },
-    submit(row) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要提交审核吗？',
-        onOk: () => {
-          this.changeWorkOrder(row.id, 1);
-        },
-      });
-    },
-    changeWorkOrder(id, status) {
-      this.$api.changeWorkOrder({
-        id,
-        status,
-      }).then(() => {
-        this.$message.success('提交成功');
-        this.getList();
-      });
     },
     exportData() {
       this.$api.exportWorkOrder({
@@ -403,6 +406,61 @@ export default {
           fileId: res,
           name: '工单.xlsx',
         });
+      });
+    },
+    finish(id) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要结束任务吗？',
+        onOk: () => {
+          this.$api.finishWorkTask({
+            id,
+          }).then(() => {
+            this.$message.success('结束成功');
+            this.getList();
+          });
+        },
+      });
+    },
+    revoke(id) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要撤回吗？',
+        onOk: () => {
+          this.$api.revokeWorkTask({
+            id,
+          }).then(() => {
+            this.$message.success('撤回成功');
+            this.getList();
+          });
+        },
+      });
+    },
+    assign(row) {
+      // this.$refs.assignTask.open(row);
+      this.$router.push({ path: 'assign', query: { id: row.id } });
+    },
+    getStatusName(status) {
+      let name = '';
+      switch (status) {
+        case 0:
+          name = '待完成';
+          break;
+        case 1:
+          name = '已完成';
+          break;
+        case 2:
+          name = '已撤回';
+          break;
+      }
+      return name;
+    },
+    getCustomerAll() {
+      this.isLoading = true;
+      this.$api.getCustomerAll().then((res) => {
+        this.customerList = res;
+      }).finally(() => {
+        this.isLoading = false;
       });
     },
   },
@@ -422,6 +480,11 @@ export default {
     color: #999999;
   }
   .mouse {
+    cursor: pointer;
+  }
+  .link {
+    color: #1b559d;
+    font-weight: 500;
     cursor: pointer;
   }
 }

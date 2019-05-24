@@ -2,8 +2,17 @@
   "paySettlement":	{
     "name": "薪资结算"
   },
+  "orderUnit":	{
+    "name": "工单单位"
+  },
+  "Expirydate":	{
+    "name": "有效期限"
+  },
   "DocumentType":	{
     "name": "证件类型"
+  },
+  "typeofwork":	{
+    "name": "工种"
   },
   "Sex":	{
     "name": "性别"

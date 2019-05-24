@@ -3,60 +3,45 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>工单编号：</span>
+          <span>手机号码：</span>
           <el-input
-            v-model="form.workOrderNo"
-            placeholder="请输入工单编号"
+            v-model="form.mobile"
+            placeholder="请输入手机号码"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>工单名称：</span>
-          <el-input
-            v-model="form.workOrderName"
-            placeholder="请输入工单名称"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>薪资结算：</span>
+          <span>是否在线：</span>
           <el-select
-            v-model="form.paySettlement"
+            v-model="form.state"
+            placeholder="请选择"
             style="width: 200px;"
-            placeholder="请选择薪资结算"
-            @change="getList"
           >
-            <el-option
-              v-for="item in $opt('paySettlement')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
-            />
+            <el-option value="全部" />
+            <el-option value="在线" />
+            <el-option value="离线" />
           </el-select>
         </div>
         <div class="item">
-          <span>工种：</span>
+          <span>指派状态：</span>
           <el-select
-            v-model="form.workType"
+            v-model="form.assignStatus"
+            placeholder="请选择"
             style="width: 200px;"
-            placeholder="请选择工种"
-            @change="getList"
           >
-            <el-option
-              v-for="item in $opt('typeofwork')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
-            />
+            <el-option value="全部" />
+            <el-option value="已指派" />
+            <el-option value="未指派" />
           </el-select>
         </div>
-        <div class="item">
-          <span>客户名称：</span>
-          <el-input
-            v-model="form.customerName"
-            placeholder="请输入客户名称"
-            style="width: 200px;"
-          />
+        <div
+          class="item"
+        >
+          <el-checkbox
+            v-model="form.served"
+          >
+            只看服务过当前客户的灵工
+          </el-checkbox>
         </div>
         <div
           class="item"
@@ -79,109 +64,94 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
-          @click="exportData"
+          type="primary"
+          @click="assign"
         >
-          导出
+          批量指派
         </el-button>
       </div>
       <el-table
         :data="list"
         :loading="listLoading"
+        @selection-change="(select) => selection = select"
       >
+        <el-table-column
+          type="selection"
+          align="center"
+          :selectable="(row) => row.assignStatus === '未指派'"
+        />
+        <el-table-column
+          prop="archivesNo"
+          align="center"
+          label="档案编号"
+        />
+        <el-table-column
+          prop="empName"
+          align="center"
+          label="姓名"
+        />
+        <el-table-column
+          prop="mobile"
+          align="center"
+          label="手机号码"
+        />
+        <el-table-column
+          prop="lastAddress"
+          align="center"
+          label="最新地址"
+        />
         <el-table-column
           prop="customerName"
           align="center"
-          label="客户名称"
+          label="性别"
+          :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
-          prop="workOrderNo"
+          prop="customerName"
           align="center"
-          label="工单编号"
-        />
-        <el-table-column
-          prop="workOrderName"
-          align="center"
-          label="工单名称"
-        />
-        <el-table-column
-          prop="workOrderFee"
-          align="center"
-          label="工单费用"
-        />
-        <el-table-column
-          prop="recruitsNumber"
-          align="center"
-          label="招聘人数"
-        />
-        <el-table-column
-          prop="paySettlement"
-          align="center"
-          label="薪资结算"
-          :formatter="({ paySettlement }) => $optDicLabel('paySettlement', paySettlement)"
-        />
-        <el-table-column
-          prop="amount"
-          align="center"
-          label="金额(元)"
-        />
-        <el-table-column
-          prop="unit"
-          align="center"
-          label="单位"
-          :formatter="({ unit }) => $optDicLabel('orderUnit', unit)"
+          label="来源"
         />
         <el-table-column
           prop="workType"
           align="center"
           label="工种"
-          :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
+          :formatter="({ workType }) => getWorkTypeName(workType)"
         />
         <el-table-column
-          prop="workPlanDate"
+          prop="confirmCount"
           align="center"
-          label="工作计划日期"
+          label="待接单任务数"
         />
         <el-table-column
-          prop="validityPeriod"
+          prop="acceptCount"
           align="center"
-          label="有效期限"
-          :formatter="({ validityPeriod }) => $optDicLabel('Expirydate', validityPeriod)"
+          label="已接单任务数"
         />
         <el-table-column
-          prop="startDate"
+          prop="goToWorkCount"
           align="center"
-          label="开始日期"
+          label="待上岗任务数"
         />
         <el-table-column
-          prop="endDate"
+          prop="toDoCount"
           align="center"
-          label="截止日期"
+          label="待完成任务数"
         />
         <el-table-column
-          prop="workArea"
+          prop="finishCount"
           align="center"
-          label="工作区域"
+          label="已完成任务数"
         />
         <el-table-column
-          prop="applicantName"
+          prop="state"
           align="center"
-          label="申请人"
+          label="是否在线"
         />
         <el-table-column
-          prop="applicationTime"
+          prop="assignStatus"
           align="center"
-          label="申请时间"
+          label="指派状态"
         />
-        <!-- <el-table-column
-          prop="createTime"
-          align="center"
-          label="审核人"
-        />
-        <el-table-column
-          prop="createTime"
-          align="center"
-          label="审核时间"
-        /> -->
         <el-table-column
           label="操作"
           align="center"
@@ -191,25 +161,12 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="row.assignStatus === '未指派'"
               type="text"
               class="primary"
-              @click="check(row)"
+              @click="assign(row)"
             >
-              审核
-            </el-button>
-            <el-button
-              type="text"
-              class="primary"
-              @click="revoke(row)"
-            >
-              驳回
-            </el-button>
-            <el-button
-              type="text"
-              class="primary"
-              @click="edit(row)"
-            >
-              详情
+              指派
             </el-button>
           </template>
         </el-table-column>
@@ -241,42 +198,33 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        workOrderNo: null,
-        workOrderName: null,
-        contactName: null,
-        customerName: null,
-        paySettlement: null,
-        status: 1,
-        validityPeriod: null,
-        workPlanStartTime: null,
-        workPlanEndTime: null,
-        workType: null,
+        mobile: null,
+        assignStatus: null,
+        state: 1,
         pageCurrent: 1,
         pageSize: 20,
       },
       total: 0,
       statusList: [
         {
+          key: 0,
+          label: '待完成',
+        },
+        {
           key: 1,
-          label: '待审核',
+          label: '已完成',
         },
         {
           key: 2,
-          label: '已驳回',
-        },
-        {
-          key: 3,
-          label: '已通过',
-        },
-        {
-          key: 99,
-          label: '全部',
+          label: '已撤回',
         },
       ],
-      createTime: [],
+      selection: [],
+      workTaskId: false,
     };
   },
   mounted() {
+    this.workTaskId = this.$route.query.id;
     this.getList();
   },
   methods: {
@@ -286,9 +234,9 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getWorkOrderList({
+      this.$api.getNotAssignList({
         ...this.form,
-        companyId: this.$store.state.fepUserInfo.companyId,
+        id: this.workTaskId,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -301,7 +249,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', query: { id: row.id } });
+      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
     },
     selectDate(val) {
       const [start, end] = val;
@@ -318,45 +266,57 @@ export default {
         });
       });
     },
-    check(row) {
+    finish(id) {
       this.$dialogs.confirm({
         title: '提示',
-        content: '确定要审核通过吗？',
+        content: '确定要结束任务吗？',
         onOk: () => {
-          this.changeWorkOrder(row.id, 2);
+          this.$api.finishWorkTask({
+            id,
+          }).then(() => {
+            this.$message.success('结束成功');
+            this.getList();
+          });
         },
       });
     },
-    revoke(row) {
+    revoke(id) {
       this.$dialogs.confirm({
         title: '提示',
-        content: '确定要驳回吗？',
+        content: '确定要撤回吗？',
         onOk: () => {
-          this.changeWorkOrder(row.id, 3);
+          this.$api.revokeWorkTask({
+            id,
+          }).then(() => {
+            this.$message.success('撤回成功');
+            this.getList();
+          });
         },
       });
     },
-    changeWorkOrder(id, status) {
-      this.$api.changeWorkOrder({
-        id,
-        status,
+    assign(row) {
+      let empIds = [];
+      if (row) {
+        empIds.push(row.id);
+      } else {
+        empIds = this.selection.map(item => item.id);
+      }
+      this.$api.assignEmpWorkTask({
+        id: this.workTaskId,
+        empIds,
       }).then(() => {
-        this.$message.success(`${status === 2 ? '通过' : '驳回'}成功`);
+        this.$message.success('指派任务成功');
         this.getList();
       });
     },
-    getStatusName(status) {
+    getWorkTypeName(workType) {
       let name = '';
-      switch (status) {
-        case 1:
-          name = '待审核';
-          break;
-        case 2:
-          name = '已审核';
-          break;
-        case 3:
-          name = '已驳回';
-          break;
+      if (workType) {
+        const arr = workType.split(',');
+        name = arr.map((label) => {
+          const labelName = this.$optDicLabel('typeofwork', label);
+          return labelName;
+        }).join(',');
       }
       return name;
     },
@@ -373,11 +333,14 @@ export default {
     display: flex;
     margin-bottom: 16px;
   }
-  .grey {
-    color: #999999;
-  }
-  .mouse {
+  .link {
+    color: #1b559d;
+    font-weight: 500;
     cursor: pointer;
+  }
+  /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+    background-color: #356fb8;
+    border-color: #356fb8;
   }
 }
 </style>
