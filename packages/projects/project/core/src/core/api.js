@@ -7,7 +7,7 @@ const {
   postForm,
   del,
   postJson,
-  // postBlob,
+  postBlob,
   getBlob,
   putJson,
 } = require('./ajax');
@@ -94,7 +94,7 @@ const api = {
   // 5.5 查询企业
   getCompany: ({ id, ...arg }) => get(`company/${id}`, arg),
   // 5.6 生成企业二维码
-  createCompany: ({ id, ...arg }) => postJson(`company/qrcode/${id}`, arg),
+  createCompany: ({ id, ...arg }) => postBlob(`company/qrcode/${id}`, arg),
   /*
     客户管理
   */
@@ -239,7 +239,9 @@ const api = {
   onWorkEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/gowork/${time}`, empWorkTaskIds),
   // 完成任务
   finishEmpWorkTask: ({ time, empWorkTaskIds }) => postJson(`empworktask/finish/${time}`, empWorkTaskIds),
-  // 拒绝任务
-  refuseEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/refuse', empWorkTaskIds),
+  // 取消任务
+  cancelEmpWorkTask: ({ empWorkTaskId }) => putJson(`empworktask/gowork/${empWorkTaskId}/cancel`),
+  // 更新已完成和上岗时间
+  updateEmpWorkTask: ({ onWorkTime, completeTime, empWorkTaskId }) => putJson(`empworktask/${empWorkTaskId}/${onWorkTime}/${completeTime}/update`),
 };
 module.exports = api;

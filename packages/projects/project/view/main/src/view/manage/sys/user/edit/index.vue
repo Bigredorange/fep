@@ -168,7 +168,9 @@
           </el-form>
         </div>
       </div>
-      <div class="con-tab">
+      <div
+        class="con-tab"
+      >
         <div>
           <el-tabs
             v-model="tabName"
@@ -205,12 +207,6 @@
               <!-- <org-tree :list="departList" /> -->
             </el-tab-pane>
             <el-tab-pane
-              label="工作授权"
-              name="work"
-            >
-              work
-            </el-tab-pane>
-            <el-tab-pane
               label="客户分配"
               name="customer"
             >
@@ -225,13 +221,20 @@
                     v-model="cusNameNot"
                     placeholder="请输入客户名称"
                     class="con-input"
-                  />
+                  >
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      @click="getCustomerNotOwn"
+                    />
+                  </el-input>
                   <el-table
                     :data="customerNotOwn"
                     @selection-change="(selection) => cusSelection = selection"
                   >
                     <el-table-column
                       type="selection"
+                      align="center"
                     />
                     <el-table-column
                       prop="customerNo"
@@ -264,10 +267,16 @@
                   class="right-card"
                 >
                   <el-input
-                    v-model="cusNameNot"
+                    v-model="cusName"
                     placeholder="请输入客户名称"
                     class="con-input"
-                  />
+                  >
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      @click="getCustomerOwn"
+                    />
+                  </el-input>
                   <el-table
                     :data="customerOwn"
                   >
@@ -388,7 +397,7 @@ export default {
         level: null,
         remark: null,
         companyId: null,
-        customerId: null,
+        // customerId: null,
         roleIds: [],
       },
       confirmButtonLoading: false,
@@ -398,16 +407,24 @@ export default {
       rolesList: [],
       userTypeList: [
         {
-          key: 1,
-          name: '企业管理员',
-        },
-        {
           key: 2,
-          name: '客户管理员',
+          name: '平台内部用户',
         },
         {
           key: 3,
-          name: '普通用户',
+          name: '企业管理员',
+        },
+        {
+          key: 4,
+          name: '企业内部用户',
+        },
+        {
+          key: 5,
+          name: '客户管理员',
+        },
+        {
+          key: 6,
+          name: '客户内部用户',
         },
       ],
       userId: null,
@@ -418,6 +435,7 @@ export default {
       cusNameNot: null,
       cusName: null,
       cusSelection: [],
+      level: null,
     };
   },
   mounted() {
@@ -427,19 +445,20 @@ export default {
     this.getCustomerList();
     const { userId, companyId } = this.$route.query;
     const { level } = this.$store.state.fepUserInfo;
+    this.level = level;
     this.userId = userId;
     if (!this.userId) {
       this.$utils.initData.call(this, { include: ['form'] });
       if (companyId) {
         this.form.companyId = companyId;
-        this.form.level = 1;
+        this.form.level = 3;
       }
     } else {
       this.getUserDetail(this.userId);
+      this.getCustomerOwn();
+      this.getCustomerNotOwn();
     }
-    this.userTypeList = this.userTypeList.filter(user => user.key >= level);
-    this.getCustomerOwn();
-    this.getCustomerNotOwn();
+    this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
   },
   methods: {
     submit() {
@@ -453,7 +472,7 @@ export default {
           let param = null;
           this.form.deptIds = resourcesIds;
           // this.form.level = this.$store.state.fepUserInfo.level;
-          if (this.form.level === 3) {
+          if (this.form.level > 2) {
             this.form.companyId = this.$store.state.fepUserInfo.companyId;
           }
           if (!this.userId) {
@@ -553,6 +572,7 @@ export default {
     getCustomerOwn() {
       this.$api.getCustomerOwn({
         id: this.userId,
+        searchContent: this.cusName,
       }).then((res) => {
         this.customerOwn = res.dataList;
       });

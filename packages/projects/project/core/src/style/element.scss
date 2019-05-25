@@ -161,6 +161,9 @@
   .row-success td {
     background-color: #e2f0e4 !important;
   }
+  .el-table__row {
+    height: 41px;
+  }
   .el-table__header-wrapper, .el-table__fixed-header-wrapper { // 表头
     th {
       background-color: #f5f8fb !important;

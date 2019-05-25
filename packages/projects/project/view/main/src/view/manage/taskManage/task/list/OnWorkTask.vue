@@ -44,7 +44,7 @@
         <div class="buttons">
           <el-button
             type="primary"
-            @click="exportData"
+            @click="goOnWork"
           >
             批量上岗
           </el-button>
@@ -59,17 +59,17 @@
             align="center"
           />
           <el-table-column
-            prop="mobile"
+            prop="archivesNo"
             align="center"
             label="档案编号"
           />
           <el-table-column
-            prop="customerName"
+            prop="empName"
             align="center"
             label="姓名"
           />
           <el-table-column
-            prop="customerName"
+            prop="mobile"
             align="center"
             label="手机号码"
           />
@@ -175,58 +175,20 @@ export default {
       this.form.pageSize = n;
       this.getList();
     },
-    edit(row) {
-      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
-    },
-    selectDate(val) {
-      const [start, end] = val;
-      this.form.workPlanStartTime = start;
-      this.form.workPlanEndTime = end;
-    },
-    exportData() {
-      this.$api.exportWorkOrder({
-        ...this.form,
-      }).then((res) => {
-        this.$api.fileDownloadById({
-          fileId: res,
-          name: '工单.xlsx',
-        });
-      });
-    },
-    finish(id) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要结束任务吗？',
-        onOk: () => {
-          this.$api.finishWorkTask({
-            id,
-          }).then(() => {
-            this.$message.success('结束成功');
-            this.getList();
-          });
-        },
-      });
-    },
     onWork(obj) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要上岗吗？',
-        onOk: () => {
-          let empWorkTaskIds = [];
-          if (obj.row) {
-            empWorkTaskIds.push(obj.row.id);
-          } else {
-            empWorkTaskIds = this.selection.map(item => item.id);
-          }
-          this.$api.revokeEmpWorkTask({
-            time: obj.date,
-            empWorkTaskIds,
-          }).then(() => {
-            this.$refs.selectDate.close();
-            this.$message.success('操作成功');
-            this.getList();
-          });
-        },
+      let empWorkTaskIds = [];
+      if (obj.row) {
+        empWorkTaskIds.push(obj.row.id);
+      } else {
+        empWorkTaskIds = this.selection.map(item => item.id);
+      }
+      this.$api.revokeEmpWorkTask({
+        time: obj.date,
+        empWorkTaskIds,
+      }).then(() => {
+        this.$refs.selectDate.close();
+        this.$message.success('操作成功');
+        this.getList();
       });
     },
     goOnWork(row) {

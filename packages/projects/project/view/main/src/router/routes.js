@@ -175,6 +175,30 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'account',
+          component: RouterView,
+          redirect: 'account/list',
+          meta: {
+            title: '客户账号管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-account" */ '../view/manage/customer/account/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/account/edit/index.vue'),
+            },
+          ],
+        },
       ],
     },
     {

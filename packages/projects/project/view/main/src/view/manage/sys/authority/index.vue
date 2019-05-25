@@ -127,6 +127,7 @@ export default {
         sort: data.sort,
         coVisible: data.coVisible,
         cusVisible: data.cusVisible,
+        platformVisible: data.platformVisible,
       };
       this.$refs.modifyResource.open({
         selectedList,

@@ -251,7 +251,6 @@
         <div>
           <el-tabs
             v-model="tabName"
-            @tab-click="handleTabClick"
           >
             <el-tab-pane
               label="职位详情"
@@ -597,24 +596,29 @@ export default {
       this.$api.getWorkOrder({ id }).then((res) => {
         this.form = res;
         this.woSchedules = res.woSchedules;
+        this.setAllCheck(this.woSchedules);
       });
     },
-    handleTabClick() {
-
-    },
-    selectDate(val) {
-      const [start, end] = val;
-      this.form.startDate = start;
-      this.form.endDate = end;
+    setAllCheck(arr) {
+      arr.forEach((item) => {
+        const keys = Object.keys(item);
+        item.flag = true;
+        keys.forEach((key) => {
+          if (key.includes('Checked')) {
+            if (!item[key]) {
+              item.flag = false;
+            }
+          }
+        });
+      });
+      // return arr;
     },
     handleCheck(row) {
       const keys = Object.keys(row);
-      this.$nextTick(() => {
-        keys.forEach((key) => {
-          if (key !== 'period') {
-            row[key] = row.flag;
-          }
-        });
+      keys.forEach((key) => {
+        if (key !== 'period') {
+          row[key] = row.flag;
+        }
       });
     },
   },

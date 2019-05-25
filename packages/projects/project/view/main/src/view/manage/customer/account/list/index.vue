@@ -26,21 +26,6 @@
             style="width: 200px;"
           />
         </div>
-        <div class="item">
-          <span>用户类型：</span>
-          <el-select
-            v-model="form.level"
-            placeholder="请选择用户类型"
-          >
-            <el-option
-              v-for="item in userTypeList"
-              :key="item.key"
-              :label="item.name"
-              :value="item.key"
-            />
-          </el-select>
-        </div>
-
         <!-- <div class="item">
           <span>部门名称：</span>
           <el-input
@@ -197,7 +182,7 @@ export default {
         pageSize: 20,
         startTime: null,
         endTime: null,
-        level: null,
+        level: 5,
       },
       total: 0,
       statusList: [
@@ -215,35 +200,10 @@ export default {
         },
       ],
       createTime: [],
-      userTypeList: [
-        {
-          key: 2,
-          name: '平台内部用户',
-        },
-        {
-          key: 3,
-          name: '企业管理员',
-        },
-        {
-          key: 4,
-          name: '企业内部用户',
-        },
-        {
-          key: 5,
-          name: '客户管理员',
-        },
-        {
-          key: 6,
-          name: '客户内部用户',
-        },
-      ],
     };
   },
   mounted() {
     this.getList();
-    const { level } = this.$store.state.fepUserInfo;
-    this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
-    this.form.level = level;
   },
   methods: {
     reset() {
@@ -254,6 +214,7 @@ export default {
       this.listLoading = true;
       this.$api.getAccountList({
         ...this.form,
+        // level: this.$store.state.fepUserInfo.level,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;

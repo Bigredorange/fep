@@ -75,17 +75,17 @@
             :selectable="(row) => row.status === 0"
           />
           <el-table-column
-            prop="mobile"
+            prop="archivesNo"
             align="center"
             label="档案编号"
           />
           <el-table-column
-            prop="customerName"
+            prop="empName"
             align="center"
             label="姓名"
           />
           <el-table-column
-            prop="customerName"
+            prop="mobile"
             align="center"
             label="手机号码"
           />
@@ -130,13 +130,6 @@
                 @click="revoke(row)"
               >
                 撤回
-              </el-button>
-              <el-button
-                type="text"
-                class="primary"
-                @click="finish(row.id)"
-              >
-                完成
               </el-button>
             </template>
           </el-table-column>
@@ -206,7 +199,7 @@ export default {
         },
         {
           key: 99,
-          label: '已结束',
+          label: '全部',
         },
       ],
       isShow: false,
@@ -233,38 +226,6 @@ export default {
     sizeChange(n) {
       this.form.pageSize = n;
       this.getList();
-    },
-    edit(row) {
-      this.$router.push({ path: '/manage/workOrder/check/edit', query: { id: row.workOrderId } });
-    },
-    selectDate(val) {
-      const [start, end] = val;
-      this.form.workPlanStartTime = start;
-      this.form.workPlanEndTime = end;
-    },
-    exportData() {
-      this.$api.exportWorkOrder({
-        ...this.form,
-      }).then((res) => {
-        this.$api.fileDownloadById({
-          fileId: res,
-          name: '工单.xlsx',
-        });
-      });
-    },
-    finish(id) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要结束任务吗？',
-        onOk: () => {
-          this.$api.finishWorkTask({
-            id,
-          }).then(() => {
-            this.$message.success('结束成功');
-            this.getList();
-          });
-        },
-      });
     },
     revoke(row) {
       this.$dialogs.confirm({
@@ -321,9 +282,8 @@ export default {
       return temp;
     },
     getStatusName(status) {
-      // const temp = this.statusList.findItem(item => item.status === status) || [];
-      // return temp.label || '';
-      return status;
+      const temp = this.statusList.find(item => item.key === status);
+      return temp.label || '';
     },
   },
 };
