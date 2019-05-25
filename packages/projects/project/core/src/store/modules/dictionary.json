@@ -14,10 +14,10 @@
   "typeofwork":	{
     "name": "工种"
   },
+  "Industry":	{
+    "name": "行业"
+  },
   "Sex":	{
     "name": "性别"
-  },
-  "typeofwork": {
-    "name": "工种名称"
   }
 }

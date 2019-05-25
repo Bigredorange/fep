@@ -2,12 +2,12 @@
   <div class="con">
     <div class="con-base">
       <div class="title">
-        <label>{{ !userId ? '新增用户' : '设置用户' }}</label>
+        <label>{{ type === 'add' ? '新增用户' : '设置用户' }}</label>
       </div>
       <div class="area">
         <div class="label">
           <i class="line" />
-          <label>{{ !userId ? '填写基本信息' : '基本信息' }}</label>
+          <label>{{ type === 'add' ? '填写基本信息' : '基本信息' }}</label>
           <el-form
             ref="formUser"
             :model="form"
@@ -144,23 +144,6 @@
                   v-for="item in companyList"
                   :key="item.id"
                   :label="item.companyName"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              v-if="form.level === 4"
-              label="客户"
-              prop="customerId"
-            >
-              <el-select
-                v-model="form.customerId"
-                placeholder="请选择客户"
-              >
-                <el-option
-                  v-for="item in customerList"
-                  :key="item.id"
-                  :label="item.name"
                   :value="item.id"
                 />
               </el-select>
@@ -440,6 +423,7 @@ export default {
       cusName: null,
       cusSelection: [],
       level: null,
+      type: null,
     };
   },
   mounted() {
@@ -447,11 +431,16 @@ export default {
     this.getRolesList();
     this.getCompanyList();
     this.getCustomerList();
-    const { userId, companyId } = this.$route.query;
-    const { level } = this.$store.state.fepUserInfo;
+    const { userId, companyId, type } = this.$route.query;
+    const { level, id } = this.$store.state.fepUserInfo;
     this.level = level;
-    this.userId = userId;
-    if (!this.userId) {
+    this.type = type;
+    if (userId) {
+      this.userId = userId;
+    } else {
+      this.userId = id;
+    }
+    if (type === 'add') {
       this.$utils.initData.call(this, { include: ['form'] });
       if (companyId) {
         this.form.companyId = companyId;
@@ -459,9 +448,12 @@ export default {
       }
     } else {
       this.getUserDetail(this.userId);
-      this.getCustomerOwn();
-      this.getCustomerNotOwn();
     }
+    this.getCustomerOwn();
+    this.getCustomerNotOwn();
+    // if (this.level === 1) {
+    //   this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 || user.key <= level + 2);
+    // }
     this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
   },
   methods: {

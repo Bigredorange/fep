@@ -144,7 +144,7 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="completedNum"
+          prop="taskNumber"
           align="center"
           label="任务人数"
         />

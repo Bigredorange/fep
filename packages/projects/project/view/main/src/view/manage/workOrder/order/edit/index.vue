@@ -171,7 +171,7 @@
                 placeholder="请选择性别要求"
               >
                 <el-option
-                  v-for="item in $opt('Sex')"
+                  v-for="item in $opt('LGsex')"
                   :key="item.dictKey"
                   :label="item.dictValue"
                   :value="item.dictKey"
@@ -383,11 +383,19 @@
       </div>
       <div class="bot-menu">
         <el-button
+          v-if="workOrderId"
+          v-loading="confirmButtonLoading"
+          type="primary"
+          @click="submitToCheck"
+        >
+          提交审核
+        </el-button>
+        <el-button
           v-loading="confirmButtonLoading"
           type="primary"
           @click="submit"
         >
-          提交
+          保存
         </el-button>
         <el-button>
           取消
@@ -481,15 +489,16 @@ export default {
         workArea: null,
         workAddress: null,
         workPlanDate: null,
-        genderRequirement: null,
-        academicRequirement: null,
-        expr: null,
+        genderRequirement: 1,
+        academicRequirement: 1,
+        expr: 1,
         recruitsNumber: null,
         workType: null,
         workOrderFee: null,
         jobDetail: null,
       },
       confirmButtonLoading: false,
+      submitLoading: false,
       customerList: [],
       workOrderId: null,
       tabName: 'jobDetail',
@@ -619,6 +628,27 @@ export default {
         if (key !== 'period') {
           row[key] = row.flag;
         }
+      });
+    },
+    submitToCheck() {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要提交审核吗？',
+        onOk: () => {
+          this.changeWorkOrder(this.workOrderId, 1);
+        },
+      });
+    },
+    changeWorkOrder(id, status) {
+      this.submitLoading = true;
+      this.$api.changeWorkOrder({
+        id,
+        status,
+      }).then(() => {
+        this.$message.success('提交成功');
+        this.getList();
+      }).finally(() => {
+        this.submitLoading = false;
       });
     },
   },

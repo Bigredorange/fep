@@ -249,7 +249,7 @@
             slot-scope="{ row }"
           >
             <el-button
-              v-if="row.status === 0"
+              v-if="row.status === 0 || row.status === 2"
               type="text"
               class="primary"
               @click="submit(row)"
@@ -257,6 +257,7 @@
               提交审核
             </el-button>
             <el-button
+              v-if="row.status !== 3"
               type="text"
               class="primary"
               @click="edit(row)"
@@ -308,6 +309,10 @@ export default {
       },
       total: 0,
       statusList: [
+        {
+          key: 0,
+          label: '待提交',
+        },
         {
           key: 1,
           label: '待审核',
@@ -365,14 +370,17 @@ export default {
     getStatusName(status) {
       let name = '';
       switch (status) {
+        case 0:
+          name = '待提交';
+          break;
         case 1:
           name = '待审核';
           break;
         case 2:
-          name = '已审核';
+          name = '已驳回';
           break;
         case 3:
-          name = '已驳回';
+          name = '已通过';
           break;
       }
       return name;

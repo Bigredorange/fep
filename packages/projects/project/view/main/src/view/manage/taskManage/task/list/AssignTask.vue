@@ -175,26 +175,22 @@ export default {
         },
         {
           key: 2,
-          label: '已接单',
-        },
-        {
-          key: 3,
           label: '待上岗',
         },
         {
-          key: 4,
+          key: 3,
           label: '待完成',
         },
         {
-          key: 5,
+          key: 4,
           label: '已完成',
         },
         {
-          key: 6,
+          key: 5,
           label: '已撤回',
         },
         {
-          key: 7,
+          key: 6,
           label: '已结束',
         },
         {
@@ -233,7 +229,7 @@ export default {
         content: '确定要撤回吗？',
         onOk: () => {
           let empWorkTaskIds = [];
-          if (row) {
+          if (row.id) {
             empWorkTaskIds.push(row.id);
           } else {
             empWorkTaskIds = this.selection.map(item => item.id);

@@ -38,7 +38,7 @@
               label="薪资结算"
               prop="paySettlement"
             >
-              <p>{{ form.paySettlement }}</p>
+              <p>{{ $optDicLabel('paySettlement', form.paySettlement) }}</p>
             </el-form-item>
             <el-form-item
               label="金额(元)"
@@ -50,13 +50,13 @@
               label="单位"
               prop="unit"
             >
-              <p>{{ form.unit }}</p>
+              <p>{{ $optDicLabel('orderUnit', form.unit) }}</p>
             </el-form-item>
             <el-form-item
               label="有效期限"
               prop="validityPeriod"
             >
-              <p>{{ form.validityPeriod }}</p>
+              <p>{{ $optDicLabel('orderUnit', form.validityPeriod) }}</p>
             </el-form-item>
             <el-form-item
               label="有效开始日期"
@@ -92,19 +92,19 @@
               label="性别要求"
               prop="genderRequirement"
             >
-              <p>{{ form.genderRequirement }}</p>
+              <p>{{ $optDicLabel('LGsex', form.genderRequirement) }}</p>
             </el-form-item>
             <el-form-item
               label="学历要求"
               prop="academicRequirement"
             >
-              <p>{{ form.academicRequirement }}</p>
+              <p>{{ $optDicLabel('Education', form.academicRequirement) }}</p>
             </el-form-item>
             <el-form-item
               label="经验"
               prop="expr"
             >
-              <p>{{ form.expr }}</p>
+              <p>{{ $optDicLabel('Experience', form.expr) }}</p>
             </el-form-item>
             <el-form-item
               label="招聘人数"
@@ -116,7 +116,7 @@
               label="工种"
               prop="workType"
             >
-              <p>{{ form.workType }}</p>
+              <p>{{ $optDicLabel('typeofwork', form.workType) }}</p>
             </el-form-item>
             <el-form-item
               label="工单费用"

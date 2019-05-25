@@ -65,6 +65,7 @@
       <div class="buttons">
         <el-button
           type="primary"
+          :disabled="selection.length === 0"
           @click="assign"
         >
           批量指派
@@ -296,8 +297,9 @@ export default {
     },
     assign(row) {
       let empIds = [];
-      if (row) {
+      if (row.id) {
         empIds.push(row.id);
+        console.log(1);
       } else {
         empIds = this.selection.map(item => item.id);
       }

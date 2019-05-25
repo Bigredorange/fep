@@ -278,7 +278,7 @@ export default {
       this.form.endTime = end;
     },
     add() {
-      this.$router.push('edit');
+      this.$router.push({ path: 'edit', query: { type: 'add' } });
     },
   },
 };

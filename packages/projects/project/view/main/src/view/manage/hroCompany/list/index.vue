@@ -169,7 +169,7 @@
               v-if="!row.hroId"
               type="text"
               class="primary"
-              @click="$router.push({ path: '/manage/sys/user/edit', query:{ companyId: row.id } })"
+              @click="$router.push({ path: '/manage/sys/user/edit', query:{ companyId: row.id, type: 'add' } })"
             >
               分配账号
             </el-button>

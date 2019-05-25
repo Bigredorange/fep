@@ -177,44 +177,6 @@ export default {
         pageSize: 20,
       },
       total: 0,
-      statusList: [
-        {
-          key: 0,
-          label: '待接单',
-        },
-        {
-          key: 1,
-          label: '已拒绝',
-        },
-        {
-          key: 2,
-          label: '已接单',
-        },
-        {
-          key: 3,
-          label: '待上岗',
-        },
-        {
-          key: 4,
-          label: '待完成',
-        },
-        {
-          key: 5,
-          label: '已完成',
-        },
-        {
-          key: 6,
-          label: '已撤回',
-        },
-        {
-          key: 7,
-          label: '已结束',
-        },
-        {
-          key: 99,
-          label: '已结束',
-        },
-      ],
       isShow: false,
       title: '',
       selection: [],

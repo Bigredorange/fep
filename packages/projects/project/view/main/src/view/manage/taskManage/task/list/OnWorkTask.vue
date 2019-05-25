@@ -182,7 +182,7 @@ export default {
       } else {
         empWorkTaskIds = this.selection.map(item => item.id);
       }
-      this.$api.revokeEmpWorkTask({
+      this.$api.onWorkEmpWorkTask({
         time: obj.date,
         empWorkTaskIds,
       }).then(() => {
