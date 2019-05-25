@@ -251,6 +251,7 @@
           width="220px"
         >
           <template
+            v-if="row.status !== 2"
             slot-scope="{ $index, row }"
           >
             <el-button
@@ -330,6 +331,10 @@ export default {
         },
         {
           key: 1,
+          label: '确认中',
+        },
+        {
+          key: 2,
           label: '已确认',
         },
         {
@@ -551,6 +556,9 @@ export default {
           name = '未确认';
           break;
         case 1:
+          name = '确认中';
+          break;
+        case 2:
           name = '已确认';
           break;
         case '':

@@ -323,7 +323,7 @@ export default {
         title: '提示',
         content: '确定要审核通过吗？',
         onOk: () => {
-          this.changeWorkOrder(row.id, 2);
+          this.changeWorkOrder(row.id, 3);
         },
       });
     },
@@ -332,7 +332,7 @@ export default {
         title: '提示',
         content: '确定要驳回吗？',
         onOk: () => {
-          this.changeWorkOrder(row.id, 3);
+          this.changeWorkOrder(row.id, 2);
         },
       });
     },

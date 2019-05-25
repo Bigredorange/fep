@@ -432,13 +432,11 @@ export default {
     this.getCompanyList();
     this.getCustomerList();
     const { userId, companyId, type } = this.$route.query;
-    const { level, id } = this.$store.state.fepUserInfo;
+    const { level } = this.$store.state.fepUserInfo;
     this.level = level;
     this.type = type;
     if (userId) {
       this.userId = userId;
-    } else {
-      this.userId = id;
     }
     if (type === 'add') {
       this.$utils.initData.call(this, { include: ['form'] });
@@ -448,9 +446,9 @@ export default {
       }
     } else {
       this.getUserDetail(this.userId);
+      this.getCustomerOwn();
+      this.getCustomerNotOwn();
     }
-    this.getCustomerOwn();
-    this.getCustomerNotOwn();
     // if (this.level === 1) {
     //   this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 || user.key <= level + 2);
     // }
@@ -481,9 +479,14 @@ export default {
               id: this.userId,
             };
           }
-          this.$api[api](param).then(() => {
+          this.$api[api](param).then((res) => {
             this.$message.success('保存成功');
-            this.$router.go(-1);
+            if (!this.userId) {
+              this.userId = res;
+              this.getCustomerOwn();
+              this.getCustomerNotOwn();
+            }
+            // this.$router.go(-1);
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
