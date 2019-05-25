@@ -32,11 +32,6 @@
       align="center"
       label="结束日期"
     />
-    <el-table-column
-      prop="cost"
-      align="center"
-      label="所获报酬"
-    />
   </el-table>
 </template>
 <script>

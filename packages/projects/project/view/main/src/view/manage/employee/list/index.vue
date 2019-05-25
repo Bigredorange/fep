@@ -117,6 +117,7 @@
           prop="sex"
           align="center"
           label="性别"
+          :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
           prop="contactName"
@@ -125,7 +126,7 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="companyName"
+          prop="source"
           align="center"
           label="来源"
         />
