@@ -522,6 +522,10 @@ export default {
     },
     sendItem(row) {
       const arr = [row.id];
+      if (row.isEdit) {
+        this.$message.warning('请先点击保存');
+        return;
+      }
       this.sendApi(arr);
     },
     sendApi(arr, title = '确定发送服务报酬确认？') {
