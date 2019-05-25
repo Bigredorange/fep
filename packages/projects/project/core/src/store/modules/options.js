@@ -64,6 +64,18 @@ export default {
         });
       });
     },
+    initDictionary({ commit }, keys) {
+      Vue.prototype.$api.getDictListByCode({
+        codes: keys,
+      }).then((res) => {
+        res.forEach((item) => {
+          commit('setOption', {
+            key: item.key,
+            value: res || [],
+          });
+        });
+      });
+    },
     setDefaultSignCompanyId({ state }) {
       if (!$db('signCompanyId')) {
         $db('signCompanyId', state.signCompanys[0].id);
