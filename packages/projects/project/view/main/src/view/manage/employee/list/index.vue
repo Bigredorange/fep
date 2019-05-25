@@ -102,7 +102,18 @@
           prop="empName"
           align="center"
           label="姓名"
-        />
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="edit(row)"
+            >
+              {{ row.empName }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="mobile"
           align="center"
@@ -117,6 +128,7 @@
           prop="sex"
           align="center"
           label="性别"
+          :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
           prop="contactName"
@@ -125,7 +137,7 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="companyName"
+          prop="source"
           align="center"
           label="来源"
         />
@@ -301,6 +313,11 @@ export default {
     color: #999999;
   }
   .mouse {
+    cursor: pointer;
+  }
+  .link {
+    color: #1b559d;
+    font-weight: 500;
     cursor: pointer;
   }
 }

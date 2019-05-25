@@ -375,8 +375,16 @@ export default {
             showClose: false,
           });
         }).catch((res) => {
+          if (res.status !== 1302) {
+            this.$message.error('导入失败');
+            return;
+          }
           this.$refs.uploadDetail.open({
-            detail: res.data,
+            detail: {
+              ...res.data,
+              fileName: '服务报酬错误导入信息',
+              flag: 201,
+            },
             cols: [
               {
                 prop: 'empName',
