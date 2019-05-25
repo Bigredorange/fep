@@ -45,10 +45,10 @@
                 placeholder="请选择行业"
               >
                 <el-option
-                  v-for="item in rolesList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  v-for="item in $opt('hroIndustry')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
@@ -60,10 +60,10 @@
                 placeholder="请选择企业性质"
               >
                 <el-option
-                  v-for="item in rolesList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
+                  v-for="item in $opt('Enterprise')"
+                  :key="item.dictKey"
+                  :label="item.dictValue"
+                  :value="item.dictKey"
                 />
               </el-select>
             </el-form-item>
