@@ -102,7 +102,18 @@
           prop="empName"
           align="center"
           label="姓名"
-        />
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="edit(row)"
+            >
+              {{ row.empName }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="mobile"
           align="center"
@@ -302,6 +313,11 @@ export default {
     color: #999999;
   }
   .mouse {
+    cursor: pointer;
+  }
+  .link {
+    color: #1b559d;
+    font-weight: 500;
     cursor: pointer;
   }
 }

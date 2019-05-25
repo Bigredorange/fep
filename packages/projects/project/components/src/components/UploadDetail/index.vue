@@ -25,7 +25,7 @@
           {{ detail.msg }}
         </div>
         <div
-          v-if="detail.fileUuid"
+          v-if="detail.fileId"
           class="btn"
         >
           <el-button
@@ -65,7 +65,7 @@
     flag: number, // 错误码
     errorData: array, // 错误数据表格
     tip?: string, // 默认为导入失败，红色的错误信息
-    fileUuid?: string, // 错误数据文件id
+    fileId?: string, // 错误数据文件id
     fileName?: string, // 错误数据文件名
  * }
  */
@@ -89,9 +89,9 @@ export default {
       this.cols = res.cols;
     },
     download() {
-      const { fileUuid, fileName } = this.detail;
-      this.$api.filesDownLoadFile({
-        fileUuid,
+      const { fileId, fileName } = this.detail;
+      this.$api.fileDownloadById({
+        fileId,
       }).then(blob => this.$utils.autoLoad(new Blob([blob]), fileName));
     },
     close() {
