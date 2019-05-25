@@ -245,7 +245,12 @@ export default {
   },
   mounted() {
     const { level } = this.$store.state.fepUserInfo;
-    this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
+    if (this.level === 1) {
+      console.log(this.level);
+      this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 && user.key <= level + 2);
+    } else {
+      this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
+    }
     this.form.level = level + 1;
     this.getList();
   },

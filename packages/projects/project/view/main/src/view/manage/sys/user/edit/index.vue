@@ -449,10 +449,12 @@ export default {
       this.getCustomerOwn();
       this.getCustomerNotOwn();
     }
-    // if (this.level === 1) {
-    //   this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 || user.key <= level + 2);
-    // }
-    this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
+    if (this.level === 1) {
+      console.log(this.level);
+      this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 && user.key <= level + 2);
+    } else {
+      this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
+    }
   },
   methods: {
     submit() {
