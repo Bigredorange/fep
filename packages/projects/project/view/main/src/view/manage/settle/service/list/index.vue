@@ -414,6 +414,9 @@ export default {
     },
     downloadTemplate() {
       // 下载模板
+      this.$api.downloadTemplate({
+        file: 'service_reward_import.xlsx',
+      }).then(blob => this.$utils.autoLoad(new Blob([blob]), '服务薪酬模板.xlsx'));
     },
     selectionChange(selection) {
       this.selection = selection;

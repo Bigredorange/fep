@@ -243,5 +243,9 @@ const api = {
   cancelEmpWorkTask: ({ empWorkTaskId }) => putJson(`empworktask/gowork/${empWorkTaskId}/cancel`),
   // 更新已完成和上岗时间
   updateEmpWorkTask: ({ onWorkTime, completeTime, empWorkTaskId }) => putJson(`empworktask/${empWorkTaskId}/${onWorkTime}/${completeTime}/update`),
+  /**
+   * 模板下载
+   */
+  downloadTemplate: args => getBlob('file/download/template', args),
 };
 module.exports = api;
