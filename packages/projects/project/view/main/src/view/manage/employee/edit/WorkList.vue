@@ -150,6 +150,19 @@ export default {
         });
     },
     save(row) {
+      if (!row.workType) {
+        this.$message.warning('工种不能为空');
+        return;
+      }
+      if (!row.startDate) {
+        this.$message.warning('开始日期不能为空');
+        return;
+      }
+      if (!row.startDate) {
+        this.$message.warning('结束日期不能为空');
+        return;
+      }
+
       let api;
       let params = {};
       if (row.id) {

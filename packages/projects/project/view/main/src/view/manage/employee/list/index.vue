@@ -237,7 +237,8 @@ export default {
       });
     },
     getWorkType(workType) {
-      return workType.split(',').map(t => this.$optDicLabel('typeofwork', t)).join('，');
+      const workTypeStr = workType || '';
+      return workTypeStr.split(',').map(t => this.$optDicLabel('typeofwork', t)).join('，');
     },
     sizeChange(n) {
       this.form.pageSize = n;
