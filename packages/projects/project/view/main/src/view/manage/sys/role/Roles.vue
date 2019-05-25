@@ -56,6 +56,12 @@
 
 <script>
 export default {
+  props: {
+    refresh: {
+      type: Boolean,
+      default: null,
+    },
+  },
   data() {
     return {
       isLoading: false,
@@ -84,6 +90,13 @@ export default {
       roleId: 0,
     };
   },
+  watch: {
+    refresh(val) {
+      if (val) {
+        this.getList();
+      }
+    },
+  },
   mounted() {
     this.getList();
   },
@@ -96,10 +109,11 @@ export default {
         this.list = res;
       }).finally(() => {
         this.isLoading = false;
+        // this.refresh = false;
       });
     },
     add() {
-      this.$emit('setRoleId', this.roleId);
+      this.$emit('setRoleId', null);
       this.$message.info('请在右侧填写角色信息');
     },
     del(item) {

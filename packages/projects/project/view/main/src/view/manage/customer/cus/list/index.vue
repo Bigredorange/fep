@@ -148,11 +148,16 @@
             </div>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-          prop="area"
+        <el-table-column
+          align="center"
+          label="余额控制"
+          :formatter="({ balanceLimit }) => balanceLimit ? '是' : '否'"
+        />
+        <el-table-column
+          prop="creator"
           align="center"
           label="创建人"
-        /> -->
+        />
         <el-table-column
           prop="createTime"
           align="center"

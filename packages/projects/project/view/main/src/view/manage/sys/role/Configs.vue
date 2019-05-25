@@ -37,11 +37,11 @@
                 </el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item
+            <!-- <el-form-item
               label="创建时间"
             >
               <span>{{ form.createTime }}</span>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item
               label="角色名称"
               prop="name"
@@ -152,6 +152,7 @@ export default {
           remark: '',
           permIds: [],
         };
+        this.list = [];
       } else {
         this.getRoleSettingsById();
       }
@@ -206,9 +207,12 @@ export default {
                   id: this.roleId,
                 };
               }
-              this.$api[api](param).then(() => {
-                this.$message.success('修改成功');
-                this.getRoleSettingsById();
+              this.$api[api](param).then((res) => {
+                this.$message.success(`${this.roleId ? '修改成功' : '新增成功'}`);
+                if (!this.roleId) {
+                  this.$emit('setRoleId', res);
+                }
+                this.$emit('update');
               }).finally(() => {
                 this.confirmButtonLoading = false;
               });

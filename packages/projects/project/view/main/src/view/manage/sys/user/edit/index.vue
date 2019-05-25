@@ -132,7 +132,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              v-if="form.level === 2"
+              v-if="form.level === 3"
               label="企业"
               prop="companyId"
             >
@@ -149,7 +149,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              v-if="form.level === 3"
+              v-if="form.level === 4"
               label="客户"
               prop="customerId"
             >
@@ -406,6 +406,10 @@ export default {
       expandNodes: [], // 树的展开情况
       rolesList: [],
       userTypeList: [
+        {
+          key: 1,
+          name: '系统管理员',
+        },
         {
           key: 2,
           name: '平台内部用户',

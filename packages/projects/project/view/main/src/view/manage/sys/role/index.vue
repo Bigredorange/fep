@@ -2,10 +2,17 @@
   <div class="page">
     <div class="container">
       <div class="left">
-        <roles @setRoleId="$event => roleId = $event" />
+        <roles
+          :refresh="refresh"
+          @setRoleId="$event => roleId = $event"
+        />
       </div>
       <div class="right">
-        <configs :role-id="roleId" />
+        <configs
+          :role-id="roleId"
+          @update="refresh = true"
+          @setRoleId="$event => roleId = $event"
+        />
       </div>
     </div>
   </div>
@@ -23,6 +30,7 @@ export default {
   data() {
     return {
       roleId: null,
+      refresh: false,
     };
   },
 };

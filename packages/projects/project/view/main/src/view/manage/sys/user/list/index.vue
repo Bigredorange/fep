@@ -217,6 +217,10 @@ export default {
       createTime: [],
       userTypeList: [
         {
+          key: 1,
+          name: '系统管理员',
+        },
+        {
           key: 2,
           name: '平台内部用户',
         },
@@ -240,10 +244,10 @@ export default {
     };
   },
   mounted() {
-    this.getList();
     const { level } = this.$store.state.fepUserInfo;
     this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
-    this.form.level = level;
+    this.form.level = level + 1;
+    this.getList();
   },
   methods: {
     reset() {

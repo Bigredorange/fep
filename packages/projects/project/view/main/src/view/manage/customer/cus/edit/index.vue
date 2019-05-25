@@ -261,7 +261,7 @@
                 style="margin-left: 120px;width: 80%;"
               >
                 <el-form-item
-                  label="成立日期"
+                  label="开票类型"
                 >
                   <el-select
                     v-model="form.invoiceAptitude"
@@ -421,6 +421,7 @@ export default {
         invoiceAddress: null,
         tel: null,
         introduction: null,
+        balanceLimit: 1,
       },
       confirmButtonLoading: false,
       rolesList: [],
@@ -465,9 +466,10 @@ export default {
               id: this.customerId,
             };
           }
-          this.$api[api](param).then(() => {
+          this.$api[api](param).then((res) => {
             this.$message.success('保存成功');
             // this.$router.push('list');
+            this.customerId = res;
           }).finally(() => {
             this.confirmButtonLoading = false;
           });

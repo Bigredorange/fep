@@ -110,6 +110,7 @@
           prop="industry"
           align="center"
           label="所属行业"
+          :formatter="({ industry }) => $optDicLabel('hroIndustry', industry)"
         />
         <el-table-column
           prop="legalRepresentative"

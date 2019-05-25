@@ -20,12 +20,12 @@
           v-model="form.orgType"
         >
           <el-radio-button
-            label="1"
+            :label="1"
           >
             公司
           </el-radio-button>
           <el-radio-button
-            label="0"
+            :label="0"
           >
             部门
           </el-radio-button>
