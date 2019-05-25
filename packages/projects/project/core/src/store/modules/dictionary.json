@@ -17,6 +17,15 @@
   "Industry":	{
     "name": "行业"
   },
+  "LGsex":	{
+    "name": "灵工性别"
+  },
+  "Experience":	{
+    "name": "工作经验"
+  },
+  "Education":	{
+    "name": "学历要求"
+  },
   "Sex":	{
     "name": "性别"
   }

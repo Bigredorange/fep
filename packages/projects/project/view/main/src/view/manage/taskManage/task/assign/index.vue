@@ -118,7 +118,7 @@
           label="工种"
           :formatter="({ workType }) => getWorkTypeName(workType)"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="confirmCount"
           align="center"
           label="待接单任务数"
@@ -142,7 +142,7 @@
           prop="finishCount"
           align="center"
           label="已完成任务数"
-        />
+        /> -->
         <el-table-column
           prop="state"
           align="center"
