@@ -110,6 +110,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
+              v-if="form.validityPeriod === '2'"
               label="有效开始日期"
               prop="startDate"
             >
@@ -121,6 +122,7 @@
               />
             </el-form-item>
             <el-form-item
+              v-if="form.validityPeriod === '2'"
               label="有效结束日期"
               prop="endDate"
             >
@@ -489,9 +491,9 @@ export default {
         workArea: null,
         workAddress: null,
         workPlanDate: null,
-        genderRequirement: 1,
-        academicRequirement: 1,
-        expr: 1,
+        genderRequirement: '1',
+        academicRequirement: '1',
+        expr: '1',
         recruitsNumber: null,
         workType: null,
         workOrderFee: null,

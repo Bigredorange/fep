@@ -163,6 +163,7 @@
           >
             <el-button
               v-if="row.assignStatus === '未指派'"
+              v-loading="loading"
               type="text"
               class="primary"
               @click="assign(row)"
@@ -201,7 +202,7 @@ export default {
       form: {
         mobile: null,
         assignStatus: null,
-        state: 1,
+        state: '全部',
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -222,6 +223,7 @@ export default {
       ],
       selection: [],
       workTaskId: false,
+      loading: false,
     };
   },
   mounted() {
@@ -296,10 +298,10 @@ export default {
       });
     },
     assign(row) {
+      // this.loading = false;
       let empIds = [];
       if (row.id) {
         empIds.push(row.id);
-        console.log(1);
       } else {
         empIds = this.selection.map(item => item.id);
       }
@@ -309,6 +311,8 @@ export default {
       }).then(() => {
         this.$message.success('指派任务成功');
         this.getList();
+      }).finally(() => {
+        // this.loading = true;
       });
     },
     getWorkTypeName(workType) {

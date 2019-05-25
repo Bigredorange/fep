@@ -118,16 +118,6 @@
           label="联系人"
         />
         <el-table-column
-          prop="contactPhone"
-          align="center"
-          label="联系方式"
-        />
-        <el-table-column
-          prop="area"
-          align="center"
-          label="区域"
-        />
-        <el-table-column
           prop="status"
           align="center"
           label="状态"

@@ -362,6 +362,10 @@ export default {
           key: 2,
           label: '已撤回',
         },
+        {
+          key: 99,
+          label: '全部',
+        },
       ],
       customerList: [],
     };
