@@ -11,7 +11,6 @@
             :model="form"
             :rules="rules"
             label-width="100px"
-            style="margin-left: 120px;"
             inline
             class="ui-form one-col"
           >

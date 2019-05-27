@@ -29,6 +29,7 @@
             菜单
           </el-radio>
           <el-radio
+            :disabled="!btns.length"
             :label="1"
           >
             按钮
@@ -52,11 +53,24 @@
             :value="item.path"
           />
         </el-select>
-        <el-input
+        <el-select
+          v-if="form.type === 1"
+          v-model="form.code"
+          placeholder="请选择按钮"
+          @change="btnChange"
+        >
+          <el-option
+            v-for="(item, index) in btns"
+            :key="index"
+            :label="item.title"
+            :value="item.value"
+          />
+        </el-select>
+        <!-- <el-input
           v-else-if="form.type === 1"
           v-model="form.code"
           placeholder="请输入唯一码"
-        />
+        /> -->
       </el-form-item>
       <el-form-item
         label="名称"
@@ -170,6 +184,7 @@ export default {
       asyncRoutes: [],
       allRoutes: [],
       routes: [], // init函数获得
+      btns: [], // 可选按钮
       selectedList: [], // 已选路由，用于筛选
       parentPath: '', // 父级路径
       form: {
@@ -241,7 +256,7 @@ export default {
       };
       this.selectedList = selectedList || [];
       this.isShow = true;
-      this.init();
+      this.init(this.form.path);
     },
     init() {
       // 获取可选项列表
@@ -253,6 +268,7 @@ export default {
           return {
             title: route.meta ? route.meta.title : null,
             path: `${route.parentPath}/${route.path}`,
+            btnPermission: route.meta.btnPermission || [],
           };
         }
         return {
@@ -279,14 +295,23 @@ export default {
       this.parentPath = parentPath.replace(/,/g, '/');
       // 根据完整url,获取当前可选url
       let options = [];
+      const btns = [];
       const parentPathArr = parentPath ? parentPath.split(',') : [];
-      console.log(parentPathArr);
       const takeRoutes = (children, level) => children.some((route) => {
-        console.log(`${route.path}`);
         if (`${route.path}` === parentPathArr[level]) {
           if (parentPathArr.length === (level + 1)) {
+            console.log(parentPathArr);
             if (route.children) {
               options = [...route.children].filter(child => !this.selectedList.includes(child.path));
+              route.children.forEach((child) => {
+                if (child.btnPermission) {
+                  let btnPermission = [];
+                  btnPermission = child.btnPermission.filter(btn => !this.selectedList.includes(btn.value));
+                  if (btnPermission.length > 0) {
+                    btns.push(...btnPermission);
+                  }
+                }
+              });
             }
             return true;
           }
@@ -300,20 +325,28 @@ export default {
       } else {
         options = allRoutes.filter(route => !this.selectedList.includes(route.path));
       }
-      // 当无选项时,只能添加按钮
-      if (!options.length && this.form.type === 0) {
-        this.form.type = 1;
-        this.form.code = this.parentPath;
-      }
       this.routes = options;
+      this.btns = btns;
+      if (!options.length) {
+        this.form.type = 1;
+      }
+      // 当无选项时
+      if (!options.length && !btns.length) {
+        this.$message.warning('该菜单已配置，无需配置');
+        this.isShow = false;
+      }
     },
     pathChange() {
       const target = this.routes.find(route => route.path === this.form.code);
       this.form.name = target ? target.title : null;
     },
+    btnChange() {
+      const target = this.btns.find(btn => btn.value === this.form.code);
+      this.form.name = target ? target.title : null;
+    },
     typeChange(value) {
       if (value === 1) {
-        this.form.code = this.parentPath;
+        // this.form.code = this.parentPath;
       } else {
         this.form.code = null;
       }

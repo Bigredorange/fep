@@ -108,7 +108,7 @@ axios.interceptors.response.use((response) => {
   return Promise.reject(error);
 });
 
-const get = (url, arg, cfg = {}) => axios.get(arg ? `${url}?${qs.stringify(arg)}` : url, cfg);
+const get = (url, arg, cfg = {}) => axios.get(arg ? `${url}?${qs.stringify(arg, { indices: false })}` : url, cfg);
 
 const post = (url, arg, cfg = {}) => axios.post(url, qs.stringify(arg), cfg);
 

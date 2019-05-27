@@ -14,7 +14,7 @@
       <el-breadcrumb-item
         v-for="(item, index) in breadcrumbList"
         :key="index"
-        :to="gotoPage(item, index)"
+        :to="item.path"
       >
         {{ item.title }}
       </el-breadcrumb-item>
@@ -51,42 +51,22 @@ export default {
       this.breadcrumbList = [];
       let pathArr = path.split('/');
       pathArr = pathArr.slice(2);
+      let subPath = '/manage';
       pathArr.forEach((pathEle) => {
-        this.getTitle(this.menuList, pathEle);
+        subPath += `/${pathEle}`;
+        this.getTitle(this.menuList, subPath);
       });
     },
-    getTitle(arr, path) {
-      const obj = {};
-      if (arr) {
-        arr.forEach((element) => {
-          if (element.path === path && this.$route.path.includes(element.parentPath)) {
-            obj.path = path;
-            obj.title = element.meta.title;
-            if (element.parentPath) {
-              obj.parentPath = element.parentPath;
-            }
-            this.breadcrumbList.push(obj);
-          } else {
-            this.getTitle(element.children, path);
-          }
-        });
-      }
-      return this.breadcrumbList;
-    },
-    gotoPage(item, index) {
-      if (this.breadcrumbList.length - 1 === index) {
-        return '';
-      }
-      let path = '';
-      this.breadcrumbList.forEach((ele, i) => {
-        if (i <= index) {
-          path += `/${ele.parentPath}`;
+    getTitle(arr, subPath) {
+      arr.forEach((element) => {
+        if (subPath === element.path) {
+          const obj = {};
+          obj.path = element.path;
+          obj.title = element.meta.title;
+          this.breadcrumbList.push(JSON.parse(JSON.stringify(obj)));
         }
-        if (i === index) {
-          path += `/${ele.path}`;
-        }
+        this.getTitle(element.children, subPath);
       });
-      return path;
     },
   },
 };

@@ -103,6 +103,13 @@
             @change="selectDate"
           />
         </div>
+        <div class="item">
+          <span>部门或人员：</span>
+          <child-tree
+            ref="childTree"
+            @selected="selectedChildTree"
+          />
+        </div>
         <div
           class="item"
         >
@@ -288,7 +295,12 @@
   </div>
 </template>
 <script>
+import ChildTree from '../../../../../components/ChildTree';
+
 export default {
+  components: {
+    ChildTree,
+  },
   data() {
     return {
       list: [],
@@ -412,6 +424,19 @@ export default {
           name: '工单.xlsx',
         });
       });
+    },
+    selectedChildTree(selection) {
+      const userIdList = [];
+      selection.forEach((item) => {
+        if (item.id) {
+          userIdList.push(item.id);
+        }
+      });
+      console.log(userIdList);
+      this.form = Object.assign({}, this.form, {
+        userIdList,
+      });
+      this.getList();
     },
   },
 };

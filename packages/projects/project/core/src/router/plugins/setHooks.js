@@ -40,8 +40,6 @@ const initData = async () => {
       document.querySelector('#global-reload').style.display = 'block';
       throw (new Error('init failed'));
     });
-    // const vm = new Vue();
-    // vm.$router.push('/manage');
   }
 };
 // let inited = false;

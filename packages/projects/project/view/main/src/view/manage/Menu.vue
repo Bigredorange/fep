@@ -7,7 +7,7 @@
           :key="menu.path"
           class="menu-item"
           :class="{'active': isActiveMenu(menu.path)}"
-          @click="$router.push(`/manage/${menu.path}`)"
+          @click="$router.push(menu.path)"
         >
           {{ menu.meta.title }}
         </li>
@@ -29,7 +29,7 @@ export default {
     },
     showMenu(menu) { // 是否显示菜单
       const isRight = (route) => { // 是否有权限访问
-        const path = `/manage/${route.path}`;
+        const { path } = route;
         return this.$p(path);
       };
       return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);

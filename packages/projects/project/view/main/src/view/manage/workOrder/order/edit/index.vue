@@ -386,7 +386,7 @@
       <div class="bot-menu">
         <el-button
           v-if="workOrderId"
-          v-loading="confirmButtonLoading"
+          v-loading="submitLoading"
           type="primary"
           @click="submitToCheck"
         >
@@ -616,7 +616,7 @@ export default {
         item.flag = true;
         keys.forEach((key) => {
           if (key.includes('Checked')) {
-            if (!item[key]) {
+            if (!item[key] && key !== 'id') {
               item.flag = false;
             }
           }

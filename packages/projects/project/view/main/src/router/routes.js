@@ -67,6 +67,12 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑用户',
+                    value: '/sys/user/list/editUser',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-user" */ '../view/manage/sys/user/list/index.vue'),
             },
@@ -74,6 +80,20 @@ const asyncRoutes = [{
               path: 'edit',
               meta: {
                 title: '详情',
+                btnPermission: [
+                  {
+                    title: '分配客户',
+                    value: '/sys/user/edit/distirbuteCus',
+                  },
+                  {
+                    title: '组织设置',
+                    value: '/sys/user/edit/setDept',
+                  },
+                  {
+                    title: '用户设置',
+                    value: '/sys/user/edit/setUser',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sys/user/edit/index.vue'),
             },

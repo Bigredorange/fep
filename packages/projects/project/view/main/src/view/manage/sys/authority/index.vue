@@ -135,7 +135,6 @@ export default {
       });
     },
     add(data, node) {
-      console.log(node);
       const selectedList = node.childNodes.map(child => child.data.code);
       const form = {
         pid: data.id,
@@ -143,6 +142,7 @@ export default {
         code: null,
         sort: null,
         sysNum: 1,
+        path: data.code,
       };
       this.$refs.modifyResource.open({
         selectedList,

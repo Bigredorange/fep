@@ -50,6 +50,8 @@ const api = {
   getDepart: ({ id, ...arg }) => get(`org/department/${id}`, arg),
   // 2.6 查询用户个人部门树
   getUserDepartTree: args => get('org/department/tree/for_personal', args),
+  // 查询我管理部门组织人员
+  getUserDepartTreeById: args => get('org/department/user_dept_tree', args),
   /*
     角色管理
   */
@@ -181,7 +183,7 @@ const api = {
   // 更新工单状态
   changeWorkOrder: ({ id, ...arg }) => putJson(`work_order/${id}/change_status`, arg),
   // 工单列表
-  getWorkOrderList: args => get('work_order/list', args),
+  getWorkOrderList: args => postJson('work_order/list', args),
   // 导出工单
   exportWorkOrder: args => postJson('work_order/export', args),
   /**

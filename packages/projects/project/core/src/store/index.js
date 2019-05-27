@@ -3,14 +3,14 @@ import Vuex from 'vuex';
 import cookie from 'js-cookie';
 import $utils from '../core/utils';
 import options from './modules/options';
-import socketManage from './modules/socketManage';
+import permission from './modules/permission';
 
 Vue.use(Vuex);
 
 const vuex = new Vuex.Store({
   modules: {
     options,
-    socketManage,
+    permission,
   },
   state: {
     tableHeight: null, // 页面高度
@@ -52,7 +52,6 @@ const vuex = new Vuex.Store({
   actions: {
     logout({ commit }) {
       commit('reset');
-      // commit('socketManage/reset');
       commit('reset/reset');
       sessionStorage.clear();
       cookie.remove(sessionStorage.hroTokenName);
@@ -66,10 +65,11 @@ const vuex = new Vuex.Store({
         commit('setMessageCount', Number(count));
       });
     },
-    getUserInfo({ commit }) {
+    getUserInfo({ commit, dispatch }) {
       if (sessionStorage.fepUserInfo) {
         commit('setFepUserInfo', JSON.parse(sessionStorage.fepUserInfo));
         commit('setPermissionList', JSON.parse(sessionStorage.fepUserInfo).permTrees);
+        dispatch('permission/GenerateRoutes', JSON.parse(sessionStorage.fepUserInfo).permTrees);
         return Promise.resolve();
       }
       return Vue.prototype.$api.getUserInfo().then((res) => {
@@ -77,6 +77,7 @@ const vuex = new Vuex.Store({
         sessionStorage.fepUserInfo = JSON.stringify(res);
         commit('setFepUserInfo', res);
         commit('setPermissionList', res.permTrees);
+        dispatch('permission/GenerateRoutes', res.permTrees);
       });
     },
     getPermissionList({ commit }) {

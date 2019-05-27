@@ -152,6 +152,7 @@
         </div>
       </div>
       <div
+        v-if="$p('/sys/user/edit/setUser')"
         class="con-tab"
       >
         <div>
@@ -160,6 +161,7 @@
             @tab-click="handleTabClick"
           >
             <el-tab-pane
+              v-if="$p('/sys/user/edit/setDept')"
               label="组织设置"
               name="org"
             >
@@ -173,10 +175,11 @@
                 show-checkbox
                 :default-expanded-keys="expandNodes"
                 :data="departList"
+                check-strictly
                 @node-expand="expandNode"
                 @node-collapse="collapseNode"
               >
-                <span
+                <div
                   slot-scope="{ node, data }"
                   class="title"
                 >
@@ -185,11 +188,23 @@
                     class="node-name"
                     @click.stop="edit(data, node)"
                   >{{ data.name }}</span>
-                </span>
+                  <div class="switch">
+                    部门负责人：
+                    <el-switch
+                      v-model="data.manageLevel"
+                      active-color="#356fb8"
+                      inactive-color="#E2E4E8"
+                      :active-value="1"
+                      :inactive-value="0"
+                      @click.stop
+                    />
+                  </div>
+                </div>
               </el-tree>
               <!-- <org-tree :list="departList" /> -->
             </el-tab-pane>
             <el-tab-pane
+              v-if="$p('/sys/user/edit/distirbuteCus')"
               label="客户分配"
               name="customer"
             >
@@ -427,7 +442,6 @@ export default {
     };
   },
   mounted() {
-    this.getUserDepartTree();
     this.getRolesList();
     this.getCompanyList();
     this.getCustomerList();
@@ -444,6 +458,7 @@ export default {
         this.form.companyId = companyId;
         this.form.level = 3;
       }
+      this.getUserDepartTree();
     } else {
       this.getUserDetail(this.userId);
       this.getCustomerOwn();
@@ -457,15 +472,24 @@ export default {
   },
   methods: {
     submit() {
-      const halfIds = this.$refs.tree.getHalfCheckedKeys();
-      const checkedIds = this.$refs.tree.getCheckedKeys();
-      const resourcesIds = halfIds.concat(checkedIds);
+      // const halfIds = this.$refs.tree.getHalfCheckedKeys();
+      // const checkedIds = this.$refs.tree.getCheckedKeys();
+      // const resourcesIds = halfIds.concat(checkedIds);
+      // const halfNodes = this.$refs.tree.getHalfCheckedNodes();
+      const checkedNodes = this.$refs.tree.getCheckedNodes();
+      // const resourcesNodes = halfNodes.concat(checkedNodes);
       this.$refs.formUser.validate((valid) => {
         if (valid) {
           this.confirmButtonLoading = true;
           let api = '';
           let param = null;
-          this.form.deptIds = resourcesIds;
+          this.form.deptLevels = checkedNodes.map((node) => {
+            const obj = {};
+            obj.deptId = node.id;
+            obj.manageLevel = node.manageLevel;
+            obj.name = node.name;
+            return obj;
+          });
           // this.form.level = this.$store.state.fepUserInfo.level;
           if (this.form.level > 2) {
             this.form.companyId = this.$store.state.fepUserInfo.companyId;
@@ -487,6 +511,7 @@ export default {
               this.getCustomerOwn();
               this.getCustomerNotOwn();
             }
+            this.getUserDetail(this.userId);
             // this.$router.go(-1);
           }).finally(() => {
             this.confirmButtonLoading = false;
@@ -498,6 +523,17 @@ export default {
     },
     handleTabClick() {
 
+    },
+    getKey(arr, keys = []) {
+      arr.forEach((item) => {
+        if (item.children && item.children.length) {
+          this.getKey(item.children, keys);
+        } else if (item.checked) {
+          keys.push(item.id);
+        }
+      });
+      console.log(keys);
+      return keys;
     },
     getUserDepartTree() {
       this.$api.getUserDepartTree().then((res) => {
@@ -582,6 +618,21 @@ export default {
         id,
       }).then((res) => {
         this.form = res;
+        this.departList = res.deptTrees;
+        const keys = [];
+        const getKey = (list) => {
+          list.forEach((item) => {
+            if (item.children && item.children.length) {
+              getKey(item.children);
+            } else if (item.checked) {
+              keys.push(item.id);
+            }
+          });
+        };
+        getKey(res.deptTrees);
+        console.log(keys);
+        this.expandNodes = keys;
+        this.$refs.tree.setCheckedKeys(keys);
       });
     },
     assignCus() {
@@ -616,7 +667,11 @@ export default {
     background: #fff;
     border-radius: 10px;
     .title {
+      display: flex;
       color: #70829a;
+      .switch {
+        margin-left: 20px;
+      }
     }
     .area {
       margin-top: 10px;

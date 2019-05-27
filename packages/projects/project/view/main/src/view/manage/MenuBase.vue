@@ -16,33 +16,7 @@
             <span>
               {{ menu.meta.title | getTitle }}
             </span>
-            <!-- <i
-              v-if="menu.children && !menu.noDropdown"
-              class="arrow"
-            /> -->
           </div>
-          <!-- <transition name="menu-slide">
-            <ul
-              v-show="curIndex === index && !menu.noDropdown"
-              class="menu"
-            >
-              <template v-for="item in menu.children">
-                <li
-                  v-if="showSubMenu(item)"
-                  :key="item.path"
-                >
-                  <router-link
-                    :to="`/manage/${menu.parentPath}/${menu.path}/${item.path}`"
-                    :class="{
-                      'subActive': isActiveMenu(`/${menu.path}/${item.path}`)
-                    }"
-                  >
-                    <span>{{ item.meta.title | getTitle }}</span>
-                  </router-link>
-                </li>
-              </template>
-            </ul>
-          </transition> -->
         </li>
       </template>
     </ul>
@@ -91,7 +65,7 @@ export default {
     },
     selectSubmenu(menu, index) {
       // 当数据含路径参数，则跳转相应路由
-      this.$router.push(`/manage/${menu.parentPath}/${menu.path}`);
+      this.$router.push(menu.path);
       // if (!menu.children || menu.noDropdown) {
       // }
       this.curIndex = index === this.curIndex ? null : index;
@@ -102,26 +76,27 @@ export default {
     },
     isActiveMainMenu(pathMenu) { // 主菜单是否激活
       const { path } = this.$route;
-      const pathArr = path.split('/');
-      const flag = pathArr.indexOf(pathMenu) !== -1;
-      return flag;
+      // const pathArr = path.split('/');
+      // const flag = pathArr.indexOf(pathMenu) !== -1;
+      return path.includes(pathMenu);
     },
-    showMenu(menu, parentMenu) { // 是否显示菜单
-      const isRight = (route) => { // 是否有权限访问
-        const path = parentMenu ? `${parentMenu.path}/${route.path}` : `${route.path}`;
-        return this.$p(`/manage/${menu.parentPath}/${path}`);
-        // return path;
-      };
-      return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
+    showMenu(menu) { // 是否显示菜单
+      // const isRight = (route) => { // 是否有权限访问
+      // return menu.path;
+      // const path = parentMenu ? `${parentMenu.path}/${route.path}` : `${route.path}`;
+      // return this.$p(`/manage/${menu.parentPath}/${path}`);
+      // return path;
+      // };
+      return menu && menu.meta.title;
     },
-    showSubMenu(menu) { // 是否显示菜单
-      const isRight = (route) => { // 是否有权限访问
-        const path = `/manage/${menu.parentPath}/${route.path}`;
-        return this.$p(path);
-        // return path;
-      };
-      return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
-    },
+    // showSubMenu(menu) { // 是否显示菜单
+    //   const isRight = (route) => { // 是否有权限访问
+    //     const path = `/manage/${menu.parentPath}/${route.path}`;
+    //     return this.$p(path);
+    //     // return path;
+    //   };
+    //   return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
+    // },
   },
 };
 </script>
