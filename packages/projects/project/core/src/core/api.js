@@ -205,6 +205,8 @@ const api = {
   exportEmployee: args => postJson('employee/export', args),
   // 获取灵工详情
   getEmployeeDetails: ({ id, ...arg }) => get(`employee/${id}`, arg),
+  // 导入灵工
+  importEmployee: args => postForm('employee/import', args, { noMessage: true }),
   /**
    * 服务报酬
    */

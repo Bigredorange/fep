@@ -379,6 +379,7 @@ export default {
             type: 'success',
             showClose: false,
           });
+          this.getList();
         }).catch((res) => {
           if (res.status !== 1302) {
             this.$message.error('导入失败');

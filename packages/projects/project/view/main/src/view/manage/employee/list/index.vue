@@ -87,7 +87,15 @@
         >
           新增
         </el-button>
-        <el-button>导出</el-button>
+        <el-button
+          type="primary"
+          @click="importEmployee"
+        >
+          导入灵工
+        </el-button>
+        <el-button @click="exportEmployee">
+          导出
+        </el-button>
       </div>
       <el-table
         :data="list"
@@ -192,6 +200,7 @@
         </el-pagination>
       </affix>
     </div>
+    <upload-detail ref="uploadDetail" />
   </div>
 </template>
 <script>
@@ -207,7 +216,7 @@ export default {
         startTime: null,
         endTime: null,
         source: null,
-        status: 99,
+        status: '',
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -222,7 +231,7 @@ export default {
           label: '启用',
         },
         {
-          key: 99,
+          key: '',
           label: '全部',
         },
       ],
@@ -300,6 +309,75 @@ export default {
           break;
       }
       return name;
+    },
+    importEmployee() {
+      this.$upload({
+        multiple: false,
+        fileType: 'excel',
+      }).then(([item]) => {
+        this.uploading = true;
+        this.$message.info('导入中...');
+        this.$api.importEmployee({
+          file: item.file,
+        }).then(() => {
+          this.$dialogs.confirm({
+            content: '灵工导入完成',
+            type: 'success',
+            showClose: false,
+          });
+          this.getList();
+        }).catch((res) => {
+          if (res.status !== 1302) {
+            this.$message.error('导入失败');
+            return;
+          }
+          this.$refs.uploadDetail.open({
+            detail: {
+              ...res.data,
+              fileName: '灵工错误导入信息',
+              flag: 201,
+            },
+            cols: [
+              {
+                prop: 'empName',
+                label: '姓名',
+                align: 'center',
+              },
+              {
+                prop: 'sex',
+                label: '性别',
+                align: 'center',
+              },
+              {
+                prop: 'mobile',
+                label: '手机号码',
+                align: 'center',
+              },
+              {
+                prop: 'certificateNum',
+                label: '证件号码',
+                align: 'center',
+              },
+              {
+                prop: 'errorMsg',
+                label: '错误描述',
+              },
+            ],
+          });
+        }).finally(() => {
+          this.uploading = false;
+        });
+      });
+    },
+    exportEmployee() {
+      this.$api.exportEmployee({
+        ...this.form,
+      }).then((res) => {
+        this.$api.fileDownloadById({
+          fileId: res,
+          name: '灵工.xlsx',
+        });
+      });
     },
   },
 };
