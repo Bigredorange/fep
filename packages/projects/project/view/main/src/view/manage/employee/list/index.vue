@@ -137,7 +137,7 @@
           :formatter="({ status }) => getStatusName(status)"
         />
         <el-table-column
-          prop="source"
+          prop="companyName"
           align="center"
           label="来源"
         />
@@ -148,7 +148,7 @@
           :formatter="({ workType }) => getWorkType(workType)"
         /> -->
         <el-table-column
-          prop="unit"
+          prop="state"
           align="center"
           label="是否在线"
         />
@@ -207,7 +207,7 @@ export default {
         startTime: null,
         endTime: null,
         source: null,
-        status: '',
+        status: 99,
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -222,7 +222,7 @@ export default {
           label: '启用',
         },
         {
-          key: '',
+          key: 99,
           label: '全部',
         },
       ],
@@ -260,6 +260,11 @@ export default {
       this.$router.push({ path: 'edit', query: { id: row.id, empId: row.empId } });
     },
     selectDate(val) {
+      if (!val) {
+        this.form.startTime = '';
+        this.form.endTime = '';
+        return;
+      }
       const [start, end] = val;
       this.form.startTime = start;
       this.form.endTime = end;
