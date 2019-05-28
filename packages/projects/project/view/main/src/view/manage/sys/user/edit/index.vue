@@ -196,7 +196,7 @@
                       inactive-color="#E2E4E8"
                       :active-value="1"
                       :inactive-value="0"
-                      @click.stop
+                      @click.native.stop
                     />
                   </div>
                 </div>
@@ -472,15 +472,13 @@ export default {
   },
   methods: {
     submit() {
-      // const halfIds = this.$refs.tree.getHalfCheckedKeys();
-      // const checkedIds = this.$refs.tree.getCheckedKeys();
-      // const resourcesIds = halfIds.concat(checkedIds);
-      // const halfNodes = this.$refs.tree.getHalfCheckedNodes();
-      const checkedNodes = this.$refs.tree.getCheckedNodes();
-      // const resourcesNodes = halfNodes.concat(checkedNodes);
       this.$refs.formUser.validate((valid) => {
         if (valid) {
           this.confirmButtonLoading = true;
+          let checkedNodes = [];
+          if (this.$refs.tree) {
+            checkedNodes = this.$refs.tree.getCheckedNodes();
+          }
           let api = '';
           let param = null;
           this.form.deptLevels = checkedNodes.map((node) => {
@@ -490,9 +488,11 @@ export default {
             obj.name = node.name;
             return obj;
           });
-          // this.form.level = this.$store.state.fepUserInfo.level;
           if (this.form.level > 2) {
             this.form.companyId = this.$store.state.fepUserInfo.companyId;
+          }
+          if (this.form.level === 6) {
+            this.form.customerId = this.$store.state.fepUserInfo.customerId;
           }
           if (!this.userId) {
             api = 'addUser';
@@ -532,7 +532,6 @@ export default {
           keys.push(item.id);
         }
       });
-      console.log(keys);
       return keys;
     },
     getUserDepartTree() {
@@ -549,7 +548,9 @@ export default {
           });
         };
         getKey(res);
-        this.$refs.tree.setCheckedKeys(keys);
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys(keys);
+        }
       });
     },
     expandNode(data, node) {
@@ -630,7 +631,6 @@ export default {
           });
         };
         getKey(res.deptTrees);
-        console.log(keys);
         this.expandNodes = keys;
         this.$refs.tree.setCheckedKeys(keys);
       });
@@ -654,6 +654,9 @@ export default {
         this.getCustomerOwn();
         this.getCustomerNotOwn();
       });
+    },
+    handleSwitch() {
+
     },
   },
 };

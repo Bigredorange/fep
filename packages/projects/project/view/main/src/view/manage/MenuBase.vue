@@ -108,7 +108,7 @@ export default {
   position: fixed;
   top: 60px;
   left: 0;
-  width: 160px;
+  width: 14rem;
   height: calc(100vh - 60px);
   padding-top: 14px;
   border-right: 1px solid #d2d2d2;
@@ -198,7 +198,7 @@ export default {
   height: 38px;
   cursor: pointer;
   transition: all 0.3s;
-  margin: 0 15px;
+  margin: 0 1rem;
   border-bottom: 1px solid #f0f3f6;
   > span {
     display: flex;

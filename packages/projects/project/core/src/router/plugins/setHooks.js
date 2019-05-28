@@ -42,27 +42,6 @@ const initData = async () => {
     });
   }
 };
-// let inited = false;
-// const initData = async () => {
-//   if (!inited) {
-//     inited = true;
-//     await Promise.all([
-//       store.dispatch('getUserInfo'), // 初始化用户信息
-//       store.dispatch('getPermissionList'), // 初始化用户权限列表
-//       store.dispatch('options/init'), // 初始化可选项
-//       store.dispatch('getClientHeight'), // 获取客户端高度
-//     ]).catch(() => { // 初始化失败时显示刷新按钮
-//       NProgress.done();
-//       document.querySelector('#global-loading').style.display = 'none';
-//       document.querySelector('#global-reload').style.display = 'block';
-//       throw (new Error('init failed'));
-//     });
-//     store.dispatch('socketManage/init'); // 实时推送消息
-//     db.init(store.state.fepUserInfo.account); // 初始化localStorage本地缓存
-//     store.dispatch('options/setDefaultSignCompanyId'); // 初始化签约公司
-//   }
-//   store.dispatch('getMessageCount'); // 获取站内信数量
-// };
 
 /**
  * 设置标签标题
@@ -109,9 +88,9 @@ export default () => {
     if (validateRight(to)) { // 是否通过路由权限验证
       next();
     } else {
-      next(false);
       // next();
-      // NProgress.done();
+      next(false);
+      NProgress.done();
     }
   });
 

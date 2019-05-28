@@ -84,10 +84,10 @@ export default {
   z-index: 100;
   position: fixed;
   top: 60px;
-  left: 160px;
+  left: 14rem;
 }
 .container {
-  padding: 100px 0 0 160px;
+  padding: 100px 0 0 14rem;
   background: #f3f6fb;
   height: 100vh;
 }
