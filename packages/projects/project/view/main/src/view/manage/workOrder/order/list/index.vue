@@ -428,8 +428,8 @@ export default {
     selectedChildTree(selection) {
       const userIdList = [];
       selection.forEach((item) => {
-        if (item.id) {
-          userIdList.push(item.id);
+        if (item.userId) {
+          userIdList.push(item.userId);
         }
       });
       console.log(userIdList);

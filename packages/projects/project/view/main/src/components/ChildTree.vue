@@ -108,7 +108,7 @@ export default {
       let childName = '';
       selection.forEach((item) => {
         if (item.userName) {
-          userNums.push(item.id);
+          userNums.push(item.userId);
           childName += `,${item.userName}`;
         }
       });
