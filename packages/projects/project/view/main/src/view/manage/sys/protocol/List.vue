@@ -131,6 +131,9 @@ export default {
       padding: 10px 20px;
       border-bottom: 1px solid #f0f3f6;
       cursor: pointer;
+      span {
+        width: 300px;
+      }
       .info {
         font-size: 12px;
         color: #999;

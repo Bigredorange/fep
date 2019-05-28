@@ -229,6 +229,8 @@ const api = {
   revokeWorkTask: ({ id, ...arg }) => postJson(`worktask/${id}/revoke`, arg),
   // 任务完成
   finishWorkTask: ({ id, ...arg }) => postJson(`worktask/${id}/finish`, arg),
+  // 分派任务池
+  assignWorkTaskPool: ({ id, ...arg }) => postJson(`worktask/${id}/pool`, arg),
   // 任务指派列表
   getNotAssignList: ({ id, ...arg }) => get(`empworktask/${id}/assign`, arg),
   // 任务指派后的列表
@@ -245,6 +247,14 @@ const api = {
   cancelEmpWorkTask: ({ empWorkTaskId }) => putJson(`empworktask/gowork/${empWorkTaskId}/cancel`),
   // 更新已完成和上岗时间
   updateEmpWorkTask: ({ onWorkTime, completeTime, empWorkTaskId }) => putJson(`empworktask/${empWorkTaskId}/${onWorkTime}/${completeTime}/update`),
+  // 任务池列表
+  getWorkTaskPoolList: args => get('worktask/pool', args),
+  // 任务池同意申请
+  agreeEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/accept', empWorkTaskIds),
+  // 任务池待确定列表
+  getUnconfirmList: ({ id, ...arg }) => get(`empworktask/list/${id}/pool`, arg),
+  // 拒绝任务
+  refuseEmpWorkTask: ({ empWorkTaskId }) => postJson(`empworktask/refuse/${empWorkTaskId}`),
   /**
    * 模板下载
    */

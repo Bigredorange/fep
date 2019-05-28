@@ -6,7 +6,7 @@
       width="1000px"
       @close="reset"
     >
-      <section class="con-top">
+      <!-- <section class="con-top">
         <div class="item">
           <span>姓名：</span>
           <el-input
@@ -54,14 +54,14 @@
             重置
           </el-button>
         </div>
-      </section>
+      </section> -->
       <div class="con-table">
         <div class="buttons">
           <el-button
             type="primary"
-            @click="revoke"
+            @click="confirm"
           >
-            批量撤回
+            批量同意
           </el-button>
         </div>
         <el-table
@@ -98,24 +98,33 @@
           <el-table-column
             prop="assignTime"
             align="center"
-            label="指派时间"
+            label="申请时间"
           />
           <el-table-column
             prop="receiveOrderTime"
             align="center"
-            label="接单时间"
+            label="确认时间"
           />
           <el-table-column
             prop="gotoWorkTime"
             align="center"
-            label="上岗时间"
+            width="200"
+            show-overflow-tooltip
+            label="地址"
           />
           <el-table-column
             prop="completeTime"
             align="center"
-            label="完成时间"
+            label="来源"
           />
           <el-table-column
+            prop="workType"
+            align="center"
+            label="工种"
+            :formatter="({ workType }) => getWorkTypeName(workType)"
+          />
+          <el-table-column
+            fixed="right"
             label="操作"
             align="center"
             width="200"
@@ -127,9 +136,16 @@
               <el-button
                 type="text"
                 class="primary"
-                @click="revoke(row)"
+                @click="confirm(row)"
               >
-                撤回
+                同意
+              </el-button>
+              <el-button
+                type="text"
+                class="red"
+                @click="refuse(row)"
+              >
+                拒绝
               </el-button>
             </template>
           </el-table-column>
@@ -167,7 +183,7 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '待接单',
+          label: '待确认',
         },
         {
           key: 1,
@@ -209,8 +225,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getAssignList({
-        ...this.form,
+      this.$api.getUnconfirmList({
         id: this.workTaskId,
       }).then((res) => {
         this.list = res.dataList;
@@ -223,10 +238,10 @@ export default {
       this.form.pageSize = n;
       this.getList();
     },
-    revoke(row) {
+    confirm(row) {
       this.$dialogs.confirm({
         title: '提示',
-        content: '确定要撤回吗？',
+        content: '确定要同意吗？',
         onOk: () => {
           let empWorkTaskIds = [];
           if (row.id) {
@@ -234,11 +249,25 @@ export default {
           } else {
             empWorkTaskIds = this.selection.map(item => item.id);
           }
-          this.$api.revokeEmpWorkTask({
-            id: this.workTaskId,
+          this.$api.agreeEmpWorkTask({
             empWorkTaskIds,
           }).then(() => {
-            this.$message.success('撤回任务成功');
+            this.$message.success('操作成功');
+            this.getList();
+            this.$emit('update');
+          });
+        },
+      });
+    },
+    refuse(row) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要拒绝吗？',
+        onOk: () => {
+          this.$api.refuseEmpWorkTask({
+            empWorkTaskId: row.id,
+          }).then(() => {
+            this.$message.success('操作成功');
             this.getList();
             this.$emit('update');
           });
@@ -254,8 +283,8 @@ export default {
     },
     getTitle(type) {
       let title = '';
-      if (type === 'assigned') {
-        title = '已指派详情';
+      if (type === 'unconfirm') {
+        title = '待确认详情';
       } else if (type === 'onWork') {
         title = '待上岗详情';
       } else if (type === 'todo') {
@@ -267,7 +296,7 @@ export default {
     },
     getType(type) {
       let temp = '';
-      if (type === 'assigned') {
+      if (type === 'unconfirm') {
         temp = 1;
       } else if (type === 'onWork') {
         temp = 2;
@@ -281,6 +310,17 @@ export default {
     getStatusName(status) {
       const temp = this.statusList.find(item => item.key === status);
       return temp.label || '';
+    },
+    getWorkTypeName(workType) {
+      let name = '';
+      if (workType) {
+        const arr = workType.split(',');
+        name = arr.map((label) => {
+          const labelName = this.$optDicLabel('typeofwork', label);
+          return labelName;
+        }).join(',');
+      }
+      return name;
     },
   },
 };

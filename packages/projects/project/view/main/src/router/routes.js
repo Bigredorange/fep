@@ -413,6 +413,37 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'taskPool',
+          meta: {
+            title: '任务池',
+          },
+          redirect: 'taskPool/list',
+          component: RouterView,
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/taskPool/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '详情',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/taskManage/taskPool/edit/index.vue'),
+            },
+            {
+              path: 'assign',
+              meta: {
+                title: '指派任务',
+              },
+              component: () => import(/* webpackChunkName: "v-assgin" */ '../view/manage/taskManage/taskPool/assign/index.vue'),
+            },
+          ],
+        },
       ],
     },
   ],

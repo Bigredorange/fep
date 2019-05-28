@@ -3,7 +3,7 @@
     <ul class="menu-list">
       <template v-for="(menu,index) in menuList">
         <li
-          v-if="showMenu(menu)"
+
           :key="index"
         >
           <div
@@ -70,33 +70,16 @@ export default {
       // }
       this.curIndex = index === this.curIndex ? null : index;
     },
-    isActiveMenu(path) { // 子菜单是否激活
-      // return new RegExp(`^${path}(/{1}.*)?$`).test(this.$route.path);
-      return this.$route.path.includes(path);
-    },
     isActiveMainMenu(pathMenu) { // 主菜单是否激活
       const { path } = this.$route;
-      // const pathArr = path.split('/');
-      // const flag = pathArr.indexOf(pathMenu) !== -1;
-      return path.includes(pathMenu);
+      const pathArr = path.split('/');
+      const pathMenuArr = pathMenu.split('/');
+      const flag = pathMenuArr.every((item, i) => {
+        const tempFlag = item === pathArr[i];
+        return tempFlag;
+      });
+      return flag;
     },
-    showMenu(menu) { // 是否显示菜单
-      // const isRight = (route) => { // 是否有权限访问
-      // return menu.path;
-      // const path = parentMenu ? `${parentMenu.path}/${route.path}` : `${route.path}`;
-      // return this.$p(`/manage/${menu.parentPath}/${path}`);
-      // return path;
-      // };
-      return menu && menu.meta.title;
-    },
-    // showSubMenu(menu) { // 是否显示菜单
-    //   const isRight = (route) => { // 是否有权限访问
-    //     const path = `/manage/${menu.parentPath}/${route.path}`;
-    //     return this.$p(path);
-    //     // return path;
-    //   };
-    //   return menu && menu.meta.title && !menu.meta.hidden && isRight(menu);
-    // },
   },
 };
 </script>

@@ -150,16 +150,16 @@
         />
         <el-table-column
           align="center"
-          label="已指派人数"
+          label="待确认人数"
         >
           <template
             slot-scope="{ row }"
           >
             <span
               class="link"
-              @click="$refs.assignTask.open(row.id, 'assigned')"
+              @click="$refs.confirmTask.open(row.id, 'unconfirm')"
             >
-              {{ row.assignedNum }}
+              {{ row.applyNum }}
             </span>
           </template>
         </el-table-column>
@@ -258,10 +258,9 @@
           label="工作区域"
         />
         <el-table-column
-          fixed="right"
           label="操作"
           align="center"
-          width="300"
+          width="200"
         >
           <template
             v-if="row.status === 0"
@@ -273,13 +272,6 @@
               @click="assign(row)"
             >
               指派
-            </el-button>
-            <el-button
-              type="text"
-              class="primary"
-              @click="assignPool(row.id)"
-            >
-              分派任务池
             </el-button>
             <el-button
               type="text"
@@ -316,8 +308,8 @@
         </el-pagination>
       </affix>
     </div>
-    <assign-task
-      ref="assignTask"
+    <confirm-task
+      ref="confirmTask"
       @update="getList"
     />
     <on-work-task
@@ -335,14 +327,14 @@
   </div>
 </template>
 <script>
-import AssignTask from './AssignTask.vue';
+import ConfirmTask from './ConfirmTask.vue';
 import OnWorkTask from './OnWorkTask.vue';
 import TodoTask from './TodoTask.vue';
 import FinishTask from './FinishTask.vue';
 
 export default {
   components: {
-    AssignTask,
+    ConfirmTask,
     OnWorkTask,
     TodoTask,
     FinishTask,
@@ -354,7 +346,7 @@ export default {
       form: {
         taskNo: null,
         taskName: null,
-        status: 1,
+        status: 99,
         paySettlement: null,
         workType: null,
         pageCurrent: 1,
@@ -364,7 +356,7 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '待接单',
+          label: '待确认',
         },
         {
           key: 1,
@@ -409,7 +401,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getWorkTaskList({
+      this.$api.getWorkTaskPoolList({
         ...this.form,
         companyId: this.$store.state.fepUserInfo.companyId,
       }).then((res) => {
@@ -469,22 +461,8 @@ export default {
         },
       });
     },
-    assignPool(id) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定将此任务分派到任务池吗？',
-        onOk: () => {
-          this.$api.assignWorkTaskPool({
-            id,
-          }).then(() => {
-            this.$message.success('分派成功');
-            this.getList();
-          });
-        },
-      });
-    },
     assign(row) {
-      // this.$refs.assignTask.open(row);
+      // this.$refs.confirmTask.open(row);
       this.$router.push({ path: 'assign', query: { id: row.id } });
     },
     getStatusName(status) {

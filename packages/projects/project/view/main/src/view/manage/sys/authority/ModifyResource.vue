@@ -328,7 +328,7 @@ export default {
       }
       // 当无选项时
       if (!options.length && !btns.length) {
-        this.$message.warning('该菜单已配置，无需配置');
+        this.$message.warning('该菜单已配置完全，无需配置');
         this.isShow = false;
       }
     },
