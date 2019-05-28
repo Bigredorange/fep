@@ -19,7 +19,7 @@ const defaultOption = {
   // assetsPath: process.env.NODE_ENV === 'production' ? '' : 'static/', // 相对于dist的子目录，图片、字体文件的存放路径
   urlLoaderLimit: 10e3, // 图片、字体等资源文件小于多少时（单位 Byte）内嵌在 JS 或 CSS 中
   clean: process.env.NODE_ENV === 'production', // 是否清空之前的输出目录
-  hash: false, // 输出文件名是否带 7 位的长度 hash 值
+  hash: process.env.NODE_ENV === 'production', // 输出文件名是否带 7 位的长度 hash 值
   chunkhash: process.env.NODE_ENV === 'production', // 输出文件名是否带 7 位的长度 hash 值
   // sourceMap: false, // 构建后的文件带 sourceMap
   minimize: process.env.NODE_ENV === 'production', // 是否启动压缩
