@@ -261,7 +261,7 @@
           <label>任务完成情况</label>
         </div>
         <div class="area">
-          <Task :list="list" />
+          <Task :employee-id="empId" />
         </div>
       </div>
       <div class="bot-menu">
@@ -410,8 +410,6 @@ export default {
         userName: null,
         src: null,
       },
-      listLoading: false,
-      list: [],
     };
   },
   mounted() {
