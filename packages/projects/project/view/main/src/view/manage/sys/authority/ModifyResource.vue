@@ -292,26 +292,22 @@ export default {
       if (pid) {
         takeParentPath(this.list);
       }
-      this.parentPath = parentPath.replace(/,/g, '/');
+      // this.parentPath = parentPath.replace(/,/g, '/');
       // 根据完整url,获取当前可选url
       let options = [];
       const btns = [];
       const parentPathArr = parentPath ? parentPath.split(',') : [];
       const takeRoutes = (children, level) => children.some((route) => {
         if (`${route.path}` === parentPathArr[level]) {
-          if (parentPathArr.length === (level + 1)) {
-            console.log(parentPathArr);
+          if ((parentPathArr.length - 1) === level) {
             if (route.children) {
               options = [...route.children].filter(child => !this.selectedList.includes(child.path));
-              route.children.forEach((child) => {
-                if (child.btnPermission) {
-                  let btnPermission = [];
-                  btnPermission = child.btnPermission.filter(btn => !this.selectedList.includes(btn.value));
-                  if (btnPermission.length > 0) {
-                    btns.push(...btnPermission);
-                  }
-                }
-              });
+            } else {
+              let btnPermission = [];
+              btnPermission = route.btnPermission.filter(btn => !this.selectedList.includes(btn.value));
+              if (btnPermission.length > 0) {
+                btns.push(...btnPermission);
+              }
             }
             return true;
           }

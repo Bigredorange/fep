@@ -2,10 +2,10 @@
   <div>
     <div class="header">
       <div class="topbar-left">
-        <span
-          class="system-name"
+        <img
+          src="../../assets/icon/fep.png"
           @click="$router.push('/')"
-        >灵工平台</span>
+        >
       </div>
       <menus
         class="menu"
@@ -164,12 +164,17 @@ export default {
 }
 
 .topbar-left {
-  display: inline-flex;
-  align-items: center;
-  .system-name {
-    padding: 0 21px;
-    font-size: 18px;
+  width: 14rem;
+  height: 4rem;
+  text-align: center;
+  line-height: 4rem;
+  font-size: 0;
+  img {
     cursor: pointer;
+    vertical-align: middle;
+    &:hover {
+      opacity: 0.7;
+    }
   }
 }
 
@@ -257,7 +262,7 @@ export default {
   }
 }
 .menu {
-  left: 160px;
+  left: 14rem;
   position: fixed;
 }
 </style>

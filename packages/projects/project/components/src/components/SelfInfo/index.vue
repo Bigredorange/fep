@@ -14,23 +14,29 @@
         label-width="100px"
       >
         <el-form-item
-          prop="account"
-          label="账号："
+          prop="companyName"
+          label="企业名称："
         >
-          {{ userinfo.account }}
+          {{ userinfo.companyName }}
         </el-form-item>
         <el-form-item
-          label="用户名："
+          label="账号："
           prop="username"
         >
           {{ userinfo.username }}
         </el-form-item>
         <el-form-item
+          label="用户名："
+          prop="name"
+        >
+          {{ userinfo.name }}
+        </el-form-item>
+        <el-form-item
           label="手机号："
-          prop="phone"
+          prop="mobile"
         >
           <el-input
-            v-model.trim="info.phone"
+            v-model.trim="info.mobile"
             size="small"
             clearable
             maxlength="11"
@@ -47,23 +53,6 @@
             clearable
             placeholder="请输入邮箱"
           />
-        </el-form-item>
-        <el-form-item
-          label="座机："
-          prop="landline"
-        >
-          <el-input
-            v-model.trim="info.landline"
-            size="small"
-            clearable
-            placeholder="请输入座机"
-          />
-        </el-form-item>
-        <el-form-item
-          label="部门："
-          prop="departmentNames"
-        >
-          {{ userinfo.departmentNames }}
         </el-form-item>
         <el-form-item
           label="角色："
@@ -97,11 +86,10 @@ export default {
       userinfo: this.$store.state.fepUserInfo,
       info: {
         email: null,
-        phone: null,
-        landline: null,
+        mobile: null,
       },
       infoRule: {
-        phone: {
+        mobile: {
           required: true,
           trigger: 'blur',
           validator: async (rule, value, callback) => {
@@ -109,15 +97,15 @@ export default {
               callback(new Error('手机号不能为空'));
             } else if (!this.$utils.regExp(value, 'mp')) {
               callback(new Error('手机号格式错误'));
-            } else if (value !== this.userinfo.phone) {
-              const isExist = await this.$api.userSelectExistUser({
-                phone: value,
-              });
-              if (isExist) {
-                callback(new Error('该手机号已被使用'));
-              } else {
-                callback();
-              }
+            } else if (value !== this.userinfo.mobile) {
+              // const isExist = await this.$api.userSelectExistUser({
+              //   mobile: value,
+              // });
+              // if (isExist) {
+              //   callback(new Error('该手机号已被使用'));
+              // } else {
+              //   callback();
+              // }
             } else {
               callback();
             }
@@ -132,14 +120,14 @@ export default {
             } else if (!this.$utils.regExp(value, 'em')) {
               callback(new Error('邮箱格式错误'));
             } else if (value !== this.userinfo.email) {
-              const isExist = await this.$api.userSelectExistUser({
-                email: value,
-              });
-              if (isExist) {
-                callback(new Error('该邮箱已被使用'));
-              } else {
-                callback();
-              }
+              // const isExist = await this.$api.userSelectExistUser({
+              //   email: value,
+              // });
+              // if (isExist) {
+              //   callback(new Error('该邮箱已被使用'));
+              // } else {
+              //   callback();
+              // }
             } else {
               callback();
             }
@@ -155,17 +143,18 @@ export default {
     },
     open() {
       this.userinfo = this.$store.state.fepUserInfo;
-      this.info = {
-        email: this.userinfo.email,
-        phone: this.userinfo.phone,
-        landline: this.userinfo.landline,
-      };
+      this.info = this.userinfo;
+      // this.info = {
+      //   email: this.userinfo.email,
+      //   mobile: this.userinfo.mobile,
+      //   landline: this.userinfo.landline,
+      // };
       this.dialogShow = true;
     },
     async infoModify() {
       await this.$refs.infoForm.validate();
       this.infoLoading = true;
-      this.$api.userUpdateInformation(this.info).then(() => {
+      this.$api.updateUser(this.info).then(() => {
         this.updateLocalUserinfo();
         this.$message.success('修改成功');
         this.dialogShow = false;
@@ -174,9 +163,9 @@ export default {
       });
     },
     updateLocalUserinfo() {
-      this.$api.userGetUserInfo().then((res) => {
+      this.$api.getUserInfo().then((res) => {
         sessionStorage.fepUserInfo = JSON.stringify(res);
-        this.$store.commit('setFepUserinfo', res);
+        this.$store.commit('setFepUserInfo', res);
       });
     },
   },
