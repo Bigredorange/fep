@@ -141,12 +141,12 @@
           align="center"
           label="来源"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="workType"
           align="center"
           label="工种名称"
           :formatter="({ workType }) => getWorkType(workType)"
-        />
+        /> -->
         <el-table-column
           prop="unit"
           align="center"
