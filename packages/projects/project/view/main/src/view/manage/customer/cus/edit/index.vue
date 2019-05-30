@@ -111,9 +111,13 @@
               label="区域"
               prop="area"
             >
-              <el-input
+              <!-- <el-input
                 v-model="form.area"
                 placeholder="请输入区域"
+              /> -->
+              <areas
+                v-model="form.area"
+                :work-area="form.area"
               />
             </el-form-item>
             <el-form-item
@@ -362,8 +366,12 @@
   </div>
 </template>
 <script>
+import Areas from '../../../../../components/Area.vue';
 
 export default {
+  components: {
+    Areas,
+  },
   data() {
     return {
       rules: {

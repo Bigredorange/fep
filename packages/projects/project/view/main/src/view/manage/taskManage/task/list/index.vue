@@ -81,6 +81,13 @@
             />
           </el-select>
         </div>
+        <div class="item">
+          <span>部门或人员：</span>
+          <child-tree
+            ref="childTree"
+            @selected="selectedChildTree"
+          />
+        </div>
         <div
           class="item"
         >
@@ -339,6 +346,7 @@ import AssignTask from './AssignTask.vue';
 import OnWorkTask from './OnWorkTask.vue';
 import TodoTask from './TodoTask.vue';
 import FinishTask from './FinishTask.vue';
+import ChildTree from '../../../../../components/ChildTree';
 
 export default {
   components: {
@@ -346,6 +354,7 @@ export default {
     OnWorkTask,
     TodoTask,
     FinishTask,
+    ChildTree,
   },
   data() {
     return {
@@ -509,6 +518,18 @@ export default {
       }).finally(() => {
         this.isLoading = false;
       });
+    },
+    selectedChildTree(selection) {
+      const userIdList = [];
+      selection.forEach((item) => {
+        if (item.userId) {
+          userIdList.push(item.userId);
+        }
+      });
+      this.form = Object.assign({}, this.form, {
+        userIdList,
+      });
+      this.getList();
     },
   },
 };

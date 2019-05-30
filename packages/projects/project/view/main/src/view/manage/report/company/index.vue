@@ -3,67 +3,25 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>登陆账号：</span>
-          <el-input
-            v-model="form.username"
-            placeholder="请输入登陆账号"
-            style="width: 200px;"
+          <span>日期范围：</span>
+          <el-date-picker
+            v-model="createTime"
+            style="width: 260px;"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            @change="selectDate"
           />
         </div>
         <div class="item">
-          <span>姓名：</span>
-          <el-input
-            v-model="form.name"
-            placeholder="请输入姓名"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>手机号码：</span>
-          <el-input
-            v-model="form.mobile"
-            placeholder="请输入手机号码"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>用户类型：</span>
-          <el-select
-            v-model="form.level"
-            placeholder="请选择用户类型"
+          <span>企业状态：</span>
+          <el-checkbox
+            v-model="form.valid"
           >
-            <el-option
-              v-for="item in userTypeList"
-              :key="item.key"
-              :label="item.name"
-              :value="item.key"
-            />
-          </el-select>
-        </div>
-
-        <!-- <div class="item">
-          <span>部门名称：</span>
-          <el-input
-            v-model="form.companyName"
-            placeholder="请输入部门名称"
-            style="width: 200px;"
-          />
-        </div> -->
-        <div class="item">
-          <span>状态：</span>
-          <el-select
-            v-model="form.status"
-            style="width: 200px;"
-            placeholder="请选择状态"
-            @change="getList"
-          >
-            <el-option
-              v-for="item in statusList"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
+            只看有效
+          </el-checkbox>
         </div>
         <div
           class="item"
@@ -99,29 +57,25 @@
         :loading="listLoading"
       >
         <el-table-column
-          prop="username"
+          prop="valid"
           align="center"
-          label="登陆账号"
+          label="客户编号"
         />
         <el-table-column
-          prop="name"
+          prop="customerName"
           align="center"
-          label="姓名"
+          label="客户名称"
         />
         <el-table-column
-          prop="mobile"
+          prop="industry"
           align="center"
-          label="手机号码"
+          label="所属行业"
+          :formatter="({ industry }) => $optDicLabel('Industry', industry)"
         />
-        <!-- <el-table-column
-          prop="companyName"
-          align="center"
-          label="部门名称"
-        /> -->
         <el-table-column
-          prop="roleNames"
+          prop="contactName"
           align="center"
-          label="角色名称"
+          label="联系人"
         />
         <el-table-column
           prop="status"
@@ -131,14 +85,29 @@
           <template
             slot-scope="{ row }"
           >
-            <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-            <span
-              :class="{'grey': row.status === 0}"
+            <div
+              class="mouse"
+              @click.stop="disable(row)"
             >
-              {{ row.status === 1 ? '启用' : '禁用' }}
-            </span>
+              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <span
+                :class="{'grey': row.status === 0}"
+              >
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </span>
+            </div>
           </template>
         </el-table-column>
+        <el-table-column
+          align="center"
+          label="余额控制"
+          :formatter="({ balanceLimit }) => balanceLimit ? '是' : '否'"
+        />
+        <el-table-column
+          prop="creator"
+          align="center"
+          label="创建人"
+        />
         <el-table-column
           prop="createTime"
           align="center"
@@ -182,22 +151,26 @@
   </div>
 </template>
 <script>
+import ChildTree from '../../../../../components/ChildTree';
+
 export default {
+  components: {
+    ChildTree,
+  },
   data() {
     return {
       list: [],
       listLoading: false,
       form: {
-        username: null,
-        name: null,
-        mobile: null,
-        companyName: null,
+        valid: false,
+        customerName: null,
+        contactName: null,
+        contactPhone: null,
         status: 99,
         pageCurrent: 1,
         pageSize: 20,
         startTime: null,
         endTime: null,
-        level: null,
       },
       total: 0,
       statusList: [
@@ -215,42 +188,9 @@ export default {
         },
       ],
       createTime: [],
-      userTypeList: [
-        {
-          key: 1,
-          name: '系统管理员',
-        },
-        {
-          key: 2,
-          name: '平台内部用户',
-        },
-        {
-          key: 3,
-          name: '企业管理员',
-        },
-        {
-          key: 4,
-          name: '企业内部用户',
-        },
-        {
-          key: 5,
-          name: '客户管理员',
-        },
-        {
-          key: 6,
-          name: '客户内部用户',
-        },
-      ],
     };
   },
   mounted() {
-    const { level } = this.$store.state.fepUserInfo;
-    if (level === 1) {
-      this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 && user.key <= level + 2);
-    } else {
-      this.userTypeList = this.userTypeList.filter(user => user.key === level + 1 || user.key === level);
-    }
-    this.form.level = level + 1;
     this.getList();
   },
   methods: {
@@ -260,7 +200,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getAccountList({
+      this.$api.getCustomerList({
         ...this.form,
       }).then((res) => {
         this.list = res.dataList;
@@ -274,7 +214,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: 'edit', query: { userId: row.id } });
+      this.$router.push({ path: 'edit', query: { id: row.id } });
     },
     selectDate(val) {
       const [start, end] = val;
@@ -282,7 +222,34 @@ export default {
       this.form.endTime = end;
     },
     add() {
-      this.$router.push({ path: 'edit', query: { type: 'add' } });
+      this.$router.push('edit');
+    },
+    disable(item) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+        onOk: () => {
+          this.$api.disableCustomer({
+            id: item.id,
+            status: Number(!item.status),
+          }).then(() => {
+            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+            this.getList();
+          });
+        },
+      });
+    },
+    selectedChildTree(selection) {
+      const userIdList = [];
+      selection.forEach((item) => {
+        if (item.userId) {
+          userIdList.push(item.userId);
+        }
+      });
+      this.form = Object.assign({}, this.form, {
+        userIdList,
+      });
+      this.getList();
     },
   },
 };
@@ -299,6 +266,9 @@ export default {
   }
   .grey {
     color: #999999;
+  }
+  .mouse {
+    cursor: pointer;
   }
 }
 </style>

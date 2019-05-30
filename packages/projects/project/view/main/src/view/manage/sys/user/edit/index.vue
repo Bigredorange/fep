@@ -624,6 +624,9 @@ export default {
         const getKey = (list) => {
           list.forEach((item) => {
             if (item.children && item.children.length) {
+              if (item.checked) {
+                keys.push(item.id);
+              }
               getKey(item.children);
             } else if (item.checked) {
               keys.push(item.id);

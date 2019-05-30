@@ -248,6 +248,7 @@
           label="审核时间"
         />
         <el-table-column
+          fixed="right"
           label="操作"
           align="center"
           width="160"
@@ -432,7 +433,6 @@ export default {
           userIdList.push(item.userId);
         }
       });
-      console.log(userIdList);
       this.form = Object.assign({}, this.form, {
         userIdList,
       });
