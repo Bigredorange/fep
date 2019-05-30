@@ -102,13 +102,12 @@
           label="最新地址"
         />
         <el-table-column
-          prop="customerName"
           align="center"
           label="性别"
           :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
-          prop="customerName"
+          prop="companyName"
           align="center"
           label="来源"
         />
