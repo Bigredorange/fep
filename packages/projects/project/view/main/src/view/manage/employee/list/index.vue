@@ -93,6 +93,12 @@
         >
           导入灵工
         </el-button>
+        <!-- <el-button
+          type="primary"
+          @click="downTemplate"
+        >
+          下载模板
+        </el-button> -->
         <el-button @click="exportEmployee">
           导出
         </el-button>
@@ -393,6 +399,11 @@ export default {
           name: '灵工.xlsx',
         });
       });
+    },
+    downTemplate() {
+      this.$api.downloadTemplate({
+        file: 'employee_import.xlsx',
+      }).then(blob => this.$utils.autoLoad(new Blob([blob]), '灵工导入模板.xlsx'));
     },
   },
 };

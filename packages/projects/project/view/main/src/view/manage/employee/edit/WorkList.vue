@@ -105,6 +105,14 @@
           >
             编辑
           </el-button>
+          <el-button
+            v-if="!row.id"
+            type="text"
+            class="red"
+            @click="delRow($index)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -188,6 +196,9 @@ export default {
     },
     addRow() {
       this.list.push({ ...this.initRow });
+    },
+    delRow(index) {
+      this.list.splice(index, 1);
     },
   },
 };
