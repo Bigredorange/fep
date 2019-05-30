@@ -257,6 +257,16 @@ const asyncRoutes = [{
             },
           ],
         },
+      ],
+    },
+    {
+      path: 'hroCompanyDetail',
+      component: RouterView,
+      redirect: 'hroCompanyDetail/hroDetail',
+      meta: {
+        title: 'HRO企业',
+      },
+      children: [
         {
           path: 'hroDetail',
           meta: {
