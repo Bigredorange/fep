@@ -216,7 +216,7 @@ export default {
         startTime: null,
         endTime: null,
         source: null,
-        status: '',
+        status: 99,
         pageCurrent: 1,
         pageSize: 20,
       },
@@ -231,7 +231,7 @@ export default {
           label: '启用',
         },
         {
-          key: '',
+          key: 99,
           label: '全部',
         },
       ],
