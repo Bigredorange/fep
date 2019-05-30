@@ -26,12 +26,12 @@
         :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
       />
       <el-table-column
-        prop="startDate"
+        prop="gotoWorkTime"
         align="center"
         label="开始日期"
       />
       <el-table-column
-        prop="endDate"
+        prop="completeTime"
         align="center"
         label="结束日期"
       />
