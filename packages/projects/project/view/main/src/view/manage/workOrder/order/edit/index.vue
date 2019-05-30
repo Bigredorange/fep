@@ -473,13 +473,39 @@ export default {
         }],
         startDate: [{
           required: true,
-          message: '请选择有效日期',
           trigger: 'blur',
+          validator: (rule, value, callback) => {
+            if (!value) {
+              callback('请选择开始日期');
+              return;
+            }
+            const time = new Date(value).getTime();
+            const endDate = new Date(this.form.endDate).getTime();
+            const flag = time > endDate;
+            if (flag && this.form.endDate) {
+              callback('开始日期需小于结束日期');
+            } else {
+              callback();
+            }
+          },
         }],
         endDate: [{
           required: true,
-          message: '请选择截止日期',
           trigger: 'blur',
+          validator: (rule, value, callback) => {
+            if (!value) {
+              callback('请选择结束日期');
+              return;
+            }
+            const time = new Date(value).getTime();
+            const startDate = new Date(this.form.startDate).getTime();
+            const flag = time < startDate;
+            if (flag && this.form.startDate) {
+              callback('结束日期需大于开始日期');
+            } else {
+              callback();
+            }
+          },
         }],
       },
       form: {

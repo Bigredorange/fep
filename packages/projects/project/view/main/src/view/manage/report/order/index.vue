@@ -41,7 +41,10 @@
       </section>
     </top-bar>
     <div class="con-report">
-      <v-chart :options="chartOption" />
+      <v-chart
+        :options="chartOption"
+        style="width: 100%"
+      />
     </div>
   </div>
 </template>

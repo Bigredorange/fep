@@ -41,7 +41,10 @@
       </section>
     </top-bar>
     <div class="con-report">
-      <v-chart :options="chartOption" />
+      <v-chart
+        :options="chartOption"
+        style="width: 100%"
+      />
       <p class="total">
         说明：截止到今天，系统已入驻的灵工数量为{{ empEnterTotal }}人
       </p>
@@ -167,6 +170,7 @@ export default {
         this.customerEnterTotal = res.customerEnterTotal;
         const dateArr = res.dailyStatistics.map(item => item.date);
         const empData = res.dailyStatistics.map(item => item.quantity);
+        this.empNum = 0;
         if (empData.length > 0) {
           empData.forEach((emp) => {
             this.empNum += emp;

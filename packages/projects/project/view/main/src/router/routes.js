@@ -83,7 +83,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
                 btnPermission: [
                   {
                     title: '分配客户',
@@ -145,7 +145,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/cus/edit/index.vue'),
             },
@@ -193,7 +193,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/contract/edit/index.vue'),
             },
@@ -217,7 +217,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/account/edit/index.vue'),
             },
@@ -251,11 +251,18 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
             },
           ],
+        },
+        {
+          path: 'hroDetail',
+          meta: {
+            title: 'hro详情',
+          },
+          component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
         },
       ],
     },
@@ -285,9 +292,16 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/workOrder/order/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '工单详情',
+              },
+              component: () => import(/* webpackChunkName: "v-detail" */ '../view/manage/workOrder/detail/index.vue'),
             },
           ],
         },
@@ -307,11 +321,11 @@ const asyncRoutes = [{
               component: () => import(/* webpackChunkName: "v-check" */ '../view/manage/workOrder/check/list/index.vue'),
             },
             {
-              path: 'edit',
+              path: 'detail',
               meta: {
-                title: '详情',
+                title: '工单详情',
               },
-              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/workOrder/check/edit/index.vue'),
+              component: () => import(/* webpackChunkName: "v-detail" */ '../view/manage/workOrder/detail/index.vue'),
             },
           ],
         },
@@ -343,7 +357,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
             },
@@ -404,7 +418,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/taskManage/task/edit/index.vue'),
             },
@@ -435,7 +449,7 @@ const asyncRoutes = [{
             {
               path: 'edit',
               meta: {
-                title: '详情',
+                title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/taskManage/taskPool/edit/index.vue'),
             },

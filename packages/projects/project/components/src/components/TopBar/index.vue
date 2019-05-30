@@ -49,6 +49,7 @@ export default {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+        width: 100%;
         .item {
           display: flex;
           width: 20%;

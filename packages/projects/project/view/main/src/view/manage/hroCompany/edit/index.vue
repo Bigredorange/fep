@@ -258,6 +258,10 @@ export default {
   mounted() {
     this.getRolesList();
     this.companyId = this.$route.query.id;
+    const { level, companyId } = this.$store.state.fepUserInfo;
+    if (level) {
+      this.companyId = companyId;
+    }
     if (this.companyId) {
       this.getDetail(this.companyId);
     }

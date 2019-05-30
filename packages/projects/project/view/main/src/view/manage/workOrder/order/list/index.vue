@@ -272,12 +272,20 @@
               提交审核
             </el-button>
             <el-button
-              v-if="row.status !== 3"
+              v-if="row.status === 0 || row.status === 2"
               type="text"
               class="primary"
               @click="edit(row)"
             >
               编辑
+            </el-button>
+            <el-button
+              v-if="row.status === 3"
+              type="text"
+              class="primary"
+              @click="detail(row)"
+            >
+              详情
             </el-button>
           </template>
         </el-table-column>
@@ -357,13 +365,11 @@ export default {
   },
   mounted() {
     this.getCustomerAll();
-    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
   },
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
-      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {
@@ -439,6 +445,7 @@ export default {
       });
     },
     selectedChildTree(selection) {
+      this.form.userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
           this.form.userIdList.push(item.userId);
@@ -453,6 +460,9 @@ export default {
       }).finally(() => {
         this.isLoading = false;
       });
+    },
+    detail(row) {
+      this.$router.push({ path: 'detail', query: { id: row.id } });
     },
   },
 };

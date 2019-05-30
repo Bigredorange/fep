@@ -20,7 +20,7 @@
         </div>
         <div class="item">
           <span>操作时间：</span>
-          <el-date-pickerel-date-picker
+          <el-date-picker
             v-model="createTime"
             style="width: 260px;"
             type="daterange"
@@ -72,16 +72,6 @@
           prop="operator"
           align="center"
           label="操作人"
-        />
-        <el-table-column
-          prop="contactPhone"
-          align="center"
-          label="联系方式"
-        />
-        <el-table-column
-          prop="area"
-          align="center"
-          label="区域"
         />
         <!-- <el-table-column
           prop="area"
