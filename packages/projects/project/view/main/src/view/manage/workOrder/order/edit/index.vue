@@ -620,7 +620,7 @@ export default {
         item.flag = true;
         keys.forEach((key) => {
           if (key.includes('Checked')) {
-            if (!item[key] && key !== 'id') {
+            if (!item[key]) {
               item.flag = false;
             }
           }
@@ -631,7 +631,7 @@ export default {
     handleCheck(row) {
       const keys = Object.keys(row);
       keys.forEach((key) => {
-        if (key !== 'period') {
+        if (key.includes('Checked')) {
           row[key] = row.flag;
         }
       });

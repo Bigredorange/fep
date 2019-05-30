@@ -97,7 +97,6 @@
         >
           新增
         </el-button>
-        <el-button>导出</el-button>
       </div>
       <el-table
         :data="list"
@@ -245,6 +244,7 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {

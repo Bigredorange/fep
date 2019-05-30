@@ -87,13 +87,13 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/sys/user/list/addUser')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
         >
           新增
         </el-button>
-        <el-button>导出</el-button>
       </div>
       <el-table
         :data="list"
@@ -153,6 +153,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/sys/user/list/editUser')"
               type="text"
               class="primary"
               @click="edit(row)"

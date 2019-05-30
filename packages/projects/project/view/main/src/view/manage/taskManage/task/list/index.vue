@@ -363,7 +363,7 @@ export default {
       form: {
         taskNo: null,
         taskName: null,
-        status: 1,
+        status: 99,
         paySettlement: null,
         workType: null,
         pageCurrent: 1,
@@ -374,31 +374,15 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '待接单',
-        },
-        {
-          key: 1,
-          label: '已拒绝',
-        },
-        {
-          key: 2,
-          label: '待上岗',
-        },
-        {
-          key: 3,
           label: '待完成',
         },
         {
-          key: 4,
+          key: 1,
           label: '已完成',
         },
         {
-          key: 5,
+          key: 2,
           label: '已撤回',
-        },
-        {
-          key: 6,
-          label: '已结束',
         },
         {
           key: 99,
@@ -416,6 +400,7 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {
