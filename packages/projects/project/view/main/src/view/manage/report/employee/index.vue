@@ -11,6 +11,8 @@
             end-placeholder="结束日期"
             value-format="yyyy-MM-dd"
             :default-value="form.startTime"
+            :clearable="false"
+            @change="getList"
           />
         </div>
         <div class="item">
@@ -21,6 +23,8 @@
             placeholder="结束日期"
             value-format="yyyy-MM-dd"
             :default-value="form.endTime"
+            :clearable="false"
+            @change="getList"
           />
         </div>
         <div
@@ -39,13 +43,13 @@
     <div class="con-report">
       <v-chart :options="chartOption" />
       <p class="total">
-        当前日期范围下，入驻hro总数为{{ empEnterTotal }}家, 入驻客户总数为{{ customerEnterTotal }}家。
+        说明：截止到今天，系统已入驻的灵工数量为{{ empEnterTotal }}人
       </p>
     </div>
     <div class="con-table">
       <div class="buttons">
         <span>
-          当前日期范围下，入驻hro总数为{{ empNum }}家, 入驻客户总数为{{ customerNum }}家。
+          当前日期范围下，入驻灵工数量为{{ empNum }}人
         </span>
       </div>
       <el-table
@@ -68,7 +72,7 @@
   </div>
 </template>
 <script>
-import Echarts from 'vue-echarts';
+import Echarts from 'vue-echarts/dist/vue-echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
@@ -193,6 +197,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/ .el-date-editor--date .el-input__prefix {
+  top: 45%;
+}
 .con-report {
   margin: 8px;
   background: #fff;

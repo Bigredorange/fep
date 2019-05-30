@@ -36,9 +36,9 @@
               <li @click="$refs.selfInfo.open()">
                 个人信息
               </li>
-              <li @click="$refs.modifyPassword.open()">
+              <!-- <li @click="$refs.modifyPassword.open()">
                 修改密码
-              </li>
+              </li> -->
               <li @click="quit">
                 退出登录
               </li>

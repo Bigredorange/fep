@@ -31,6 +31,7 @@
           <el-select
             v-model="form.level"
             placeholder="请选择用户类型"
+            @change="getList"
           >
             <el-option
               v-for="item in userTypeList"

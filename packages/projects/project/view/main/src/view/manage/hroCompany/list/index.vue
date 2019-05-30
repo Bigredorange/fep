@@ -210,6 +210,7 @@ export default {
       list: [],
       listLoading: false,
       form: {
+        companyId: null,
         enterpriseNum: null,
         companyName: null,
         legalRepresentative: null,
@@ -239,6 +240,10 @@ export default {
     };
   },
   mounted() {
+    const { level, companyId } = this.$store.state.fepUserInfo;
+    if (level !== 1) {
+      this.form.companyId = companyId;
+    }
     this.getList();
   },
   methods: {

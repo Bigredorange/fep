@@ -218,6 +218,7 @@ export default {
         pageSize: 20,
         startTime: null,
         endTime: null,
+        userIdList: [],
       },
       total: 0,
       statusList: [
@@ -238,6 +239,7 @@ export default {
     };
   },
   mounted() {
+    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
   },
   methods: {
@@ -287,14 +289,10 @@ export default {
       });
     },
     selectedChildTree(selection) {
-      const userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
-          userIdList.push(item.userId);
+          this.form.userIdList.push(item.userId);
         }
-      });
-      this.form = Object.assign({}, this.form, {
-        userIdList,
       });
       this.getList();
     },
