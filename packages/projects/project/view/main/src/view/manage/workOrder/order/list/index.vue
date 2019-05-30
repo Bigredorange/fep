@@ -158,16 +158,29 @@
           prop="customerName"
           align="center"
           label="客户名称"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="workOrderNo"
           align="center"
           label="工单编号"
+          width="150"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="companyName"
+          align="center"
+          label="工单来源"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="workOrderName"
           align="center"
           label="工单名称"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="workOrderFee"
@@ -233,6 +246,8 @@
           prop="workArea"
           align="center"
           label="工作区域"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="applicantName"
@@ -243,6 +258,8 @@
           prop="applicationTime"
           align="center"
           label="申请时间"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="reviewName"
@@ -253,6 +270,8 @@
           prop="reviewTime"
           align="center"
           label="审核时间"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           fixed="right"

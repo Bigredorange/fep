@@ -122,12 +122,23 @@
           prop="taskNo"
           align="center"
           label="任务编号"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="customerName"
           align="center"
           label="客户名称"
+          width="150"
+          show-overflow-tooltip
         />
+        <!-- <el-table-column
+          prop="companyName"
+          align="center"
+          label="任务来源"
+          width="150"
+          show-overflow-tooltip
+        /> -->
         <el-table-column
           prop="taskName"
           align="center"
@@ -278,6 +289,8 @@
           prop="workArea"
           align="center"
           label="工作区域"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           fixed="right"
