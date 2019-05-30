@@ -95,7 +95,7 @@
             class="success"
             @click="save(row)"
           >
-            {{ row.id + row.id ? '保存' : '新增' }}
+            {{ row.id ? '保存' : '新增' }}
           </el-button>
           <el-button
             v-else
@@ -177,7 +177,7 @@ export default {
 
       this.$api[api](params)
         .then(() => {
-          this.$message.success(row.id ? '修改成功' : '添加成功');
+          this.$message.success(row.id ? '保存成功' : '新增成功');
           this.getList();
         })
         .finally(() => {});

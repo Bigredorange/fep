@@ -202,13 +202,15 @@ const api = {
   // 编辑灵工
   updateEmployee: ({ id, ...arg }) => putJson(`employee/${id}`, arg),
   // 导出灵工
-  exportEmployee: args => postJson('employee/export', args),
+  exportEmployee: args => get('employee/export', args),
   // 获取灵工详情
   getEmployeeDetails: ({ id, ...arg }) => get(`employee/${id}`, arg),
   // 导入灵工
   importEmployee: args => postForm('employee/import', args, { noMessage: true }),
   // 灵工任务完成记录
   getEmployeeTask: ({ id, ...arg }) => get(`/empworktask/${id}/emp`, arg),
+  // 灵工更新状态
+  updateEmployeeStatus: ({ id, status, ...arg }) => postJson(`/employee/${id}/${status}/update`, arg),
   /**
    * 服务报酬
    */

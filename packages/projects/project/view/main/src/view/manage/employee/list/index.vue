@@ -142,8 +142,23 @@
           prop="contactName"
           align="center"
           label="状态"
-          :formatter="({ status }) => getStatusName(status)"
-        />
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <div
+              class="mouse"
+              @click.stop="disable(row)"
+            >
+              <img :src="require(`../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <span
+                :class="{'grey': row.status === 0}"
+              >
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </span>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="companyName"
           align="center"
@@ -286,7 +301,7 @@ export default {
         title: '提示',
         content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
         onOk: () => {
-          this.$api.disableCustomer({
+          this.$api.updateEmployeeStatus({
             id: item.id,
             status: Number(!item.status),
           }).then(() => {
