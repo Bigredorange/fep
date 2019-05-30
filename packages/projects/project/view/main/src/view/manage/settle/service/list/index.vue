@@ -112,6 +112,7 @@
           width="50"
           align="center"
           fixed="left"
+          :selectable="selectable"
         />
         <el-table-column
           prop="importTime"
@@ -566,6 +567,9 @@ export default {
           break;
       }
       return name;
+    },
+    selectable(row) {
+      return row.status !== 2 ? 1 : 0;
     },
   },
 };
