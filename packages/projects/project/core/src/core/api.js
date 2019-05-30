@@ -260,6 +260,18 @@ const api = {
   // 拒绝任务
   refuseEmpWorkTask: ({ empWorkTaskId }) => postJson(`empworktask/refuse/${empWorkTaskId}`),
   /**
+   * 报表管理
+   */
+  // 查询企业、客户入驻情况
+  getCompanyReportList: args => get('report/entering/enterprise', args),
+  // 查询灵工入驻情况
+  getEmpReportList: args => get('report/entering/emp', args),
+  // 查询灵工接单情况
+  getOrderReportList: args => get('report/entering/receive_order', args),
+  // 查询日流水情况
+  getBillReportList: args => get('report/entering/bill', args),
+
+  /**
    * 模板下载
    */
   downloadTemplate: args => getBlob('file/download/template', args),

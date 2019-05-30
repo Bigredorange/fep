@@ -47,9 +47,6 @@
     </top-bar>
     <div class="con-report">
       <v-chart :options="chartOption" />
-      <span class="total">
-        当前日期范围下，入驻hro总数为{{ list.companyEnterTotal }}家, 入驻客户总数为{{ list.customerEnterTotal }}家。
-      </span>
     </div>
     <div class="con-table">
       <div class="buttons">
@@ -105,7 +102,7 @@ export default {
       customerNum: 0,
       chartOption: {
         title: {
-          text: '入驻统计表',
+          text: '入驻灵工数量',
           textStyle: {
             fontSize: 18,
             color: '#999',
@@ -127,7 +124,7 @@ export default {
           },
         },
         backgroundColor: '#fff',
-        color: ['#ED7E33', '#5C9BD5'],
+        color: ['#5C9BD5'],
         xAxis: {
           type: 'category',
           data: [],
@@ -183,16 +180,6 @@ export default {
         const dateArr = res.dailyStatistics.map(item => item.date)
         const comData = res.dailyStatistics.map(item => item.comDailyQuantity);
         const cusData = res.dailyStatistics.map(item => item.cusDailyQuantity);
-        if (comData.length > 0) {
-          comData.forEach((com) => {
-            this.companyNum += com;
-          });
-        }
-        if (cusData.length > 0) {
-          cusData.forEach((cus) => {
-            this.customerNum += cus;
-          });
-        }
         this.chartOption.series[0].data = comData;
         this.chartOption.series[1].data = cusData;
         this.chartOption.xAxis.data = dateArr;
@@ -248,9 +235,6 @@ export default {
 <style lang="scss" scoped>
 .con-report {
   padding: 8px;
-  .total {
-    margin-left: 20px;
-  }
 }
 .con-table {
   background: #fff;
