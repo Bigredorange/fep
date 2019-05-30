@@ -222,7 +222,7 @@
             <el-button
               type="text"
               class="primary"
-              @click="edit(row)"
+              @click="detail(row)"
             >
               详情
             </el-button>
@@ -300,13 +300,11 @@ export default {
   },
   mounted() {
     this.getCustomerAll();
-    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
   },
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
-      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {
@@ -325,8 +323,8 @@ export default {
       this.form.pageSize = n;
       this.getList();
     },
-    edit(row) {
-      this.$router.push({ path: 'edit', query: { id: row.id } });
+    detail(row) {
+      this.$router.push({ path: 'detail', query: { id: row.id } });
     },
     selectDate(val) {
       const [start, end] = val;
@@ -386,6 +384,7 @@ export default {
       return name;
     },
     selectedChildTree(selection) {
+      this.form.userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
           this.form.userIdList.push(item.userId);

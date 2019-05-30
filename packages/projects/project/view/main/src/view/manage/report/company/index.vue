@@ -48,7 +48,10 @@
       </section>
     </top-bar>
     <div class="con-report">
-      <v-chart :options="chartOption" />
+      <v-chart
+        :options="chartOption"
+        style="width: 100%"
+      />
       <p class="total">
         说明：截止到今天，系统已入驻hro总数为{{ companyEnterTotal }}家, 已入驻客户总数为{{ customerEnterTotal }}家。
       </p>
@@ -195,6 +198,8 @@ export default {
         const dateArr = res.dailyStatistics.map(item => item.date);
         const comData = res.dailyStatistics.map(item => item.comDailyQuantity);
         const cusData = res.dailyStatistics.map(item => item.cusDailyQuantity);
+        this.companyNum = 0;
+        this.customerNum = 0;
         if (comData.length > 0) {
           comData.forEach((com) => {
             this.companyNum += com;

@@ -393,14 +393,12 @@ export default {
     };
   },
   mounted() {
-    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
     this.getCustomerAll();
   },
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
-      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {
@@ -507,6 +505,7 @@ export default {
       });
     },
     selectedChildTree(selection) {
+      this.form.userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
           this.form.userIdList.push(item.userId);

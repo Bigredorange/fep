@@ -41,7 +41,10 @@
       </section>
     </top-bar>
     <div class="con-report">
-      <v-chart :options="chartOption" />
+      <v-chart
+        :options="chartOption"
+        style="width: 100%"
+      />
     </div>
   </div>
 </template>
@@ -133,7 +136,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      this.$api.getOrderReportList({
+      this.$api.getBillReportList({
         ...this.form,
       }).then((res) => {
         this.list = res;
