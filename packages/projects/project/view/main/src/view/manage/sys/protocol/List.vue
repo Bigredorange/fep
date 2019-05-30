@@ -19,7 +19,12 @@
           @click="selectItem(item)"
         >
           <!-- <img src="../../../../assets/"> -->
-          <span>{{ item.name }}</span>
+          <span
+            class="protocol-name"
+            :title="item.name"
+          >
+            {{ item.name }}
+          </span>
           <div class="info">
             {{ `${item.updater} ${item.updateTime}` }}
             <div class="delete-btn">
@@ -135,10 +140,17 @@ export default {
       padding: 10px 20px;
       border-bottom: 1px solid #f0f3f6;
       cursor: pointer;
-      span {
-        width: 300px;
+      .protocol-name {
+        width: 290px;
+        height: 36px;
+        line-height: 36px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap
       }
       .info {
+        display: flex;
+        align-items: center;
         font-size: 12px;
         color: #999;
       }
@@ -154,6 +166,8 @@ export default {
 
       .delete-btn {
         width: 55px;
+        height: 36px;
+        line-height: 36px;
         display: inline-block;
       }
     }
