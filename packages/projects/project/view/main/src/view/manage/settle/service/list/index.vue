@@ -10,7 +10,10 @@
             style="width: 200px;"
           />
         </div>
-        <div class="item">
+        <div
+          class="item"
+          style="width: 40%;"
+        >
           <span>月份：</span>
           <el-date-picker
             v-model="form.startMonth"
@@ -256,6 +259,7 @@
             slot-scope="{ $index, row }"
           >
             <el-button
+              v-if="row.status === 0"
               type="text"
               class="green"
               @click="sendItem(row)"
@@ -527,6 +531,10 @@ export default {
         this.$message.warning('请选择批量发送操作项');
         return;
       }
+      if (this.selection.some(t => t.status === 1)) {
+        this.$message.warning('包含确认中的数据，请勾选未确认的数据');
+        return;
+      }
       const ids = this.selection.map(item => item.id);
       this.sendApi(ids, '确定批量发送服务报酬确认？');
     },
@@ -577,7 +585,7 @@ export default {
 <style lang="scss" scoped>
 .range {
   min-width: 20px !important;
-  padding: 0 2px;
+  padding: 0 10px;
 }
 .con-table {
   background: #fff;
