@@ -1,260 +1,192 @@
 <template>
   <div>
-    <top-bar>
-      <section>
-        <div class="item">
-          <span>日期范围：</span>
-          <el-date-picker
-            v-model="createTime"
-            style="width: 260px;"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd"
-            @change="selectDate"
-          />
-        </div>
-        <div class="item">
-          <span>企业状态：</span>
-          <el-checkbox
-            v-model="form.valid"
-          >
-            只看有效
-          </el-checkbox>
-        </div>
-        <div
-          class="item"
-        >
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            @click="getList"
-          >
-            查询
-          </el-button>
-          <el-button
-            @click="reset"
-          >
-            重置
-          </el-button>
-        </div>
-      </section>
-    </top-bar>
-    <div class="con-table">
-      <div class="buttons">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-        >
-          新增
-        </el-button>
-        <el-button>导出</el-button>
-      </div>
-      <el-table
-        :data="list"
-        :loading="listLoading"
-      >
-        <el-table-column
-          prop="valid"
-          align="center"
-          label="客户编号"
-        />
-        <el-table-column
-          prop="customerName"
-          align="center"
-          label="客户名称"
-        />
-        <el-table-column
-          prop="industry"
-          align="center"
-          label="所属行业"
-          :formatter="({ industry }) => $optDicLabel('Industry', industry)"
-        />
-        <el-table-column
-          prop="contactName"
-          align="center"
-          label="联系人"
-        />
-        <el-table-column
-          prop="status"
-          align="center"
-          label="状态"
-        >
-          <template
-            slot-scope="{ row }"
-          >
-            <div
-              class="mouse"
-              @click.stop="disable(row)"
-            >
-              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-              <span
-                :class="{'grey': row.status === 0}"
-              >
-                {{ row.status === 1 ? '启用' : '禁用' }}
-              </span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="余额控制"
-          :formatter="({ balanceLimit }) => balanceLimit ? '是' : '否'"
-        />
-        <el-table-column
-          prop="creator"
-          align="center"
-          label="创建人"
-        />
-        <el-table-column
-          prop="createTime"
-          align="center"
-          label="创建时间"
-        />
-        <el-table-column
-          label="操作"
-          align="center"
-        >
-          <template
-            slot-scope="{ row }"
-          >
-            <el-button
-              type="text"
-              class="primary"
-              @click="edit(row)"
-            >
-              编辑
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <affix
-        direction="bottom"
-        :offset="0"
-      >
-        <el-pagination
-          class="ui-pagination"
-          :current-page.sync="form.pageCurrent"
-          :page-size="form.pageSize"
-          :page-sizes="[20, 40, 60, 80, 100]"
-          layout="slot, sizes, prev, pager, next"
-          :total="total"
-          @current-change="getList"
-          @size-change="sizeChange"
-        >
-          <span class="total">{{ total }} 条记录，共 {{ Math.ceil(total / form.pageSize) }} 页</span>
-        </el-pagination>
-      </affix>
-    </div>
+    company
   </div>
 </template>
 <script>
-import ChildTree from '../../../../../components/ChildTree';
+// import Echarts from 'vue-echarts';
+// import 'echarts/lib/chart/line';
+// import 'echarts/lib/component/tooltip';
+// import 'echarts/lib/component/legend';
+// import 'echarts/lib/component/title';
 
 export default {
-  components: {
-    ChildTree,
-  },
-  data() {
-    return {
-      list: [],
-      listLoading: false,
-      form: {
-        valid: false,
-        customerName: null,
-        contactName: null,
-        contactPhone: null,
-        status: 99,
-        pageCurrent: 1,
-        pageSize: 20,
-        startTime: null,
-        endTime: null,
-      },
-      total: 0,
-      statusList: [
-        {
-          key: 0,
-          label: '禁用',
-        },
-        {
-          key: 1,
-          label: '启用',
-        },
-        {
-          key: 99,
-          label: '全部',
-        },
-      ],
-      createTime: [],
-    };
-  },
-  mounted() {
-    this.getList();
-  },
-  methods: {
-    reset() {
-      this.$utils.initData.call(this, { include: ['form'] });
-      this.getList();
-    },
-    getList() {
-      this.listLoading = true;
-      this.$api.getCustomerList({
-        ...this.form,
-      }).then((res) => {
-        this.list = res.dataList;
-        this.total = res.allCount;
-      }).finally(() => {
-        this.listLoading = false;
-      });
-    },
-    sizeChange(n) {
-      this.form.pageSize = n;
-      this.getList();
-    },
-    edit(row) {
-      this.$router.push({ path: 'edit', query: { id: row.id } });
-    },
-    selectDate(val) {
-      const [start, end] = val;
-      this.form.startTime = start;
-      this.form.endTime = end;
-    },
-    add() {
-      this.$router.push('edit');
-    },
-    disable(item) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
-        onOk: () => {
-          this.$api.disableCustomer({
-            id: item.id,
-            status: Number(!item.status),
-          }).then(() => {
-            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
-            this.getList();
-          });
-        },
-      });
-    },
-    selectedChildTree(selection) {
-      const userIdList = [];
-      selection.forEach((item) => {
-        if (item.userId) {
-          userIdList.push(item.userId);
-        }
-      });
-      this.form = Object.assign({}, this.form, {
-        userIdList,
-      });
-      this.getList();
-    },
-  },
+  // components: {
+  //   'v-chart': Echarts,
+  // },
+  // data() {
+  //   return {
+  //     list: [],
+  //     listLoading: false,
+  //     form: {
+  //       valid: false,
+  //       startTime: null,
+  //       endTime: null,
+  //     },
+  //     companyEnterTotal: 0,
+  //     customerEnterTotal: 0,
+  //     companyNum: 0,
+  //     customerNum: 0,
+  //     chartOption: {
+  //       title: {
+  //         text: '入驻统计表',
+  //         textStyle: {
+  //           fontSize: 18,
+  //           color: '#999',
+  //         },
+  //         x: 'center',
+  //         padding: 10,
+  //       },
+  //       legend: {
+  //         data: ['入驻hro数量', '入驻客户数量'],
+  //         icon: 'rect',
+  //         itemWidth: 15,
+  //         itemHeight: 3,
+  //         bottom: 10,
+  //       },
+  //       tooltip: {
+  //         trigger: 'axis',
+  //         axisPointer: {
+  //           type: 'cross',
+  //         },
+  //       },
+  //       backgroundColor: '#fff',
+  //       color: ['#ED7E33', '#5C9BD5'],
+  //       xAxis: {
+  //         type: 'category',
+  //         data: [],
+  //         axisLine: {
+  //           lineStyle: {
+  //             color: '#E3E3E3',
+  //           },
+  //         },
+  //         axisLabel: {
+  //           color: '#999',
+  //         },
+  //       },
+  //       axisLine: {
+  //         lineStyle: {
+  //           color: '#E3E3E3',
+  //         },
+  //       },
+  //       yAxis: {
+  //         type: 'value',
+  //         axisLine: {
+  //           lineStyle: {
+  //             color: '#E3E3E3',
+  //           },
+  //         },
+  //         axisLabel: {
+  //           color: '#999',
+  //         },
+  //       },
+  //       series: [
+  //         {
+  //           name: '入驻hro数量',
+  //           type: 'line',
+  //           showSymbol: false,
+  //           data: [],
+  //         },
+  //         {
+  //           name: '入驻客户数量',
+  //           type: 'line',
+  //           showSymbol: false,
+  //           data: [],
+  //         },
+  //       ],
+  //       animationDuration: 2000,
+  //     },
+  //   };
+  // },
+  // created() {
+  //   this.form.startTime = this.$utils.formatDate(new Date(), 'yyyy-MM-dd');
+  //   this.form.endTime = this.$utils.formatDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+  //   this.getList();
+  // },
+  // methods: {
+  //   getList() {
+  //     this.listLoading = true;
+  //     this.$api.getCompanyReportList({
+  //       ...this.form,
+  //     }).then((res) => {
+  //       this.list = res.dailyStatistics;
+  //       this.companyEnterTotal = res.companyEnterTotal;
+  //       this.customerEnterTotal = res.customerEnterTotal;
+  //       const dateArr = res.dailyStatistics.map(item => item.date);
+  //       const comData = res.dailyStatistics.map(item => item.comDailyQuantity);
+  //       const cusData = res.dailyStatistics.map(item => item.cusDailyQuantity);
+  //       if (comData.length > 0) {
+  //         comData.forEach((com) => {
+  //           this.companyNum += com;
+  //         });
+  //       }
+  //       if (cusData.length > 0) {
+  //         cusData.forEach((cus) => {
+  //           this.customerNum += cus;
+  //         });
+  //       }
+  //       this.chartOption.series[0].data = comData;
+  //       this.chartOption.series[1].data = cusData;
+  //       this.chartOption.xAxis.data = dateArr;
+  //     }).finally(() => {
+  //       this.listLoading = false;
+  //     });
+  //   },
+  //   sizeChange(n) {
+  //     this.form.pageSize = n;
+  //     this.getList();
+  //   },
+  //   edit(row) {
+  //     this.$router.push({ path: 'edit', query: { id: row.id } });
+  //   },
+  //   selectDate(val) {
+  //     const [start, end] = val;
+  //     this.form.startTime = start;
+  //     this.form.endTime = end;
+  //   },
+  //   add() {
+  //     this.$router.push('edit');
+  //   },
+  //   disable(item) {
+  //     this.$dialogs.confirm({
+  //       title: '提示',
+  //       content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+  //       onOk: () => {
+  //         this.$api.disableCustomer({
+  //           id: item.id,
+  //           status: Number(!item.status),
+  //         }).then(() => {
+  //           this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+  //           this.getList();
+  //         });
+  //       },
+  //     });
+  //   },
+  //   selectedChildTree(selection) {
+  //     const userIdList = [];
+  //     selection.forEach((item) => {
+  //       if (item.userId) {
+  //         userIdList.push(item.userId);
+  //       }
+  //     });
+  //     this.form = Object.assign({}, this.form, {
+  //       userIdList,
+  //     });
+  //     this.getList();
+  //   },
+  // },
 };
 </script>
 <style lang="scss" scoped>
+.con-report {
+  margin: 8px;
+  background: #fff;
+  .total {
+    padding-left: 20px;
+    background: #fff;
+    padding-bottom: 10px;
+  }
+}
 .con-table {
   background: #fff;
   padding: 15px 20px;

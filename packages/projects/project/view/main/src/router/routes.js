@@ -450,6 +450,44 @@ const asyncRoutes = [{
         },
       ],
     },
+    {
+      path: 'report',
+      component: RouterView,
+      redirect: 'report/company',
+      meta: {
+        title: '报表管理',
+      },
+      children: [
+        {
+          path: 'company',
+          meta: {
+            title: '入驻企业报表',
+          },
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+        },
+        {
+          path: 'emp',
+          meta: {
+            title: '入驻灵工报表',
+          },
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+        },
+        {
+          path: 'order',
+          meta: {
+            title: '接单量报表',
+          },
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+        },
+        {
+          path: 'bill',
+          meta: {
+            title: '日流水报表',
+          },
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+        },
+      ],
+    },
   ],
 }];
 const routes = [

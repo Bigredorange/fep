@@ -488,7 +488,7 @@ export default {
             obj.name = node.name;
             return obj;
           });
-          if (this.form.level > 2) {
+          if (this.form.level >= 4) {
             this.form.companyId = this.$store.state.fepUserInfo.companyId;
           }
           if (this.form.level === 6) {
