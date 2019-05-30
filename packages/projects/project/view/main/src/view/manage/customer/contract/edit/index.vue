@@ -265,7 +265,7 @@ export default {
     };
   },
   mounted() {
-    this.getCustomerList();
+    this.getCustomerAll();
     this.contractId = this.$route.query.id;
     if (this.contractId) {
       this.getDetail(this.contractId);
@@ -303,17 +303,6 @@ export default {
         }
       });
     },
-    getCustomerList() {
-      this.isLoading = true;
-      this.$api.getCustomerList({
-        pageSize: 1000,
-        pageCurrent: 1,
-      }).then((res) => {
-        this.customerList = res.dataList;
-      }).finally(() => {
-        this.isLoading = false;
-      });
-    },
     getDetail(id) {
       this.$api.getCusContract({ id }).then((res) => {
         this.form = res;
@@ -347,6 +336,14 @@ export default {
         filePath: item.path,
         type: 'CUS_CONTRACT',
       }, item.fileName);
+    },
+    getCustomerAll() {
+      this.isLoading = true;
+      this.$api.getCustomerAll().then((res) => {
+        this.customerList = res;
+      }).finally(() => {
+        this.isLoading = false;
+      });
     },
   },
 };

@@ -306,6 +306,7 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {

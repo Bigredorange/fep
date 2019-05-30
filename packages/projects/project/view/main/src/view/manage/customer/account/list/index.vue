@@ -77,7 +77,6 @@
         >
           新增
         </el-button>
-        <el-button>导出</el-button>
       </div>
       <el-table
         :data="list"

@@ -172,6 +172,21 @@
         </el-table-column>
         <el-table-column
           align="center"
+          label="已指派人数"
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="$refs.assignTask.open(row.id, 'assigned')"
+            >
+              {{ row.assignedNum }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           label="待上岗人数"
         >
           <template
@@ -315,6 +330,10 @@
         </el-pagination>
       </affix>
     </div>
+    <assign-task
+      ref="assignTask"
+      @update="getList"
+    />
     <confirm-task
       ref="confirmTask"
       @update="getList"
@@ -334,6 +353,7 @@
   </div>
 </template>
 <script>
+import AssignTask from './AssignTask.vue';
 import ConfirmTask from './ConfirmTask.vue';
 import OnWorkTask from './OnWorkTask.vue';
 import TodoTask from './TodoTask.vue';
@@ -342,6 +362,7 @@ import ChildTree from '../../../../../components/ChildTree';
 
 export default {
   components: {
+    AssignTask,
     ConfirmTask,
     OnWorkTask,
     TodoTask,
@@ -366,31 +387,15 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '待确认',
-        },
-        {
-          key: 1,
-          label: '已拒绝',
-        },
-        {
-          key: 2,
-          label: '待上岗',
-        },
-        {
-          key: 3,
           label: '待完成',
         },
         {
-          key: 4,
+          key: 1,
           label: '已完成',
         },
         {
-          key: 5,
+          key: 2,
           label: '已撤回',
-        },
-        {
-          key: 6,
-          label: '已结束',
         },
         {
           key: 99,
@@ -408,6 +413,7 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.form.userIdList.push(this.$store.state.fepUserInfo.id);
       this.getList();
     },
     getList() {

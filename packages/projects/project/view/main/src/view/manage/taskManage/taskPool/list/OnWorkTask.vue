@@ -158,12 +158,14 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.getList();
     },
     getList() {
       this.listLoading = true;
       this.$api.getAssignList({
         ...this.form,
         id: this.workTaskId,
+        type: this.type,
       }).then((res) => {
         this.list = res.dataList;
         this.total = res.allCount;
@@ -198,7 +200,7 @@ export default {
     open(id, type) {
       this.workTaskId = id;
       this.title = this.getTitle(type);
-      this.form.type = this.getType(type);
+      this.type = this.getType(type);
       this.isShow = true;
       this.getList();
     },
