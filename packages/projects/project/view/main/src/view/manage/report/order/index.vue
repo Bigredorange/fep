@@ -12,6 +12,7 @@
             value-format="yyyy-MM-dd"
             :default-value="form.startTime"
             :clearable="false"
+            @change="getList"
           />
         </div>
         <div class="item">
@@ -23,16 +24,8 @@
             value-format="yyyy-MM-dd"
             :default-value="form.endTime"
             :clearable="false"
+            @change="getList"
           />
-        </div>
-        <div class="item">
-          <span>企业状态：</span>
-          <el-checkbox
-            v-model="form.valid"
-            style="line-height: 35px;"
-          >
-            只看有效
-          </el-checkbox>
         </div>
         <div
           class="item"
@@ -49,37 +42,6 @@
     </top-bar>
     <div class="con-report">
       <v-chart :options="chartOption" />
-      <p class="total">
-        说明：截止到今天，系统已入驻hro总数为{{ companyEnterTotal }}家, 已入驻客户总数为{{ customerEnterTotal }}家。
-      </p>
-    </div>
-    <div class="con-table">
-      <div class="buttons">
-        <span>
-          当前日期范围下，入驻hro总数为{{ companyNum }}家, 入驻客户总数为{{ customerNum }}家。
-        </span>
-      </div>
-      <el-table
-        :data="list"
-        :loading="listLoading"
-        style="max-height: 500px;overflow-y: auto"
-      >
-        <el-table-column
-          prop="date"
-          align="center"
-          label="创建日期"
-        />
-        <el-table-column
-          prop="comDailyQuantity"
-          align="center"
-          label="入驻hro数量"
-        />
-        <el-table-column
-          prop="cusDailyQuantity"
-          align="center"
-          label="入驻客户数量"
-        />
-      </el-table>
     </div>
   </div>
 </template>
@@ -87,7 +49,6 @@
 import Echarts from 'vue-echarts/dist/vue-echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
 import 'echarts/lib/component/title';
 
 export default {
@@ -99,30 +60,22 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        valid: false,
         startTime: null,
         endTime: null,
       },
-      companyEnterTotal: 0,
+      empEnterTotal: 0,
       customerEnterTotal: 0,
-      companyNum: 0,
+      empNum: 0,
       customerNum: 0,
       chartOption: {
         title: {
-          text: '入驻统计表',
+          text: '接单量',
           textStyle: {
             fontSize: 18,
             color: '#999',
           },
           x: 'center',
           padding: 10,
-        },
-        legend: {
-          data: ['入驻hro数量', '入驻客户数量'],
-          icon: 'rect',
-          itemWidth: 15,
-          itemHeight: 3,
-          bottom: 10,
         },
         tooltip: {
           trigger: 'axis',
@@ -131,7 +84,7 @@ export default {
           },
         },
         backgroundColor: '#fff',
-        color: ['#ED7E33', '#5C9BD5'],
+        color: ['#5C9BD5'],
         xAxis: {
           type: 'category',
           data: [],
@@ -162,13 +115,7 @@ export default {
         },
         series: [
           {
-            name: '入驻hro数量',
-            type: 'line',
-            showSymbol: false,
-            data: [],
-          },
-          {
-            name: '入驻客户数量',
+            name: '接单量',
             type: 'line',
             showSymbol: false,
             data: [],
@@ -186,27 +133,13 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      this.$api.getCompanyReportList({
+      this.$api.getOrderReportList({
         ...this.form,
       }).then((res) => {
-        this.list = res.dailyStatistics;
-        this.companyEnterTotal = res.companyEnterTotal;
-        this.customerEnterTotal = res.customerEnterTotal;
-        const dateArr = res.dailyStatistics.map(item => item.date);
-        const comData = res.dailyStatistics.map(item => item.comDailyQuantity);
-        const cusData = res.dailyStatistics.map(item => item.cusDailyQuantity);
-        if (comData.length > 0) {
-          comData.forEach((com) => {
-            this.companyNum += com;
-          });
-        }
-        if (cusData.length > 0) {
-          cusData.forEach((cus) => {
-            this.customerNum += cus;
-          });
-        }
-        this.chartOption.series[0].data = comData;
-        this.chartOption.series[1].data = cusData;
+        this.list = res;
+        const dateArr = res.map(item => item.date);
+        const yData = res.map(item => item.quantity);
+        this.chartOption.series[0].data = yData;
         this.chartOption.xAxis.data = dateArr;
       }).finally(() => {
         this.listLoading = false;
@@ -226,33 +159,6 @@ export default {
     },
     add() {
       this.$router.push('edit');
-    },
-    disable(item) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
-        onOk: () => {
-          this.$api.disableCustomer({
-            id: item.id,
-            status: Number(!item.status),
-          }).then(() => {
-            this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
-            this.getList();
-          });
-        },
-      });
-    },
-    selectedChildTree(selection) {
-      const userIdList = [];
-      selection.forEach((item) => {
-        if (item.userId) {
-          userIdList.push(item.userId);
-        }
-      });
-      this.form = Object.assign({}, this.form, {
-        userIdList,
-      });
-      this.getList();
     },
   },
 };

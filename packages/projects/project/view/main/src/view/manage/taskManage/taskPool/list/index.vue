@@ -360,6 +360,7 @@ export default {
         workType: null,
         pageCurrent: 1,
         pageSize: 20,
+        userIdList: [],
       },
       total: 0,
       statusList: [
@@ -400,6 +401,7 @@ export default {
     };
   },
   mounted() {
+    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
     this.getCustomerAll();
   },
@@ -498,14 +500,10 @@ export default {
       });
     },
     selectedChildTree(selection) {
-      const userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
-          userIdList.push(item.userId);
+          this.form.userIdList.push(item.userId);
         }
-      });
-      this.form = Object.assign({}, this.form, {
-        userIdList,
       });
       this.getList();
     },

@@ -470,21 +470,21 @@ const asyncRoutes = [{
           meta: {
             title: '入驻灵工报表',
           },
-          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/employee/index.vue'),
         },
         {
           path: 'order',
           meta: {
             title: '接单量报表',
           },
-          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/order/index.vue'),
         },
         {
           path: 'bill',
           meta: {
             title: '日流水报表',
           },
-          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/company/index.vue'),
+          component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/bill/index.vue'),
         },
       ],
     },

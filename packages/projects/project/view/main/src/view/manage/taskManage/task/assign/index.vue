@@ -38,7 +38,7 @@
           class="item"
         >
           <el-checkbox
-            v-model="form.served"
+            v-model="form.showOnly"
           >
             只看服务过当前客户的灵工
           </el-checkbox>
@@ -203,6 +203,7 @@ export default {
         mobile: null,
         assignStatus: null,
         state: '全部',
+        showOnly: false,
         pageCurrent: 1,
         pageSize: 20,
       },

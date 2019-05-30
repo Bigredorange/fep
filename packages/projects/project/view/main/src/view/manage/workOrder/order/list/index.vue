@@ -84,11 +84,18 @@
         </div>
         <div class="item">
           <span>客户名称：</span>
-          <el-input
-            v-model="form.customerName"
-            placeholder="请输入客户名称"
+          <el-select
+            v-model="form.customerId"
+            placeholder="请选择客户"
             style="width: 200px;"
-          />
+          >
+            <el-option
+              v-for="item in customerList"
+              :key="item.id"
+              :label="item.customerName"
+              :value="item.id"
+            />
+          </el-select>
         </div>
         <div class="item">
           <span>计划日期：</span>
@@ -310,7 +317,7 @@ export default {
         workOrderNo: null,
         workOrderName: null,
         contactName: null,
-        customerName: null,
+        customerId: null,
         paySettlement: null,
         status: 99,
         validityPeriod: null,
@@ -319,6 +326,7 @@ export default {
         workType: null,
         pageCurrent: 1,
         pageSize: 20,
+        userIdList: [],
       },
       total: 0,
       statusList: [
@@ -344,9 +352,12 @@ export default {
         },
       ],
       createTime: [],
+      customerList: [],
     };
   },
   mounted() {
+    this.getCustomerAll();
+    this.form.userIdList.push(this.$store.state.fepUserInfo.id);
     this.getList();
   },
   methods: {
@@ -427,16 +438,20 @@ export default {
       });
     },
     selectedChildTree(selection) {
-      const userIdList = [];
       selection.forEach((item) => {
         if (item.userId) {
-          userIdList.push(item.userId);
+          this.form.userIdList.push(item.userId);
         }
       });
-      this.form = Object.assign({}, this.form, {
-        userIdList,
-      });
       this.getList();
+    },
+    getCustomerAll() {
+      this.isLoading = true;
+      this.$api.getCustomerAll().then((res) => {
+        this.customerList = res;
+      }).finally(() => {
+        this.isLoading = false;
+      });
     },
   },
 };
