@@ -381,7 +381,7 @@ export default {
         id,
         status,
       }).then(() => {
-        this.$message.success(`${status === 2 ? '通过' : '驳回'}成功`);
+        this.$message.success(`${status === 3 ? '通过' : '驳回'}成功`);
         this.getList();
       });
     },

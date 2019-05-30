@@ -181,7 +181,7 @@ export default {
     },
     onWork(obj) {
       let empWorkTaskIds = [];
-      if (obj.row) {
+      if (obj.row.id) {
         empWorkTaskIds.push(obj.row.id);
       } else {
         empWorkTaskIds = this.selection.map(item => item.id);
