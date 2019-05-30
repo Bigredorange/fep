@@ -22,13 +22,17 @@
           <span>{{ item.name }}</span>
           <div class="info">
             {{ `${item.updater} ${item.updateTime}` }}
-            <el-button
-              type="text"
-              class="delete"
-              @click.stop="deleteProtocol(item)"
-            >
-              删除
-            </el-button>
+            <div class="delete-btn">
+              <!-- 暂时以名字过滤 -->
+              <el-button
+                v-if="item.name !== '关于灵工' && item.name !== '服务协议'"
+                type="text"
+                class="delete"
+                @click.stop="deleteProtocol(item)"
+              >
+                删除
+              </el-button>
+            </div>
           </div>
         </li>
       </ul>
@@ -146,6 +150,11 @@ export default {
       }
       &:hover {
         background: #f3e9d7;
+      }
+
+      .delete-btn {
+        width: 55px;
+        display: inline-block;
       }
     }
 }
