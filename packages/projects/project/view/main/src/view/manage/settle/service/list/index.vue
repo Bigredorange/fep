@@ -10,7 +10,10 @@
             style="width: 200px;"
           />
         </div>
-        <div class="item">
+        <div
+          class="item"
+          style="width: 40%;"
+        >
           <span>月份：</span>
           <el-date-picker
             v-model="form.startMonth"
@@ -577,7 +580,7 @@ export default {
 <style lang="scss" scoped>
 .range {
   min-width: 20px !important;
-  padding: 0 2px;
+  padding: 0 10px;
 }
 .con-table {
   background: #fff;
