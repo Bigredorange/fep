@@ -531,6 +531,10 @@ export default {
         this.$message.warning('请选择批量发送操作项');
         return;
       }
+      if (this.selection.some(t => t.status === 1)) {
+        this.$message.warning('包含确认中的数据，请勾选未确认的数据');
+        return;
+      }
       const ids = this.selection.map(item => item.id);
       this.sendApi(ids, '确定批量发送服务报酬确认？');
     },
