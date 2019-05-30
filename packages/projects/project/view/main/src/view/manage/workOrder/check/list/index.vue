@@ -183,6 +183,7 @@
           label="审核时间"
         /> -->
         <el-table-column
+          fixed="right"
           label="操作"
           align="center"
           width="200"

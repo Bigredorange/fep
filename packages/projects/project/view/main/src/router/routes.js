@@ -72,6 +72,10 @@ const asyncRoutes = [{
                     title: '编辑用户',
                     value: '/sys/user/list/editUser',
                   },
+                  {
+                    title: '新增用户',
+                    value: '/sys/user/list/addUser',
+                  },
                 ],
               },
               component: () => import(/* webpackChunkName: "v-user" */ '../view/manage/sys/user/list/index.vue'),

@@ -101,7 +101,7 @@ const api = {
     客户管理
   */
   // 6.1 客户列表
-  getCustomerList: args => get('customer', args),
+  getCustomerList: args => postJson('customer/list', args),
   // 6.2 添加客户
   addCustomer: args => postJson('customer', args),
   // 6.3 编辑客户
@@ -228,7 +228,7 @@ const api = {
    * 任务管理
    */
   // 任务列表
-  getWorkTaskList: args => get('worktask', args),
+  getWorkTaskList: args => postJson('worktask', args),
   // 任务撤回
   revokeWorkTask: ({ id, ...arg }) => postJson(`worktask/${id}/revoke`, arg),
   // 任务完成
@@ -252,7 +252,7 @@ const api = {
   // 更新已完成和上岗时间
   updateEmpWorkTask: ({ onWorkTime, completeTime, empWorkTaskId }) => putJson(`empworktask/${empWorkTaskId}/${onWorkTime}/${completeTime}/update`),
   // 任务池列表
-  getWorkTaskPoolList: args => get('worktask/pool', args),
+  getWorkTaskPoolList: args => postJson('worktask/pool', args),
   // 任务池同意申请
   agreeEmpWorkTask: ({ empWorkTaskIds }) => postJson('empworktask/accept', empWorkTaskIds),
   // 任务池待确定列表
