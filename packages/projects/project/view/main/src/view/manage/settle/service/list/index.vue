@@ -259,6 +259,7 @@
             slot-scope="{ $index, row }"
           >
             <el-button
+              v-if="row.status === 0"
               type="text"
               class="green"
               @click="sendItem(row)"
