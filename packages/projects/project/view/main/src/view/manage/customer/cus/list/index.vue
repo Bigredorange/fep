@@ -91,6 +91,7 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/customer/cus/list/addCus')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -167,11 +168,20 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/customer/cus/list/editCus')"
               type="text"
               class="primary"
               @click="edit(row)"
             >
               编辑
+            </el-button>
+            <el-button
+              v-if="$p('/customer/cus/list/viewCus')"
+              type="text"
+              class="primary"
+              @click="view(row)"
+            >
+              查看客户
             </el-button>
           </template>
         </el-table-column>
@@ -237,7 +247,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {
@@ -262,6 +272,9 @@ export default {
     },
     edit(row) {
       this.$router.push({ path: 'edit', query: { id: row.id } });
+    },
+    view(row) {
+      this.$router.push({ path: 'detail', query: { id: row.id } });
     },
     selectDate(val) {
       const [start, end] = val;

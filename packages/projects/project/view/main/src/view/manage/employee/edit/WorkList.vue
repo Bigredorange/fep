@@ -18,19 +18,17 @@
         label="工种"
       >
         <template slot-scope="{ $index, row }">
-          <el-select
+          <el-autocomplete
             v-if="row.isEdit"
             v-model="list[$index].workType"
-            placeholder="请选择工种类型"
-          >
-            <el-option
-              v-for="item in $opt('typeofwork')"
-              :key="item.id"
-              :label="item.dictValue"
-              :value="item.dictKey"
-            />
-          </el-select>
-          <span v-else>{{ $optDicLabel('typeofwork', row.workType) }}</span>
+            style="width: 200px;"
+            class="inline-input"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入工种"
+            value-key="dictValue"
+            @select="getList"
+          />
+          <span v-else>{{ row.workType }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -140,7 +138,7 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {
@@ -199,6 +197,20 @@ export default {
     },
     delRow(index) {
       this.list.splice(index, 1);
+    },
+    createFilter(queryString) {
+      const temp = (restaurant) => {
+        const tempArr = (restaurant.dictValue.indexOf(queryString) === 0);
+        return tempArr;
+      };
+      return temp;
+    },
+    querySearch(queryString, cb) {
+      const workList = this.$opt('typeofwork');
+      const results = queryString ? workList.filter(this.createFilter(queryString)) : workList;
+      console.log(results);
+      // 调用 callback 返回建议列表的数据
+      cb(results);
     },
   },
 };

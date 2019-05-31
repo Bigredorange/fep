@@ -234,7 +234,7 @@ export default {
       // this.allRoutes = this.getRoutes(this.asyncRoutes);
     },
   },
-  mounted() {
+  created() {
     this.asyncRoutes = asyncRoutes[0].children;
   },
   methods: {

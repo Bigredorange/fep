@@ -102,22 +102,20 @@
           label="最新地址"
         />
         <el-table-column
-          prop="customerName"
           align="center"
           label="性别"
           :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
-          prop="customerName"
+          prop="companyName"
           align="center"
           label="来源"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="workType"
           align="center"
           label="工种"
-          :formatter="({ workType }) => getWorkTypeName(workType)"
-        />
+        /> -->
         <!-- <el-table-column
           prop="confirmCount"
           align="center"
@@ -163,7 +161,7 @@
           >
             <el-button
               v-if="row.assignStatus === '未指派'"
-              v-loading="loading"
+              v-loading="row.loading"
               type="text"
               class="primary"
               @click="assign(row)"
@@ -227,7 +225,7 @@ export default {
       loading: false,
     };
   },
-  mounted() {
+  created() {
     this.workTaskId = this.$route.query.id;
     this.getList();
   },
@@ -299,7 +297,7 @@ export default {
       });
     },
     assign(row) {
-      // this.loading = false;
+      row.loading = true;
       let empIds = [];
       if (row.id) {
         empIds.push(row.id);
@@ -313,19 +311,8 @@ export default {
         this.$message.success('指派任务成功');
         this.getList();
       }).finally(() => {
-        // this.loading = true;
+        row.loading = false;
       });
-    },
-    getWorkTypeName(workType) {
-      let name = '';
-      if (workType) {
-        const arr = workType.split(',');
-        name = arr.map((label) => {
-          const labelName = this.$optDicLabel('typeofwork', label);
-          return labelName;
-        }).join(',');
-      }
-      return name;
     },
   },
 };

@@ -264,7 +264,7 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     this.getCustomerAll();
     this.contractId = this.$route.query.id;
     if (this.contractId) {
@@ -306,6 +306,12 @@ export default {
     getDetail(id) {
       this.$api.getCusContract({ id }).then((res) => {
         this.form = res;
+        const fileList = JSON.parse(res.attachment) || [];
+        this.fileList = fileList.map((item) => {
+          const obj = {};
+          obj.fileName = item;
+          return obj;
+        });
       });
     },
     async upload() {
@@ -412,6 +418,8 @@ export default {
     color: #7b848e;
     margin-bottom: 5px;
     .fileDesc {
+      display: flex;
+      justify-content: space-around;
       &:hover {
         cursor: pointer;
       }
@@ -425,6 +433,10 @@ export default {
       padding: 0 10px;
       .name {
         color: #000000;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 150px;
       }
       .action {
         color: #7b848e;

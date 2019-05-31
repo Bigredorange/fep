@@ -115,6 +115,7 @@
               />
             </el-form-item>
             <el-form-item
+              v-if="form.level !== 3"
               label="角色"
             >
               <el-select
@@ -441,7 +442,7 @@ export default {
       type: null,
     };
   },
-  mounted() {
+  created() {
     this.getRolesList();
     this.getCompanyList();
     this.getCustomerList();

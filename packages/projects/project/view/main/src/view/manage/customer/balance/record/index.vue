@@ -50,15 +50,6 @@
       </section>
     </top-bar>
     <div class="con-table">
-      <div class="buttons">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-        >
-          新增
-        </el-button>
-      </div>
       <el-table
         :data="list"
         :loading="listLoading"
@@ -127,7 +118,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {
@@ -158,9 +149,6 @@ export default {
       const [start, end] = val;
       this.form.startTime = start;
       this.form.endTime = end;
-    },
-    add() {
-      this.$router.push('edit');
     },
     disable(item) {
       this.$dialogs.confirm({

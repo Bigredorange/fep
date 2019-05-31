@@ -133,6 +133,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/customer/balance/list/recharge')"
               type="text"
               class="primary"
               @click="recharge(row)"
@@ -140,6 +141,7 @@
               充值
             </el-button>
             <el-button
+              v-if="$p('/customer/balance/list/viewRecord')"
               type="text"
               class="primary"
               @click="checkRecord(row)"
@@ -211,7 +213,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

@@ -84,7 +84,7 @@ export default {
       return privileges ? privileges.split(',') : [];
     },
   },
-  mounted() {
+  created() {
     // 全屏相关
     document.addEventListener('fullscreenchange', () => {
       this.isFullScreen = !this.isFullScreen;

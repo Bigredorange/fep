@@ -63,6 +63,7 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/customer/contract/list/addContract')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -151,11 +152,20 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/customer/contract/list/editContract')"
               type="text"
               class="primary"
               @click="edit(row)"
             >
               编辑
+            </el-button>
+            <el-button
+              v-if="$p('/customer/contract/list/viewContract')"
+              type="text"
+              class="primary"
+              @click="view(row)"
+            >
+              查看合同
             </el-button>
           </template>
         </el-table-column>
@@ -217,7 +227,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {
@@ -242,6 +252,9 @@ export default {
     },
     edit(row) {
       this.$router.push({ path: 'edit', query: { id: row.id } });
+    },
+    view(row) {
+      this.$router.push({ path: 'detail', query: { id: row.id } });
     },
     add() {
       this.$router.push('edit');

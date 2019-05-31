@@ -24,9 +24,9 @@
             </el-form-item>
             <el-form-item
               label="工单编号"
-              prop="customerNo"
+              prop="workOrderNo"
             >
-              <p>{{ form.customerNo }}</p>
+              <p>{{ form.workOrderNo }}</p>
             </el-form-item>
             <el-form-item
               label="工单名称"
@@ -56,15 +56,17 @@
               label="有效期限"
               prop="validityPeriod"
             >
-              <p>{{ $optDicLabel('orderUnit', form.validityPeriod) }}</p>
+              <p>{{ $optDicLabel('Expirydate', form.validityPeriod) }}</p>
             </el-form-item>
             <el-form-item
+              v-if="form.validityPeriod === 2"
               label="有效开始日期"
               prop="startDate"
             >
               <p>{{ form.startDate }}</p>
             </el-form-item>
             <el-form-item
+              v-if="form.validityPeriod === 2"
               label="有效结束日期"
               prop="endDate"
             >
@@ -116,7 +118,7 @@
               label="工种"
               prop="workType"
             >
-              <p>{{ $optDicLabel('typeofwork', form.workType) }}</p>
+              <p>{{ form.workType }}</p>
             </el-form-item>
             <el-form-item
               label="工单费用"
@@ -261,7 +263,7 @@ export default {
   data() {
     return {
       form: {
-        customerNo: null,
+        workOrderNo: null,
         workOrderName: null,
         customerId: null,
         paySettlement: 1,
@@ -319,7 +321,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     this.workOrderId = this.$route.query.id;
     if (this.workOrderId) {
       this.getDetail(this.workOrderId);

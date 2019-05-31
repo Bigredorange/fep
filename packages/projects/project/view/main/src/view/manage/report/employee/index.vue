@@ -155,8 +155,8 @@ export default {
     };
   },
   created() {
-    this.form.startTime = this.$utils.formatDate(new Date(), 'yyyy-MM-dd');
-    this.form.endTime = this.$utils.formatDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+    this.form.startTime = this.$utils.formatDate(new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+    this.form.endTime = this.$utils.formatDate(new Date(), 'yyyy-MM-dd');
     this.getList();
   },
   methods: {

@@ -67,19 +67,15 @@
         </div>
         <div class="item">
           <span>工种：</span>
-          <el-select
+          <el-autocomplete
             v-model="form.workType"
             style="width: 200px;"
-            placeholder="请选择工种"
-            @change="getList"
-          >
-            <el-option
-              v-for="item in $opt('typeofwork')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
-            />
-          </el-select>
+            class="inline-input"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入工种"
+            value-key="dictValue"
+            @select="getList"
+          />
         </div>
         <div class="item">
           <span>部门或人员：</span>
@@ -122,16 +118,29 @@
           prop="taskNo"
           align="center"
           label="任务编号"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="customerName"
           align="center"
           label="客户名称"
+          width="150"
+          show-overflow-tooltip
         />
+        <!-- <el-table-column
+          prop="companyName"
+          align="center"
+          label="任务来源"
+          width="150"
+          show-overflow-tooltip
+        /> -->
         <el-table-column
           prop="taskName"
           align="center"
           label="任务名称"
+          width="150"
+          show-overflow-tooltip
         >
           <template
             slot-scope="{ row }"
@@ -236,7 +245,6 @@
           prop="workType"
           align="center"
           label="工种"
-          :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
         />
         <el-table-column
           prop="workStartTime"
@@ -263,8 +271,11 @@
           prop="workArea"
           align="center"
           label="工作区域"
+          width="150"
+          show-overflow-tooltip
         />
         <el-table-column
+          v-if="$p('/taskManage/task/list/all')"
           fixed="right"
           label="操作"
           align="center"
@@ -275,6 +286,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/taskManage/task/list/assignWok')"
               type="text"
               class="primary"
               @click="assign(row)"
@@ -282,6 +294,7 @@
               指派
             </el-button>
             <el-button
+              v-if="$p('/taskManage/task/list/distributeWok')"
               type="text"
               class="primary"
               @click="assignPool(row.id)"
@@ -289,6 +302,7 @@
               分派任务池
             </el-button>
             <el-button
+              v-if="$p('/taskManage/task/list/revokeWok')"
               type="text"
               class="primary"
               @click="revoke(row.id)"
@@ -296,6 +310,7 @@
               撤回
             </el-button>
             <el-button
+              v-if="$p('/taskManage/task/list/finshWok')"
               type="text"
               class="primary"
               @click="finish(row.id)"
@@ -392,7 +407,7 @@ export default {
       customerList: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
     this.getCustomerAll();
   },
@@ -512,6 +527,20 @@ export default {
         }
       });
       this.getList();
+    },
+    createFilter(queryString) {
+      const temp = (restaurant) => {
+        const tempArr = (restaurant.dictValue.indexOf(queryString) === 0);
+        return tempArr;
+      };
+      return temp;
+    },
+    querySearch(queryString, cb) {
+      const workList = this.$opt('typeofwork');
+      const results = queryString ? workList.filter(this.createFilter(queryString)) : workList;
+      console.log(results);
+      // 调用 callback 返回建议列表的数据
+      cb(results);
     },
   },
 };

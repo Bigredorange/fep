@@ -139,6 +139,20 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑客户',
+                    value: '/customer/cus/list/editCus',
+                  },
+                  {
+                    title: '新增客户',
+                    value: '/customer/cus/list/addCus',
+                  },
+                  {
+                    title: '查看客户详情',
+                    value: '/customer/cus/list/viewCus',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/cus/list/index.vue'),
             },
@@ -148,6 +162,13 @@ const asyncRoutes = [{
                 title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/cus/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '客户详情',
+              },
+              component: () => import(/* webpackChunkName: "v-customrDetail" */ '../view/manage/customer/cus/detail/index.vue'),
             },
           ],
         },
@@ -163,6 +184,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '充值',
+                    value: '/customer/balance/list/recharge',
+                  },
+                  {
+                    title: '查看记录',
+                    value: '/customer/balance/list/viewRecord',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-balance" */ '../view/manage/customer/balance/list/index.vue'),
             },
@@ -187,6 +218,20 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑合同',
+                    value: '/customer/contract/list/editContract',
+                  },
+                  {
+                    title: '新增合同',
+                    value: '/customer/contract/list/addContract',
+                  },
+                  {
+                    title: '查看合同',
+                    value: '/customer/contract/list/viewContract',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/customer/contract/list/index.vue'),
             },
@@ -196,6 +241,13 @@ const asyncRoutes = [{
                 title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/contract/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '合同详情',
+              },
+              component: () => import(/* webpackChunkName: "v-contractDetail" */ '../view/manage/customer/contract/detail/index.vue'),
             },
           ],
         },
@@ -211,6 +263,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑客户账号',
+                    value: '/customer/account/list/editCusAccount',
+                  },
+                  {
+                    title: '新增客户账号',
+                    value: '/customer/account/list/addCusAccount',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-account" */ '../view/manage/customer/account/list/index.vue'),
             },
@@ -245,6 +307,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑HRO企业',
+                    value: '/hroCompany/hro/list/editHRO',
+                  },
+                  {
+                    title: '新增HRO企业',
+                    value: '/hroCompany/hro/list/addHRO',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-hroCompany" */ '../view/manage/hroCompany/list/index.vue'),
             },
@@ -257,6 +329,16 @@ const asyncRoutes = [{
             },
           ],
         },
+      ],
+    },
+    {
+      path: 'hroCompanyDetail',
+      component: RouterView,
+      redirect: 'hroCompanyDetail/hroDetail',
+      meta: {
+        title: 'HRO企业',
+      },
+      children: [
         {
           path: 'hroDetail',
           meta: {
@@ -351,6 +433,20 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑灵工',
+                    value: '/employee/emp/list/editEmp',
+                  },
+                  {
+                    title: '新增灵工',
+                    value: '/employee/emp/list/addEmp',
+                  },
+                  {
+                    title: '查看灵工',
+                    value: '/employee/emp/list/viewEmp',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
             },
@@ -360,6 +456,13 @@ const asyncRoutes = [{
                 title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '灵工详情',
+              },
+              component: () => import(/* webpackChunkName: "v-empDetail" */ '../view/manage/employee/detail/index.vue'),
             },
           ],
         },
@@ -412,15 +515,30 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '所有操作按钮',
+                    value: '/taskManage/task/list/all',
+                  },
+                  {
+                    title: '指派任务',
+                    value: '/taskManage/task/list/assignWok',
+                  },
+                  {
+                    title: '分派任务池',
+                    value: '/taskManage/task/list/distributeWok',
+                  },
+                  {
+                    title: '撤回任务',
+                    value: '/taskManage/task/list/revokeWok',
+                  },
+                  {
+                    title: '完成任务',
+                    value: '/taskManage/task/list/finshWok',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/task/list/index.vue'),
-            },
-            {
-              path: 'edit',
-              meta: {
-                title: '新增/编辑',
-              },
-              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/taskManage/task/edit/index.vue'),
             },
             {
               path: 'assign',
@@ -443,6 +561,24 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '所有操作按钮',
+                    value: '/taskManage/taskPool/list/all',
+                  },
+                  {
+                    title: '指派任务',
+                    value: '/taskManage/taskPool/list/assignWok',
+                  },
+                  {
+                    title: '撤回任务',
+                    value: '/taskManage/taskPool/list/revokeWok',
+                  },
+                  {
+                    title: '完成任务',
+                    value: '/taskManage/taskPool/list/finshWok',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/taskPool/list/index.vue'),
             },

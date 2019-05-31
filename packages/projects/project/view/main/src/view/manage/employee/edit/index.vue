@@ -412,7 +412,7 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     this.empId = this.$route.query.empId;
     this.empCompanyId = this.$route.query.id;
     if (this.empCompanyId) {

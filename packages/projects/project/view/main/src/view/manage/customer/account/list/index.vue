@@ -71,6 +71,7 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/customer/account/list/addCusAccount')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -102,11 +103,11 @@
           align="center"
           label="部门名称"
         /> -->
-        <el-table-column
+        <!-- <el-table-column
           prop="roleNames"
           align="center"
           label="角色名称"
-        />
+        /> -->
         <el-table-column
           prop="status"
           align="center"
@@ -136,6 +137,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/customer/account/list/editCusAccount')"
               type="text"
               class="primary"
               @click="edit(row)"
@@ -201,7 +203,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

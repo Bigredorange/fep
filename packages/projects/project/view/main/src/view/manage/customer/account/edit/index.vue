@@ -214,7 +214,7 @@ export default {
       cusSelection: [],
     };
   },
-  mounted() {
+  created() {
     this.getCustomerList();
     const { userId, companyId } = this.$route.query;
     this.userId = userId;

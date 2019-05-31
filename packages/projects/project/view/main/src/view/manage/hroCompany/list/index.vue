@@ -84,6 +84,7 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/hroCompany/hro/list/addHRO')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -173,6 +174,7 @@
               分配账号
             </el-button>
             <el-button
+              v-if="$p('/hroCompany/hro/list/editHRO')"
               type="text"
               class="primary"
               @click="edit(row)"
@@ -238,7 +240,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     const { level, companyId } = this.$store.state.fepUserInfo;
     if (level !== 1) {
       this.form.companyId = companyId;

@@ -42,7 +42,7 @@ export default {
       this.generateBreadcrumpList();
     },
   },
-  mounted() {
+  created() {
     this.generateBreadcrumpList();
   },
   methods: {

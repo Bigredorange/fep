@@ -89,7 +89,7 @@ export default {
       this.$refs.tree.filter(value);
     },
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

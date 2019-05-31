@@ -359,7 +359,7 @@ export default {
       selection: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {
