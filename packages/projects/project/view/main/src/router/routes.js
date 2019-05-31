@@ -442,6 +442,10 @@ const asyncRoutes = [{
                     title: '新增灵工',
                     value: '/employee/emp/list/addEmp',
                   },
+                  {
+                    title: '查看灵工',
+                    value: '/employee/emp/list/viewEmp',
+                  },
                 ],
               },
               component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
@@ -452,6 +456,13 @@ const asyncRoutes = [{
                 title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/employee/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '灵工详情',
+              },
+              component: () => import(/* webpackChunkName: "v-empDetail" */ '../view/manage/employee/detail/index.vue'),
             },
           ],
         },
@@ -504,6 +515,28 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '所有操作按钮',
+                    value: '/taskManage/task/list/all',
+                  },
+                  {
+                    title: '指派任务',
+                    value: '/taskManage/task/list/assignWok',
+                  },
+                  {
+                    title: '分派任务池',
+                    value: '/taskManage/task/list/distributeWok',
+                  },
+                  {
+                    title: '撤回任务',
+                    value: '/taskManage/task/list/revokeWok',
+                  },
+                  {
+                    title: '完成任务',
+                    value: '/taskManage/task/list/finshWok',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/task/list/index.vue'),
             },
@@ -528,6 +561,24 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '所有操作按钮',
+                    value: '/taskManage/taskPool/list/all',
+                  },
+                  {
+                    title: '指派任务',
+                    value: '/taskManage/taskPool/list/assignWok',
+                  },
+                  {
+                    title: '撤回任务',
+                    value: '/taskManage/taskPool/list/revokeWok',
+                  },
+                  {
+                    title: '完成任务',
+                    value: '/taskManage/taskPool/list/finshWok',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-task" */ '../view/manage/taskManage/taskPool/list/index.vue'),
             },

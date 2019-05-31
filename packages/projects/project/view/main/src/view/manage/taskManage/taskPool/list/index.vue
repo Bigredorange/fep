@@ -288,6 +288,7 @@
           show-overflow-tooltip
         />
         <el-table-column
+          v-if="$p('/taskManage/taskPool/list/all')"
           fixed="right"
           label="操作"
           align="center"
@@ -298,6 +299,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/taskManage/taskPool/list/assignWok')"
               type="text"
               class="primary"
               @click="assign(row)"
@@ -305,6 +307,7 @@
               指派
             </el-button>
             <el-button
+              v-if="$p('/taskManage/taskPool/list/revokeWok')"
               type="text"
               class="primary"
               @click="revoke(row.id)"
@@ -312,6 +315,7 @@
               撤回
             </el-button>
             <el-button
+              v-if="$p('/taskManage/taskPool/list/finshWok')"
               type="text"
               class="primary"
               @click="finish(row.id)"

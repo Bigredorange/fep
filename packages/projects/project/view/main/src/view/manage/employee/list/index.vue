@@ -203,6 +203,14 @@
             >
               编辑
             </el-button>
+            <el-button
+              v-if="$p('/employee/emp/list/viewEmp')"
+              type="text"
+              class="primary"
+              @click="view(row)"
+            >
+              查看灵工
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -291,6 +299,9 @@ export default {
     },
     edit(row) {
       this.$router.push({ path: 'edit', query: { id: row.id, empId: row.empId } });
+    },
+    view(row) {
+      this.$router.push({ path: 'detail', query: { id: row.id, empId: row.empId } });
     },
     selectDate(val) {
       if (!val) {

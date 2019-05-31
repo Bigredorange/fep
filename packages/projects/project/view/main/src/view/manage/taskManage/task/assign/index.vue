@@ -161,7 +161,7 @@
           >
             <el-button
               v-if="row.assignStatus === '未指派'"
-              v-loading="loading"
+              v-loading="row.loading"
               type="text"
               class="primary"
               @click="assign(row)"
@@ -297,7 +297,7 @@ export default {
       });
     },
     assign(row) {
-      // this.loading = false;
+      row.loading = true;
       let empIds = [];
       if (row.id) {
         empIds.push(row.id);
@@ -311,7 +311,7 @@ export default {
         this.$message.success('指派任务成功');
         this.getList();
       }).finally(() => {
-        // this.loading = true;
+        row.loading = false;
       });
     },
   },

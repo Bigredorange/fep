@@ -418,6 +418,8 @@ export default {
     color: #7b848e;
     margin-bottom: 5px;
     .fileDesc {
+      display: flex;
+      justify-content: space-around;
       &:hover {
         cursor: pointer;
       }
@@ -431,6 +433,10 @@ export default {
       padding: 0 10px;
       .name {
         color: #000000;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 150px;
       }
       .action {
         color: #7b848e;
