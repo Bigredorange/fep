@@ -115,6 +115,7 @@
               />
             </el-form-item>
             <el-form-item
+              v-if="form.level !== 3"
               label="角色"
             >
               <el-select

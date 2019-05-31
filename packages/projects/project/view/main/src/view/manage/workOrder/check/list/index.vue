@@ -227,7 +227,7 @@
               class="primary"
               @click="check(row)"
             >
-              审核
+              通过
             </el-button>
             <el-button
               type="text"
