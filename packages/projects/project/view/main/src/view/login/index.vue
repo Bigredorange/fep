@@ -123,7 +123,7 @@ export default {
       src: '',
     };
   },
-  mounted() {
+  created() {
     /**
      * 移除全局加载动画
      */

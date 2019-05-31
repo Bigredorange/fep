@@ -225,17 +225,14 @@
               label="工种"
               prop="workType"
             >
-              <el-select
+              <el-autocomplete
                 v-model="form.workType"
-                placeholder="请选择工种"
-              >
-                <el-option
-                  v-for="item in $opt('typeofwork')"
-                  :key="item.dictKey"
-                  :label="item.dictValue"
-                  :value="item.dictKey"
-                />
-              </el-select>
+                style="width: 200px;"
+                class="inline-input"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入工种"
+                value-key="dictValue"
+              />
             </el-form-item>
             <el-form-item
               label="工单费用"
@@ -463,8 +460,8 @@ export default {
         }],
         workType: [{
           required: true,
-          message: '请选择工种',
-          trigger: 'blur',
+          message: '请选择或输入工种',
+          trigger: 'change',
         }],
         workPlanDate: [{
           required: true,
@@ -582,7 +579,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     this.getCustomerAll();
     this.workOrderId = this.$route.query.id;
     if (this.workOrderId) {
@@ -616,7 +613,7 @@ export default {
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
-            // this.$router.push('list');
+            this.$router.push('list');
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
@@ -678,10 +675,24 @@ export default {
         status,
       }).then(() => {
         this.$message.success('提交成功');
-        this.getList();
+        this.$router.push('list');
       }).finally(() => {
         this.submitLoading = false;
       });
+    },
+    createFilter(queryString) {
+      const temp = (restaurant) => {
+        const tempArr = (restaurant.dictValue.indexOf(queryString) === 0);
+        return tempArr;
+      };
+      return temp;
+    },
+    querySearch(queryString, cb) {
+      const workList = this.$opt('typeofwork');
+      const results = queryString ? workList.filter(this.createFilter(queryString)) : workList;
+      console.log(results);
+      // 调用 callback 返回建议列表的数据
+      cb(results);
     },
   },
 };

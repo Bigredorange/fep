@@ -203,7 +203,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

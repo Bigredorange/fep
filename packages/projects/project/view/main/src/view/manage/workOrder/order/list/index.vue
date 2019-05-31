@@ -68,19 +68,15 @@
         </div>
         <div class="item">
           <span>工种：</span>
-          <el-select
+          <el-autocomplete
             v-model="form.workType"
             style="width: 200px;"
-            placeholder="请选择工种"
-            @change="getList"
-          >
-            <el-option
-              v-for="item in $opt('typeofwork')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
-            />
-          </el-select>
+            class="inline-input"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入工种"
+            value-key="dictValue"
+            @select="getList"
+          />
         </div>
         <div class="item">
           <span>客户名称：</span>
@@ -219,7 +215,6 @@
           prop="workType"
           align="center"
           label="工种"
-          :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
         />
         <el-table-column
           prop="workPlanDate"
@@ -299,7 +294,7 @@
               编辑
             </el-button>
             <el-button
-              v-if="row.status === 3"
+              v-if="row.status === 1 || row.status === 3"
               type="text"
               class="primary"
               @click="detail(row)"
@@ -382,7 +377,7 @@ export default {
       customerList: [],
     };
   },
-  mounted() {
+  created() {
     this.getCustomerAll();
     this.getList();
   },
@@ -482,6 +477,20 @@ export default {
     },
     detail(row) {
       this.$router.push({ path: 'detail', query: { id: row.id } });
+    },
+    createFilter(queryString) {
+      const temp = (restaurant) => {
+        const tempArr = (restaurant.dictValue.indexOf(queryString) === 0);
+        return tempArr;
+      };
+      return temp;
+    },
+    querySearch(queryString, cb) {
+      const workList = this.$opt('typeofwork');
+      const results = queryString ? workList.filter(this.createFilter(queryString)) : workList;
+      console.log(results);
+      // 调用 callback 返回建议列表的数据
+      cb(results);
     },
   },
 };

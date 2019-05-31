@@ -245,7 +245,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     const { level } = this.$store.state.fepUserInfo;
     if (level === 1) {
       this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 && user.key <= level + 2);

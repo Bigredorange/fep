@@ -255,7 +255,7 @@ export default {
       qrcodeFlag: false,
     };
   },
-  mounted() {
+  created() {
     this.getRolesList();
     this.companyId = this.$route.query.id;
     const { level, companyId } = this.$store.state.fepUserInfo;

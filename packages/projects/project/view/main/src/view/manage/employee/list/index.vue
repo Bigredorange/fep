@@ -63,24 +63,26 @@
             style="width: 200px;"
           />
         </div>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left:20px;"
-          @click="getList"
-        >
-          查询
-        </el-button>
-        <el-button
-          @click="reset"
-        >
-          重置
-        </el-button>
+        <div class="item">
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getList"
+          >
+            查询
+          </el-button>
+          <el-button
+            @click="reset"
+          >
+            重置
+          </el-button>
+        </div>
       </section>
     </top-bar>
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/employee/emp/list/addEmp')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -194,6 +196,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/employee/emp/list/editEmp')"
               type="text"
               class="primary"
               @click="edit(row)"
@@ -259,7 +262,7 @@ export default {
       createTime: [],
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

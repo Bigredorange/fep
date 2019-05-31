@@ -264,7 +264,7 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     this.getCustomerAll();
     this.contractId = this.$route.query.id;
     if (this.contractId) {
@@ -306,6 +306,12 @@ export default {
     getDetail(id) {
       this.$api.getCusContract({ id }).then((res) => {
         this.form = res;
+        const fileList = JSON.parse(res.attachment) || [];
+        this.fileList = fileList.map((item) => {
+          const obj = {};
+          obj.fileName = item;
+          return obj;
+        });
       });
     },
     async upload() {

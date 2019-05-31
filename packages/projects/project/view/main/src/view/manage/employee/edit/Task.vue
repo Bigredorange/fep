@@ -23,7 +23,6 @@
         prop="area"
         align="center"
         label="工种"
-        :formatter="({ workType }) => $optDicLabel('typeofwork', workType)"
       />
       <el-table-column
         prop="gotoWorkTime"
@@ -67,7 +66,7 @@ export default {
       total: 0,
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

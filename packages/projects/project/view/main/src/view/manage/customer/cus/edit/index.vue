@@ -447,7 +447,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     this.getRolesList();
     this.customerId = this.$route.query.id;
     if (this.customerId) {
@@ -476,7 +476,7 @@ export default {
           }
           this.$api[api](param).then((res) => {
             this.$message.success('保存成功');
-            // this.$router.push('list');
+            this.$router.push('list');
             this.customerId = res;
           }).finally(() => {
             this.confirmButtonLoading = false;

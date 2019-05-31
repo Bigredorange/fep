@@ -442,7 +442,7 @@ export default {
       type: null,
     };
   },
-  mounted() {
+  created() {
     this.getRolesList();
     this.getCompanyList();
     this.getCustomerList();

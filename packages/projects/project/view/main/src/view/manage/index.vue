@@ -40,7 +40,7 @@ export default {
     //   this.setParentPath(val);
     // },
   },
-  mounted() {
+  created() {
     // this.menuList = routes.main[0].children;
     // this.setParentPath(this.menuList);
     this.getSubmenuList();

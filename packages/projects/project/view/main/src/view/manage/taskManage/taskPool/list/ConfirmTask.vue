@@ -121,7 +121,6 @@
             prop="workType"
             align="center"
             label="工种"
-            :formatter="({ workType }) => getWorkTypeName(workType)"
           />
           <el-table-column
             fixed="right"
@@ -312,17 +311,6 @@ export default {
     getStatusName(status) {
       const temp = this.statusList.find(item => item.key === status);
       return temp.label || '';
-    },
-    getWorkTypeName(workType) {
-      let name = '';
-      if (workType) {
-        const arr = workType.split(',');
-        name = arr.map((label) => {
-          const labelName = this.$optDicLabel('typeofwork', label);
-          return labelName;
-        }).join(',');
-      }
-      return name;
     },
   },
 };

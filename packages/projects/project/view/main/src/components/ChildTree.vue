@@ -67,7 +67,7 @@ export default {
       childName: '',
     };
   },
-  mounted() {
+  created() {
     this.getList();
   },
   methods: {

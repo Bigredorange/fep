@@ -111,12 +111,11 @@
           align="center"
           label="来源"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="workType"
           align="center"
           label="工种"
-          :formatter="({ workType }) => getWorkTypeName(workType)"
-        />
+        /> -->
         <!-- <el-table-column
           prop="confirmCount"
           align="center"
@@ -226,7 +225,7 @@ export default {
       loading: false,
     };
   },
-  mounted() {
+  created() {
     this.workTaskId = this.$route.query.id;
     this.getList();
   },
@@ -314,17 +313,6 @@ export default {
       }).finally(() => {
         // this.loading = true;
       });
-    },
-    getWorkTypeName(workType) {
-      let name = '';
-      if (workType) {
-        const arr = workType.split(',');
-        name = arr.map((label) => {
-          const labelName = this.$optDicLabel('typeofwork', label);
-          return labelName;
-        }).join(',');
-      }
-      return name;
     },
   },
 };

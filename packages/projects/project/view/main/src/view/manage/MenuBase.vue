@@ -52,7 +52,7 @@ export default {
       curIndex: null, // 当前展开子菜单索引
     };
   },
-  mounted() {
+  created() {
     this.curIndex = this.getCurIndex();
   },
   methods: {

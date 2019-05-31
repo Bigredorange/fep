@@ -315,7 +315,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     this.workOrderId = this.$route.query.id;
     if (this.workOrderId) {
       this.getDetail(this.workOrderId);
