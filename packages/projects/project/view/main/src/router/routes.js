@@ -139,6 +139,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑客户',
+                    value: '/customer/cus/list/editCus',
+                  },
+                  {
+                    title: '新增客户',
+                    value: '/customer/cus/list/addCus',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-customer" */ '../view/manage/customer/cus/list/index.vue'),
             },
@@ -163,6 +173,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '充值',
+                    value: '/customer/balance/list/recharge',
+                  },
+                  {
+                    title: '查看记录',
+                    value: '/customer/balance/list/viewRecord',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-balance" */ '../view/manage/customer/balance/list/index.vue'),
             },
@@ -187,6 +207,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑合同',
+                    value: '/customer/contract/list/editContract',
+                  },
+                  {
+                    title: '新增合同',
+                    value: '/customer/contract/list/addContract',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/customer/contract/list/index.vue'),
             },
@@ -211,6 +241,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑客户账号',
+                    value: '/customer/account/list/editCusAccount',
+                  },
+                  {
+                    title: '新增客户账号',
+                    value: '/customer/account/list/addCusAccount',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-account" */ '../view/manage/customer/account/list/index.vue'),
             },
@@ -361,6 +401,16 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑灵工',
+                    value: '/employee/emp/list/editEmp',
+                  },
+                  {
+                    title: '新增灵工',
+                    value: '/employee/emp/list/addEmp',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-employee" */ '../view/manage/employee/list/index.vue'),
             },

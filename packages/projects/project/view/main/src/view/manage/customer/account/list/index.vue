@@ -71,6 +71,7 @@
     <div class="con-table">
       <div class="buttons">
         <el-button
+          v-if="$p('/customer/account/list/addCusAccount')"
           type="primary"
           icon="el-icon-plus"
           @click="add"
@@ -136,6 +137,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/customer/account/list/editCusAccount')"
               type="text"
               class="primary"
               @click="edit(row)"
