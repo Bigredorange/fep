@@ -181,7 +181,7 @@
         <el-table-column
           prop="workOrderFee"
           align="center"
-          label="工单费用"
+          label="任务单价"
         />
         <el-table-column
           prop="contactName"

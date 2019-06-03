@@ -651,6 +651,13 @@ const routes = [
     },
   },
   {
+    path: '/home',
+    component: () => import(/* webpackChunkName: "v-home" */ '../view/manage/home/index.vue'),
+    meta: {
+      // isRight: true,
+    },
+  },
+  {
     path: '/',
     redirect: '/login',
   },

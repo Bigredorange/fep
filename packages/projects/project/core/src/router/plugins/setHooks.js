@@ -40,6 +40,10 @@ const initData = async () => {
       document.querySelector('#global-reload').style.display = 'block';
       throw (new Error('init failed'));
     });
+    const [first] = store.state.permission.routes;
+    if (first) {
+      router.push(first.path);
+    }
   }
 };
 

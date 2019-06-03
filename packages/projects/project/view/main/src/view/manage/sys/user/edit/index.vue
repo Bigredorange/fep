@@ -636,7 +636,9 @@ export default {
         };
         getKey(res.deptTrees);
         this.expandNodes = keys;
-        this.$refs.tree.setCheckedKeys(keys);
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys(keys);
+        }
       });
     },
     assignCus() {

@@ -120,7 +120,7 @@
               <p>{{ form.workType }}</p>
             </el-form-item>
             <el-form-item
-              label="工单费用"
+              label="任务单价"
               prop="workOrderFee"
             >
               <p>{{ form.workOrderFee }}</p>

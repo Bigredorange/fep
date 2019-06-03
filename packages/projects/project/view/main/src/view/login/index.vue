@@ -163,7 +163,7 @@ export default {
       }).then((res) => {
         const { token } = res;
         this.manageToken(token);
-        this.$router.push('/manage/customer');
+        this.$router.push('/home');
       }).catch(() => {}).finally(() => {
         this.loading = false;
       });

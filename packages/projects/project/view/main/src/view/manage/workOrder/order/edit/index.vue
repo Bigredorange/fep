@@ -217,6 +217,7 @@
             >
               <el-input
                 v-model="form.recruitsNumber"
+                type="number"
                 placeholder="请输入招聘人数"
               />
             </el-form-item>
@@ -234,12 +235,12 @@
               />
             </el-form-item>
             <el-form-item
-              label="工单费用"
+              label="任务单价"
               prop="workOrderFee"
             >
               <el-input
                 v-model="form.workOrderFee"
-                placeholder="请输入工单费用"
+                placeholder="请输入任务单价"
               />
             </el-form-item>
           </el-form>
@@ -410,6 +411,15 @@ export default {
     Areas,
   },
   data() {
+    const validateNum = (rule, value, callback) => {
+      if (!value) {
+        callback('请输入数字');
+      } else if (!this.$utils.regExp(value, 'number')) {
+        callback('请输入数字');
+      } else {
+        callback();
+      }
+    };
     return {
       rules: {
         workOrderName: [{
@@ -439,8 +449,8 @@ export default {
         }],
         recruitsNumber: [{
           required: true,
-          message: '请选择招聘人数',
           trigger: 'blur',
+          validator: validateNum,
         }],
         validityPeriod: [{
           required: true,
