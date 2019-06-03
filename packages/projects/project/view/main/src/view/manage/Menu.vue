@@ -24,8 +24,15 @@ export default {
     },
   },
   methods: {
-    isActiveMenu(path) {
-      return this.$route.path.includes(path);
+    isActiveMenu(pathMenu) {
+      const { path } = this.$route;
+      const pathArr = path.split('/');
+      const pathMenuArr = pathMenu.split('/');
+      const flag = pathMenuArr.every((item, i) => {
+        const tempFlag = item === pathArr[i];
+        return tempFlag;
+      });
+      return flag;
     },
     showMenu(menu) { // 是否显示菜单
       const isRight = (route) => { // 是否有权限访问

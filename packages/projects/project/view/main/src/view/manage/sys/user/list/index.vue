@@ -114,6 +114,11 @@
           align="center"
           label="手机号码"
         />
+        <el-table-column
+          prop="companyName"
+          align="center"
+          label="企业名称"
+        />
         <!-- <el-table-column
           prop="companyName"
           align="center"
@@ -132,12 +137,17 @@
           <template
             slot-scope="{ row }"
           >
-            <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
-            <span
-              :class="{'grey': row.status === 0}"
+            <div
+              class="mouse"
+              @click.stop="disable(row)"
             >
-              {{ row.status === 1 ? '启用' : '禁用' }}
-            </span>
+              <img :src="require(`../../../../../assets/icon/${row.status === 1 ? 'K_abled.png' : 'K_disabled.png'}`)">
+              <span
+                :class="{'grey': row.status === 0}"
+              >
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -286,6 +296,22 @@ export default {
     add() {
       this.$router.push({ path: 'edit', query: { type: 'add' } });
     },
+    disable(item) {
+      console.log(item);
+      // this.$dialogs.confirm({
+      //   title: '提示',
+      //   content: `确定要${item.status === 1 ? '禁用' : '启用'}吗？`,
+      //   onOk: () => {
+      //     this.$api.disableCustomer({
+      //       id: item.id,
+      //       status: Number(!item.status),
+      //     }).then(() => {
+      //       this.$message.success(`${item.status === 1 ? '禁用' : '启用'}成功`);
+      //       this.getList();
+      //     });
+      //   },
+      // });
+    },
   },
 };
 </script>
@@ -301,6 +327,9 @@ export default {
   }
   .grey {
     color: #999999;
+  }
+  .mouse {
+    // cursor: pointer;
   }
 }
 </style>

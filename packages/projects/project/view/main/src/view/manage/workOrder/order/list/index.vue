@@ -181,6 +181,11 @@
         <el-table-column
           prop="workOrderFee"
           align="center"
+          label="工单费用"
+        />
+        <el-table-column
+          prop="taskUnitPrice"
+          align="center"
           label="任务单价"
         />
         <el-table-column

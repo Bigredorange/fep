@@ -236,10 +236,10 @@
             </el-form-item>
             <el-form-item
               label="任务单价"
-              prop="workOrderFee"
+              prop="taskUnitPrice"
             >
               <el-input
-                v-model="form.workOrderFee"
+                v-model="form.taskUnitPrice"
                 placeholder="请输入任务单价"
               />
             </el-form-item>
@@ -532,7 +532,7 @@ export default {
         expr: '1',
         recruitsNumber: null,
         workType: null,
-        workOrderFee: null,
+        taskUnitPrice: null,
         jobDetail: null,
       },
       confirmButtonLoading: false,

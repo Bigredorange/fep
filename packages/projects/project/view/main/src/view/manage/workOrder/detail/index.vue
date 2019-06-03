@@ -121,9 +121,9 @@
             </el-form-item>
             <el-form-item
               label="任务单价"
-              prop="workOrderFee"
+              prop="taskUnitPrice"
             >
-              <p>{{ form.workOrderFee }}</p>
+              <p>{{ form.taskUnitPrice }}</p>
             </el-form-item>
           </el-form>
         </div>

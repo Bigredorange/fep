@@ -433,7 +433,7 @@ export default {
       this.getList();
     },
     edit(row) {
-      this.$router.push({ path: '/manage/workOrder/check/detail', query: { id: row.workOrderId } });
+      this.$router.push({ path: '/manage/workOrder/order/detail', query: { id: row.workOrderId } });
     },
     selectDate(val) {
       const [start, end] = val;
