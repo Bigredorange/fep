@@ -63,7 +63,7 @@ export default {
   > .left {
     flex-shrink: 0;
     margin-right: 36px;
-    width: 602px;
+    width: 50%;
   }
   > .right {
     flex: 1 0 0;

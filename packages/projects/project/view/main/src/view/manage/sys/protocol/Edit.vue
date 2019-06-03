@@ -192,9 +192,6 @@ export default {
         line-height: 16px;
         font-size: 14px;
       }
-      /deep/ .label {
-        width: 80%;
-      }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;
         border-color: #356fb8;

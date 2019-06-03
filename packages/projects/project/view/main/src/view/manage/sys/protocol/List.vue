@@ -141,7 +141,7 @@ export default {
       border-bottom: 1px solid #f0f3f6;
       cursor: pointer;
       .protocol-name {
-        width: 290px;
+        width: 280px;
         height: 36px;
         line-height: 36px;
         overflow:hidden;

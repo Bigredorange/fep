@@ -13,7 +13,6 @@
             :model="form"
             :rules="rules"
             label-width="140px"
-            style="margin-left: 120px;"
             inline
             class="ui-form three-col"
           >
@@ -68,6 +67,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
+              v-if="$store.state.fepUserInfo.level !== 3"
               label="状态"
               prop="status"
             >
@@ -126,9 +126,9 @@
               label="区域"
               prop="area"
             >
-              <el-input
+              <areas
                 v-model="form.companyArea"
-                placeholder="请输入区域"
+                :work-area="form.companyArea"
               />
             </el-form-item>
             <el-form-item
@@ -199,10 +199,12 @@
 </template>
 <script>
 import MaskCode from './Mask.vue';
+import Areas from '../../../../components/Area.vue';
 
 export default {
   components: {
     MaskCode,
+    Areas,
   },
   data() {
     return {
@@ -285,7 +287,9 @@ export default {
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
-            this.$router.push('list');
+            if (this.$store.state.fepUserInfo.level !== 3) {
+              this.$router.push('list');
+            }
           }).finally(() => {
             this.confirmButtonLoading = false;
           });
@@ -352,9 +356,6 @@ export default {
         vertical-align: middle;
         line-height: 16px;
         font-size: 14px;
-      }
-      /deep/ .label {
-        width: 80%;
       }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;

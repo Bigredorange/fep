@@ -16,7 +16,7 @@
             :model="form"
             :rules="rules"
             label-width="100px"
-            style="margin-left: 120px;"
+            style="margin-top: 20px;"
           >
             <el-form-item
               label="角色状态"

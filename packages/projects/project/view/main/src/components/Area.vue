@@ -54,6 +54,12 @@ export default {
       }
     },
   },
+  created() {
+    if (this.workArea) {
+      this.area = this.workArea.split('/');
+      this.handleItemChange(this.area);
+    }
+  },
   methods: {
     handleItemChange(val) {
       if (val.length >= 2) {

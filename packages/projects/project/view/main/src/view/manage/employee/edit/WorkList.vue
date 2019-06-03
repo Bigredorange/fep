@@ -26,7 +26,6 @@
             :fetch-suggestions="querySearch"
             placeholder="请输入工种"
             value-key="dictValue"
-            @select="getList"
           />
           <span v-else>{{ row.workType }}</span>
         </template>
@@ -69,10 +68,15 @@
         label="工作区域"
       >
         <template slot-scope="{ $index, row }">
-          <el-input
+          <!-- <el-input
             v-if="row.isEdit"
             v-model="list[$index].workArea"
             type="text"
+          /> -->
+          <areas
+            v-if="row.isEdit"
+            v-model="list[$index].workArea"
+            :work-area="list[$index].workArea"
           />
           <span v-else>{{ row.workArea }}</span>
         </template>
@@ -117,7 +121,12 @@
   </div>
 </template>
 <script>
+import Areas from '../../../../components/Area.vue';
+
 export default {
+  components: {
+    Areas,
+  },
   props: {
     employeeId: {
       type: [Number, String],

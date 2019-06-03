@@ -13,7 +13,6 @@
             :model="form"
             :rules="rules"
             label-width="140px"
-            style="margin-left: 120px;"
             inline
             class="ui-form three-col"
           >
@@ -181,7 +180,6 @@
                 label-width="140px"
                 inline
                 class="ui-form three-col"
-                style="margin-left: 120px;width: 80%;"
               >
                 <el-form-item
                   label="成立日期"
@@ -539,9 +537,6 @@ export default {
         line-height: 16px;
         font-size: 14px;
       }
-      /deep/ .label {
-        width: 80%;
-      }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;
         border-color: #356fb8;
@@ -550,6 +545,9 @@ export default {
         color: #999999;
       }
     }
+  }
+  .con-tab {
+    padding: 0 10px;
   }
   .bot-menu {
       margin-top: 20px;

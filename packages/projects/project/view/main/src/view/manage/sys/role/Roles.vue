@@ -6,12 +6,12 @@
           v-model="form.name"
           placeholder="搜索 角色名称"
           suffix-icon="el-icon-search"
-          style="width: 200px;"
+          style="width: 150px;"
           @blur="getList"
         />
         <el-select
           v-model="form.status"
-          style="width: 200px;margin-left: 20px;"
+          style="width: 150px;margin-left: 20px;"
           placeholder="请选择状态"
           @change="getList"
         >

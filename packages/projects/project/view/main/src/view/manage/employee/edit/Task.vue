@@ -20,7 +20,7 @@
         label="工作区域"
       />
       <el-table-column
-        prop="area"
+        prop="workType"
         align="center"
         label="工种"
       />

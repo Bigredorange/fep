@@ -13,7 +13,6 @@
             :model="form"
             :rules="rules"
             label-width="140px"
-            style="margin-left: 120px;"
             inline
             class="ui-form three-col"
           >
@@ -384,9 +383,6 @@ export default {
         vertical-align: middle;
         line-height: 16px;
         font-size: 14px;
-      }
-      /deep/ .label {
-        width: 80%;
       }
       /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
         background-color: #356fb8;
