@@ -241,7 +241,16 @@
           prop="totalAmount"
           align="center"
           label="合计"
-        />
+        >
+          <template slot-scope="{ row, $index }">
+            <el-input
+              v-if="row.isEdit"
+              v-model="list[$index].totalAmount"
+              placeholder="请输入"
+            />
+            <span v-else>{{ row.totalAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="status"
           align="center"
@@ -437,39 +446,45 @@ export default {
       this.getList();
     },
     save(index) {
-      // 丑代码待优化
       const currentRow = this.list[index];
       const reward = currentRow.reward || 0;
       const taxesPayable = currentRow.taxesPayable || 0;
       const actualPay = currentRow.actualPay || 0;
       const serviceFee = currentRow.serviceFee || 0;
       const billingTax = currentRow.billingTax || 0;
-      if (reward && this.$utils.regExp('money', reward)) {
+      const totalAmount = currentRow.totalAmount || 0;
+      if (reward && !this.$utils.regExp(reward, 'money')) {
         this.$message.warning('服务报酬只能为数值');
         return;
       }
-      if (actualPay && this.$utils.regExp('money', actualPay)) {
+      if (actualPay && !this.$utils.regExp(actualPay, 'money')) {
         this.$message.warning('实发金额只能为数值');
         return;
       }
-      if (taxesPayable && this.$utils.regExp('money', taxesPayable)) {
+      if (taxesPayable && !this.$utils.regExp(taxesPayable, 'money')) {
         this.$message.warning('应交税费只能为数值');
         return;
       }
-      if (serviceFee && this.$utils.regExp('money', serviceFee)) {
+      if (serviceFee && !this.$utils.regExp(serviceFee, 'money')) {
         this.$message.warning('服务费只能为数值');
         return;
       }
-      if (billingTax && this.$utils.regExp('money', billingTax)) {
+      if (billingTax && !this.$utils.regExp(billingTax, 'money')) {
         this.$message.warning('开票税费只能为数值');
         return;
       }
+      if (totalAmount && !this.$utils.regExp(totalAmount, 'money')) {
+        this.$message.warning('合计只能为数值');
+        return;
+      }
+
       const params = {
         reward,
         actualPay,
         taxesPayable,
         serviceFee,
         billingTax,
+        totalAmount,
       };
       Object.keys(params).forEach((k) => {
         if (typeof params[k] === 'string') {
