@@ -117,7 +117,7 @@
               <span
                 v-else
               >
-                {{ row.gotoWorkTime }}
+                {{ row.completeTime }}
               </span>
             </template>
           </el-table-column>
