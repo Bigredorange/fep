@@ -15,7 +15,6 @@
       <el-input
         v-model="money"
         placeholder="请输入充值金额"
-        style="200px"
       />
     </div>
     <span
@@ -41,17 +40,21 @@ export default {
   data() {
     return {
       isShow: false,
-      money: 0,
+      money: '',
       customerId: null,
     };
   },
   methods: {
     open(row) {
-      this.money = 0;
+      this.money = '';
       this.isShow = true;
       this.customerId = row.customerId;
     },
     submit() {
+      if (!/^\d+$/.test(this.money) || Number(this.money) <= 0) {
+        this.$message.warning('请输入大于 0 的金额');
+        return;
+      }
       this.$api.addCusBalance({
         id: this.customerId,
         money: this.money,

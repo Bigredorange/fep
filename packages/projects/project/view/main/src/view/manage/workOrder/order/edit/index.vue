@@ -393,7 +393,7 @@
         <el-button
           v-loading="confirmButtonLoading"
           type="primary"
-          @click="submit"
+          @click="submit(0)"
         >
           保存
         </el-button>

@@ -19,7 +19,7 @@
             v-model="form.startMonth"
             type="month"
             placeholder="开始月份"
-            value-format="yyyy-MM-dd"
+            value-format="yyyy-MM"
             style="width: 200px;"
           />
           <span class="range">至</span>
@@ -27,7 +27,7 @@
             v-model="form.endMonth"
             type="month"
             placeholder="截止月份"
-            value-format="yyyy-MM-dd"
+            value-format="yyyy-MM"
             style="width: 200px;"
           />
         </div>
