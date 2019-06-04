@@ -170,20 +170,21 @@ export default {
     getDetail(id) {
       this.$api.getCusContract({ id }).then((res) => {
         this.form = res;
-        const fileList = JSON.parse(res.attachment) || [];
+        const fileList = res.attachmentFiles || [];
         this.fileList = fileList.map((item) => {
-          const obj = {};
-          obj.fileName = item;
-          return obj;
+          const { filePath: path, oprName: userName } = item;
+          return {
+            ...item,
+            userName,
+            path,
+          };
         });
       });
     },
     downloadFile(item) {
-      return item;
-      // this.$api.fileDownloadUpload({
-      //   filePath: item.path,
-      //   type: 'CUS_CONTRACT',
-      // }, item.fileName);
+      this.$api.downloadFileById({
+        fileId: item.id,
+      }).then(blob => this.$utils.autoLoad(new Blob([blob]), item.fileName));
     },
     getCustomerAll() {
       this.isLoading = true;
