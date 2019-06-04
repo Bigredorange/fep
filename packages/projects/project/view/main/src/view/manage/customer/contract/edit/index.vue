@@ -272,7 +272,7 @@ export default {
   },
   methods: {
     submit() {
-      this.form.attachment = JSON.stringify(this.fileList.map(item => item.path));
+      this.form.attachment = JSON.stringify(this.fileList.map(item => item.id));
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.confirmButtonLoading = true;
@@ -328,7 +328,7 @@ export default {
           type: 'CUS_CONTRACT',
         }).then((res) => {
           this.file.fileName = fileObj.name;
-          this.file.path = res;
+          this.file.id = res;
           this.file.userName = this.$store.state.fepUserInfo.name;
           this.fileList.push(this.file);
         }).finally(() => {
@@ -340,10 +340,9 @@ export default {
       this.fileList.splice(index, 1);
     },
     downloadFile(item) {
-      this.$api.fileDownloadUpload({
-        filePath: item.path,
-        type: 'CUS_CONTRACT',
-      }, item.fileName);
+      this.$api.downloadFileById({
+        fileId: item.id,
+      }).then(blob => this.$utils.autoLoad(new Blob([blob]), item.fileName));
     },
     getCustomerAll() {
       this.isLoading = true;

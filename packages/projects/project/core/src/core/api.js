@@ -277,5 +277,7 @@ const api = {
    * 模板下载
    */
   downloadTemplate: args => getBlob('file/download/template', args),
+  // 根据文件ID下载文件
+  downloadFileById: args => getBlob('/file/download', args),
 };
 module.exports = api;
