@@ -170,6 +170,14 @@
             >
               编辑
             </el-button>
+            <el-button
+              v-if="$p('/sys/user/list/resetPassword')"
+              type="text"
+              class="primary"
+              @click="resetPassword(row)"
+            >
+              重置密码
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -312,6 +320,18 @@ export default {
       //   },
       // });
     },
+    resetPassword({ id }) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要重置密码吗？',
+        onOk: () => {
+          this.$api.resetPassword({ id }).then(() => {
+            this.$message.success('重置成功!重置密码为 111111');
+            this.getList();
+          });
+        },
+      });
+    },
   },
 };
 </script>
@@ -329,7 +349,7 @@ export default {
     color: #999999;
   }
   .mouse {
-    // cursor: pointer;
+    cursor: pointer;
   }
 }
 </style>

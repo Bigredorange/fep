@@ -13,7 +13,7 @@
       :rules="rules"
       label-width="100px"
     >
-      <el-form-item
+      <!-- <el-form-item
         prop="oldPasswd"
         label="旧密码"
       >
@@ -23,8 +23,9 @@
           type="password"
           size="small"
           placeholder="请输入旧密码"
+          :maxlength="20"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item
         prop="newPasswd"
         label="设置新密码"
@@ -130,15 +131,27 @@ export default {
     },
     async submitForm() {
       await this.$refs.form.validate();
-      this.isLoading = true;
-      this.$api.userUpdatePasswd({
-        ...this.form,
-      }).then(() => {
-        this.$message.success('修改成功');
-        this.reset();
-        this.isShow = false;
-      }).finally(() => {
-        this.isLoading = false;
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要修改密码吗？',
+        onOk: () => {
+          const { id } = this.$store.state.fepUserInfo;
+          const params = {
+            id,
+            password: this.$utils.aesEncrypt(this.form.newPasswd),
+          };
+          this.isLoading = true;
+          this.$api.updatePassword({
+            ...params,
+          }).then(() => {
+            this.$message.success('修改成功');
+            this.reset();
+            this.$emit('reset');
+            this.isShow = false;
+          }).finally(() => {
+            this.isLoading = false;
+          });
+        },
       });
     },
   },

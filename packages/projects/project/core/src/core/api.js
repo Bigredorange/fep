@@ -279,5 +279,10 @@ const api = {
   downloadTemplate: args => getBlob('file/download/template', args),
   // 根据文件ID下载文件
   downloadFileById: args => getBlob('/file/download', args),
+
+  // 重置密码为 111111
+  resetPassword: ({ id, ...arg }) => putJson(`/user/${id}/reset_psw`, arg),
+  // 修改密码
+  updatePassword: ({ id, ...arg }) => putJson(`/user/${id}/change_psw`, arg),
 };
 module.exports = api;

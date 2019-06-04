@@ -144,6 +144,14 @@
             >
               编辑
             </el-button>
+            <el-button
+              v-if="$p('/customer/account/list/updatePassword')"
+              type="text"
+              class="primary"
+              @click="resetPassword(row)"
+            >
+              重置密码
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -237,6 +245,18 @@ export default {
     },
     add() {
       this.$router.push('edit');
+    },
+    resetPassword({ id }) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要重置密码吗？',
+        onOk: () => {
+          this.$api.resetPassword({ id }).then(() => {
+            this.$message.success('重置成功!重置密码为 111111');
+            this.getList();
+          });
+        },
+      });
     },
   },
 };

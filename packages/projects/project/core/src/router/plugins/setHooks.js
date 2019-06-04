@@ -28,7 +28,7 @@ const validateRight = (to) => {
  * 初始化数据
  */
 let inited = false;
-const initData = async () => {
+const initData = async (path) => {
   if (!inited) {
     inited = true;
     await Promise.all([
@@ -41,7 +41,8 @@ const initData = async () => {
       throw (new Error('init failed'));
     });
     const [first] = store.state.permission.routes;
-    if (first) {
+    // 进首页时跳到权限路由第一个页面
+    if (first && path === '/home') {
       router.push(first.path);
     }
   }
@@ -87,7 +88,7 @@ export default () => {
       return;
     }
 
-    await initData(); // 初始化数据
+    await initData(to.path); // 初始化数据
 
     if (validateRight(to)) { // 是否通过路由权限验证
       next();

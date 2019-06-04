@@ -36,9 +36,9 @@
               <li @click="$refs.selfInfo.open()">
                 个人信息
               </li>
-              <!-- <li @click="$refs.modifyPassword.open()">
+              <li @click="$refs.modifyPassword.open()">
                 修改密码
-              </li> -->
+              </li>
               <li @click="quit">
                 退出登录
               </li>
@@ -52,7 +52,10 @@
     <!-- 个人信息 -->
     <self-info ref="selfInfo" />
     <!-- 修改密码 -->
-    <modify-password ref="modifyPassword" />
+    <modify-password
+      ref="modifyPassword"
+      @reset="resetPassword"
+    />
   </div>
 </template>
 
@@ -100,6 +103,9 @@ export default {
     });
   },
   methods: {
+    resetPassword() {
+      setTimeout(() => this.quit(), 400);
+    },
     quit() {
       // 退出删除本地个人信息和token
       this.$store.dispatch('logout');

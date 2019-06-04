@@ -76,6 +76,10 @@ const asyncRoutes = [{
                     title: '新增用户',
                     value: '/sys/user/list/addUser',
                   },
+                  {
+                    title: '重置密码',
+                    value: '/sys/user/list/resetPassword',
+                  },
                 ],
               },
               component: () => import(/* webpackChunkName: "v-user" */ '../view/manage/sys/user/list/index.vue'),
@@ -271,6 +275,10 @@ const asyncRoutes = [{
                   {
                     title: '新增客户账号',
                     value: '/customer/account/list/addCusAccount',
+                  },
+                  {
+                    title: '重置密码',
+                    value: '/customer/account/list/updatePassword',
                   },
                 ],
               },
