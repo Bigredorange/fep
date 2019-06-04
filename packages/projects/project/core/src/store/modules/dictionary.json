@@ -28,5 +28,11 @@
   },
   "Sex":	{
     "name": "性别"
+  },
+  "hroIndustry": {
+    "name": "HRO行业"
+  },
+  "Enterprise": {
+    "name": "企业性质"
   }
 }
