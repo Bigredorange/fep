@@ -130,6 +130,7 @@
                 type="date"
                 placeholder="选择有效结束日期"
                 value-format="yyyy-MM-dd"
+                :picker-options="pickerOptions"
               />
             </el-form-item>
             <el-form-item
@@ -440,7 +441,7 @@ export default {
         workArea: [{
           required: true,
           message: '请输入工作区域',
-          trigger: 'blur',
+          trigger: 'change',
         }],
         workAddress: [{
           required: true,
@@ -465,7 +466,7 @@ export default {
         unit: [{
           required: true,
           message: '请选择单位',
-          trigger: 'blur',
+          trigger: 'change',
         }],
         workType: [{
           required: true,
@@ -586,6 +587,11 @@ export default {
           flag: false,
         },
       ],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 1000 * 60 * 60 * 24;
+        },
+      },
     };
   },
   created() {
@@ -608,6 +614,7 @@ export default {
           let param = null;
           this.form.companyId = this.$store.state.fepUserInfo.companyId;
           this.form.woSchedules = this.woSchedules;
+          if (!this.form.taskUnitPrice) this.form.taskUnitPrice = 0;
           if (!this.workOrderId) {
             api = 'addWorkOrder';
             param = {
