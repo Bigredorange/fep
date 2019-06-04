@@ -602,7 +602,7 @@ export default {
     }
   },
   methods: {
-    submit() {
+    submit(bool) {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (!this.form.jobDetail) {
@@ -628,6 +628,10 @@ export default {
             };
           }
           this.$api[api](param).then(() => {
+            if (bool) {
+              this.changeWorkOrder(this.workOrderId, 1);
+              return;
+            }
             this.$message.success('保存成功');
             this.$router.push('list');
           }).finally(() => {
@@ -680,7 +684,7 @@ export default {
         title: '提示',
         content: '确定要提交审核吗？',
         onOk: () => {
-          this.changeWorkOrder(this.workOrderId, 1);
+          this.submit(1);
         },
       });
     },
