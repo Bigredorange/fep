@@ -5,7 +5,7 @@
         <div class="item">
           <span>姓名：</span>
           <el-input
-            v-model="form.empName"
+            v-model.trim="form.empName"
             placeholder="请输入姓名"
             style="width: 200px;"
           />
@@ -13,7 +13,7 @@
         <div class="item">
           <span>手机号码：</span>
           <el-input
-            v-model="form.mobile"
+            v-model.trim="form.mobile"
             placeholder="请输入手机号码"
             style="width: 200px;"
           />
@@ -21,7 +21,7 @@
         <div class="item">
           <span>证件号码：</span>
           <el-input
-            v-model="form.certificateNum"
+            v-model.trim="form.certificateNum"
             placeholder="请输入证件号码"
             style="width: 200px;"
           />
@@ -43,6 +43,14 @@
           </el-select>
         </div>
         <div class="item">
+          <span>客户名称：</span>
+          <el-input
+            v-model.trim="form.customerName"
+            placeholder="请输入客户名称"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
           <span>创建日期：</span>
           <el-date-picker
             v-model="createTime"
@@ -58,7 +66,7 @@
         <div class="item">
           <span>灵工来源：</span>
           <el-input
-            v-model="form.source"
+            v-model.trim="form.source"
             placeholder="请输入灵工来源"
             style="width: 200px;"
           />
@@ -242,6 +250,7 @@ export default {
       list: [],
       listLoading: false,
       form: {
+        customerName: null,
         empName: null,
         mobile: null,
         certificateNum: null,

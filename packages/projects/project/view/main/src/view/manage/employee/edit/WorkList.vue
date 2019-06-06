@@ -31,6 +31,27 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="customerId"
+        align="center"
+        label="服务客户"
+      >
+        <template slot-scope="{ $index, row }">
+          <el-select
+            v-if="row.isEdit"
+            v-model="list[$index].customerId"
+            placeholder="请选择服务客户"
+          >
+            <el-option
+              v-for="item in customerList"
+              :key="item.id"
+              :label="item.customerName"
+              :value="item.id"
+            />
+          </el-select>
+          <span v-else>{{ row.customerName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="startDate"
         align="center"
         label="开始日期"
@@ -145,10 +166,12 @@ export default {
         workArea: null,
         isEdit: true,
       },
+      customerList: [],
     };
   },
   created() {
     this.getList();
+    this.getCustomerItems();
   },
   methods: {
     getList() {
@@ -220,6 +243,9 @@ export default {
       console.log(results);
       // 调用 callback 返回建议列表的数据
       cb(results);
+    },
+    async getCustomerItems() {
+      this.customerList = await this.$api.getCustomerAll();
     },
   },
 };
