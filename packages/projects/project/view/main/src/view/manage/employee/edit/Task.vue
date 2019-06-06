@@ -15,16 +15,6 @@
         label="服务客户"
       />
       <el-table-column
-        prop="workAddress"
-        align="center"
-        label="工作区域"
-      />
-      <el-table-column
-        prop="workType"
-        align="center"
-        label="工种"
-      />
-      <el-table-column
         prop="gotoWorkTime"
         align="center"
         label="开始日期"
@@ -33,6 +23,16 @@
         prop="completeTime"
         align="center"
         label="结束日期"
+      />
+      <el-table-column
+        prop="workAddress"
+        align="center"
+        label="工作区域"
+      />
+      <el-table-column
+        prop="area"
+        align="center"
+        label="工种"
       />
     </el-table>
     <el-pagination
