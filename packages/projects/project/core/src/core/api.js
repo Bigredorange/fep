@@ -284,5 +284,21 @@ const api = {
   resetPassword: ({ id, ...arg }) => putJson(`/user/${id}/reset_psw`, arg),
   // 修改密码
   updatePassword: ({ id, ...arg }) => putJson(`/user/${id}/change_psw`, arg),
+
+  /**
+   * 印章管理
+   */
+  // 获取印章管理者
+  getSealManager: ({ id, ...arg }) => get(`seal/${id}/manager_list`, arg),
+  // 获取可分配的用户列表
+  getManagerList: ({ id, ...arg }) => get(`seal/${id}/distributable_user_list`, arg),
+  // 新增印章
+  addSeal: args => postJson('seal', args),
+  // 添加印章管理用户
+  addSealManage: args => postJson('seal/seal_manage', args),
+  // 取消用户管理印章
+  delSealManager: ({ smId, ...arg }) => del(`seal/seal_manage/${smId}`, arg),
+  // 印章列表
+  getSealList: args => get('seal/list', args),
 };
 module.exports = api;

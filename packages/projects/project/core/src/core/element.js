@@ -133,7 +133,6 @@ Vue.use(Cascader);
 // Vue.use(Main);
 // Vue.use(Footer);
 Vue.use(Scrollbar);
-
 Vue.use(Loading.directive);
 
 // Vue.prototype.$loading = Loading.service;

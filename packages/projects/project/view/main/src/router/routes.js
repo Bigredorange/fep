@@ -335,6 +335,13 @@ const asyncRoutes = [{
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
             },
+            {
+              path: 'authentic',
+              meta: {
+                title: '企业认证',
+              },
+              component: () => import(/* webpackChunkName: "v-authentic" */ '../view/manage/hroCompany/authentic/index.vue'),
+            },
           ],
         },
       ],
@@ -353,6 +360,13 @@ const asyncRoutes = [{
             title: 'hro详情',
           },
           component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/edit/index.vue'),
+        },
+        {
+          path: 'authentic',
+          meta: {
+            title: '企业认证',
+          },
+          component: () => import(/* webpackChunkName: "v-authentic" */ '../view/manage/hroCompany/authentic/index.vue'),
         },
       ],
     },
@@ -643,6 +657,71 @@ const asyncRoutes = [{
             title: '日流水报表',
           },
           component: () => import(/* webpackChunkName: "v-company" */ '../view/manage/report/bill/index.vue'),
+        },
+      ],
+    },
+    {
+      path: 'sign',
+      component: RouterView,
+      redirect: 'sign/template',
+      meta: {
+        title: '签约管理',
+      },
+      children: [
+        {
+          path: 'seal',
+          component: RouterView,
+          redirect: 'seal/list',
+          meta: {
+            title: '印章管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-seal" */ '../view/manage/sign/seal/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '创建印章',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sign/seal/edit/index.vue'),
+            },
+            {
+              path: 'addManager',
+              meta: {
+                title: '添加人员',
+              },
+              component: () => import(/* webpackChunkName: "v-addManager" */ '../view/manage/sign/seal/addManager/index.vue'),
+            },
+          ],
+        },
+        {
+          path: 'template',
+          component: RouterView,
+          redirect: 'template/list',
+          meta: {
+            title: '签约模板',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-template" */ '../view/manage/sign/template/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '新增/编辑',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sign/template/edit/index.vue'),
+            },
+          ],
         },
       ],
     },

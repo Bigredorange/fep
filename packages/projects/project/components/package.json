@@ -7,6 +7,7 @@
     "@fep-project-lib/ci": "^0.0.1"
   },
   "dependencies": {
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "tributejs": "3.7.1"
   }
 }

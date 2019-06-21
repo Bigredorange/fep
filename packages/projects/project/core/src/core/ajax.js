@@ -67,6 +67,7 @@ axios.interceptors.response.use((response) => {
     if (res.type !== 'application/json') {
       // 获取文件名，将文件名从gb2312转码成utf-8
       const fileName = response.headers['content-disposition'];
+      iconv.skipDecodeWarning = true;
       if (fileName) {
         res.fileName = iconv.decode(fileName.replace(/.+filename=/, ''), 'gb2312');
       }
