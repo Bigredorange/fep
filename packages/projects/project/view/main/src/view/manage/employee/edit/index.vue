@@ -466,7 +466,6 @@ export default {
         this.form = res;
       });
     },
-
     upload(type) {
       this.$utils.initData.call(this, { include: ['file'] });
       const fileType = type === 'avatar' ? 'image' : '';
