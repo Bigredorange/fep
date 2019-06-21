@@ -3,6 +3,7 @@
     <div
       ref="editor"
       v-loading="isLoading"
+      class="editor"
     />
   </div>
 </template>
@@ -35,13 +36,20 @@ export default {
       tribute: {
 
       },
+      params: [],
     };
+  },
+  watch: {
+    value(v) {
+      this.editor.txt.html(v);
+    },
   },
   mounted() {
     const editor = new Wangeditor(this.$refs.editor);
     this.setConfig(editor);
     editor.create();
     this.editor = editor;
+    this.editor.txt.html(this.value);
     this.setTribute();
   },
   methods: {
@@ -65,7 +73,7 @@ export default {
       };
       // 监听内容更改事件
       editor.customConfig.onchange = (html) => {
-        this.$emit('input', html);
+        // this.$emit('input', html);
         this.$emit('update:value', html);
       };
     },
@@ -98,13 +106,18 @@ export default {
       const tribute = new Tribute({
         ...this.tributeConfig,
         selectTemplate(item) {
-          console.log(item);
-          return `<a style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.original.value}#</a>&nbsp;`;
-          // return '#' + item.original.name + '#';
+          this.setParms(item.value);
+          return `
+            <a
+              class="contract-template-flag"
+              style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;"
+            >#${item.original.value}#</a>&nbsp;
+          `;
         },
       });
-      tribute.attach(this.$refs.editor);
-      // this.$refs.editor;
+      this.$nextTick(() => {
+        tribute.attach(document.querySelector('.w-e-text'));
+      });
     },
     insertVarsIntoHtml(item) {
       const insertTagName = 'a';
@@ -113,20 +126,26 @@ export default {
       // if (UA.isWebkit && !UA.isEdge) {
       //     insertTagName = 'label'
       // }
-      this.editor.cmd.do('insertHTML', `<${insertTagName} style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
+      this.editor.cmd.do('insertHTML', `<${insertTagName} class="contract-template-flag" style="color: #356fb8;
+      text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
+      this.setParms(item.value);
       // this.oldRange = this._editor.currentRange()
       // 手动触发改变
       // this._editor.$txt.change()
     },
-
+    setParms(value) {
+      if (this.params.indexOf(value) === -1) {
+        this.params.push(value);
+        this.$emit('updateParams', this.params);
+      }
+    },
   },
 };
 </script>
 <style lang="scss">
-// @import 'tributejs/dist/tribute.css';
-// /deep/ .tribute-container li {
-//   width: 300px;
-// }
+.w-e-text-container {
+  height: 500px !important;
+}
 .tribute-container {
   position: absolute;
   top: 0;
@@ -136,23 +155,30 @@ export default {
   max-width: 500px;
   overflow: auto;
   display: block;
-  z-index: 999999; }
-  .tribute-container ul {
-    margin: 0;
-    margin-top: 2px;
-    padding: 0;
-    list-style: none;
-    background: #efefef; }
-  .tribute-container li {
-    width: 200px;
-    padding: 5px 5px;
-    cursor: pointer; }
-    .tribute-container li.highlight {
-      background: #ddd; }
-    .tribute-container li span {
-      font-weight: bold; }
-    .tribute-container li.no-match {
-      cursor: default; }
-  .tribute-container .menu-highlighted {
-    font-weight: bold; }
+  z-index: 999999;
+}
+.tribute-container ul {
+  margin: 0;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  background: #efefef;
+}
+.tribute-container li {
+  width: 200px;
+  padding: 5px 5px;
+  cursor: pointer;
+}
+.tribute-container li.highlight {
+  background: #ddd;
+}
+.tribute-container li span {
+  font-weight: bold;
+}
+.tribute-container li.no-match {
+  cursor: default;
+}
+.tribute-container .menu-highlighted {
+  font-weight: bold;
+}
 </style>

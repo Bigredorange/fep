@@ -1,21 +1,39 @@
 <template>
   <div class="con">
-    <Editor
-      ref="editor"
-      :tribute-config="tributeConfig"
-      class="editor"
-    />
-    <div class="con-right">
-      <div class="con-btn">
+    <div
+      v-for="item in sealList"
+      :key="item.id"
+      class="item"
+    >
+      <img
+        class="img"
+        src="../../../../../assets/icon/contractT.png"
+      >
+      <!-- <img
+        src="item.sealUrl"
+      > -->
+      <p>{{ item.templateName }}</p>
+      <div class="btn">
         <el-button
-          v-for="item in tributeConfig.values"
-          :key="item.key"
-          class="item-btn"
-          @click="onInsertVar(item)"
+          class="primary edit"
+          type="text"
+          @click="$router.push({ path: 'edit', query: {id : item.id } })"
         >
-          {{ item.value }}
+          编辑
         </el-button>
+        <div class="con-icon">
+          <i class="el-icon-delete icon" />
+        </div>
       </div>
+    </div>
+    <div
+      class="item"
+    >
+      <!-- <img> -->
+      <i
+        class="el-icon-plus add"
+        @click="$router.push('edit')"
+      />
     </div>
   </div>
 </template>
@@ -23,28 +41,21 @@
 export default {
   data() {
     return {
-      tributeConfig: {
-        trigger: '#',
-        allowSpaces: true,
-        lookup: 'value',
-        fillAttr: 'value',
-        values: [
-          {
-            key: 'name',
-            value: '姓名',
-          },
-          {
-            key: 'company',
-            value: '公司',
-          },
-        ],
-      },
+      sealList: [],
     };
   },
+  created() {
+    this.getList();
+  },
   methods: {
-    async onInsertVar(item) {
-      // console.log(this.$refs.editor);
-      this.$refs.editor.insertVarsIntoHtml(item);
+    getList() {
+      const { companyId } = this.$store.state.fepUserInfo;
+      this.$api.getContractList({
+        companyId,
+      }).then((res) => {
+        this.sealList = res;
+      }).finally(() => {
+      });
     },
   },
 };
@@ -52,18 +63,52 @@ export default {
 <style lang="scss" scoped>
 .con {
   background: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  height: calc(100vh - 102px);
+  padding: 15px 10px;
   display: flex;
-  padding: 10px;
-  .editor {
-    flex: 8;
-  }
-  .con-right {
-    flex: 2;
-    .con-btn {
-      margin-left: 5%;
-      .item-btn {
-        width: 45%;
+  .item {
+    width: 10%;
+    height: 220px;
+    text-align: center;
+    border: 1px solid #F3F3F3;
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+    .img {
+      margin-top: 10px;
+    }
+    .btn {
+      display: flex;
+      border-top: 1px solid #f0f0f0;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      justify-content: space-between;
+      width: 100%;
+      .edit {
+        flex: 4;
       }
+      .con-icon {
+        float: right;
+        flex: 2;
+        border-left: 1px solid #f0f0f0;
+      }
+      .icon {
+        line-height: 36px;
+        cursor: pointer;
+      }
+    }
+    .add {
+      margin-top: 45%;
+      cursor: pointer;
+      font-size: 50px;
+      color: #6D7074;
+    }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
     }
   }
 }

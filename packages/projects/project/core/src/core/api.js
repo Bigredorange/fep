@@ -300,5 +300,18 @@ const api = {
   delSealManager: ({ smId, ...arg }) => del(`seal/seal_manage/${smId}`, arg),
   // 印章列表
   getSealList: args => get('seal/list', args),
+  /**
+   * 签约模板管理
+   */
+  // 新增签约模板
+  addContract: args => postJson('contract_template', args),
+  // 签约模板设置印章
+  setContractSeal: args => postJson('contract_template', args),
+  // 修改签约模板
+  updateContract: ({ contractTemplateId, ...arg }) => putJson(`contract_template/${contractTemplateId}`, arg),
+  // 查询签约模板
+  getContract: ({ contractTemplateId, ...arg }) => get(`contract_template/${contractTemplateId}`, arg),
+  // 签约模板列表
+  getContractList: args => get('contract_template/list', args),
 };
 module.exports = api;

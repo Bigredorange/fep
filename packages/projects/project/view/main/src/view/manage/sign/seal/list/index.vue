@@ -6,6 +6,7 @@
       class="item"
     >
       <img
+        class="img"
         src="../../../../../assets/icon/seal1.png"
       >
       <!-- <img
@@ -14,13 +15,13 @@
       <p>{{ item.sealName }}</p>
       <div class="btn">
         <el-button
-          class="primary"
+          class="primary edit"
           type="text"
           @click="$router.push({ path: 'addManager', query: {id : item.id } })"
         >
           添加管理人员
         </el-button>
-        <div>
+        <div class="con-icon">
           <i class="el-icon-delete icon" />
         </div>
       </div>
@@ -73,10 +74,26 @@ export default {
     text-align: center;
     border: 1px solid #F3F3F3;
     margin: 10px;
-    padding: 10px;
+    position: relative;
+    .img {
+      margin-top: 10px;
+    }
     .btn {
       display: flex;
-      justify-content: space-around;
+      border-top: 1px solid #f0f0f0;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      justify-content: space-between;
+      width: 100%;
+      .edit {
+        flex: 4;
+      }
+      .con-icon {
+        float: right;
+        flex: 2;
+        border-left: 1px solid #f0f0f0;
+      }
       .icon {
         line-height: 36px;
         cursor: pointer;

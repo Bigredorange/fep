@@ -1,31 +1,280 @@
 <template>
-  <div>
-    <Editor
-      ref="editor"
-    />
-    <el-button
-      @click="onInsertVar($event, '姓名')"
-    >
-      姓名
-    </el-button>
+  <div class="con">
+    <div class="con-left">
+      <Editor
+        ref="editor"
+        :value.sync="form.content"
+        :tribute-config="tributeConfig"
+        class="editor"
+        @upate:value="handleValue"
+        @updateParams="handleUpdate"
+      />
+      <div class="bot-menu">
+        <el-button
+          v-loading="confirmButtonLoading"
+          type="primary"
+          @click="submit"
+        >
+          保存
+        </el-button>
+        <el-button>
+          设置盖章
+        </el-button>
+      </div>
+    </div>
+    <div class="con-right">
+      <div class="con-label">
+        <i class="line" />
+        <label>模板属性设置</label>
+        <a class="href">查看模板实例</a>
+      </div>
+      <el-form
+        ref="formUser"
+        :model="form"
+        :rules="rules"
+        label-width="140px"
+        label-position="top"
+      >
+        <el-form-item
+          label="模板名称"
+          prop="templateName"
+        >
+          <el-input
+            v-model="form.templateName"
+            placeholder="请输入模板名称"
+          />
+        </el-form-item>
+        <el-form-item
+          prop="needSetSeal"
+        >
+          <label
+            slot="label"
+          >
+            <span>盖章 <span class="grey">是否需要设置盖章</span></span>
+          </label>
+          <el-radio-group
+            v-model="form.needSetSeal"
+          >
+            <el-radio-button
+              :label="true"
+            >
+              需要
+            </el-radio-button>
+            <el-radio-button
+              :label="false"
+            >
+              不需要
+            </el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          label="HRO名称"
+          prop="effectiveDay"
+        >
+          <label
+            slot="label"
+          >
+            <span>签署有效期 <span class="grey">自发起签署日起</span></span>
+          </label>
+          <el-input-number
+            v-model="form.effectiveDay"
+            placeholder="请输入HRO名称"
+            controls-position="right"
+            :min="1"
+          /> 天内有效
+        </el-form-item>
+      </el-form>
+      <p>动态内容 <span class="grey">提取文档中##中间字段作为动态字段</span></p>
+      <div class="con-btn">
+        <el-button
+          v-for="item in tributeConfig.values"
+          :key="item.key"
+          class="item-btn"
+          type="primary"
+          @click="onInsertVar(item)"
+        >
+          {{ item.value }}
+        </el-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-
+      tributeConfig: {
+        trigger: '#',
+        allowSpaces: true,
+        lookup: 'value',
+        fillAttr: 'value',
+        values: [
+          {
+            key: 'name',
+            value: '姓名',
+          },
+          {
+            key: 'company',
+            value: '公司',
+          },
+        ],
+      },
+      form: {
+        templateName: null,
+        needSetSeal: true,
+        effectiveDay: null,
+        params: [],
+        content: '',
+      },
+      rules: {
+        templateName: [{
+          required: true,
+          message: '请输入HRO名称',
+          trigger: 'blur',
+        }],
+        needSetSeal: [{
+          required: true,
+          message: '请选择是否要盖章',
+          trigger: 'blur',
+        }],
+        effectiveDay: [{
+          required: true,
+          message: '请输入签署有效期',
+          trigger: 'blur',
+        }],
+      },
+      confirmButtonLoading: false,
+      contractId: null,
     };
   },
+  created() {
+    this.contractId = this.$route.query.id;
+    this.getDetail(this.contractId);
+  },
   methods: {
-    async onInsertVar(e, item) {
-      this.$refs.editor.insertVarIntoHtml(e, {
-        text: item,
+    async onInsertVar(item) {
+      this.$refs.editor.insertVarsIntoHtml(item);
+    },
+    submit() {
+      this.$refs.formUser.validate((valid) => {
+        if (valid) {
+          this.confirmButtonLoading = true;
+          let api = '';
+          let param = null;
+          if (this.form.params instanceof Array) {
+            this.form.params = JSON.stringify(this.form.params);
+          }
+          if (!this.contractId) {
+            api = 'addContract';
+            param = this.form;
+          } else {
+            api = 'updateContract';
+            param = {
+              ...this.form,
+              contractTemplateId: this.contractId,
+            };
+          }
+          this.$api[api](param).then(() => {
+            this.$message.success('保存成功');
+          }).finally(() => {
+            this.confirmButtonLoading = false;
+          });
+        } else {
+          this.$message.info('请按提示填写');
+        }
+      });
+    },
+    handleUpdate(params) {
+      this.form.params = params;
+    },
+    handleValue(v) {
+      console.log(v);
+      this.form.content = v;
+    },
+    getDetail(contractTemplateId) {
+      this.$api.getContract({ contractTemplateId }).then((res) => {
+        this.form = res;
       });
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-
+.con {
+  display: flex;
+  padding: 10px;
+  height: calc(100vh - 180px);
+  .con-left {
+    background: #fff;
+    flex: 6;
+    .editor {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .bot-menu {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .con-right {
+    flex: 4;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 10px;
+    .con-label {
+      position: relative;
+      margin-bottom: 20px;
+      i.line {
+        margin-right: 7px;
+        vertical-align: middle;
+        display: inline-block;
+        width: 4px;
+        height: 14px;
+        border-radius: 2px;
+        background-color: #538cd3;
+      }
+      label {
+        font-size: 14px;
+      }
+      .href {
+        float: right;
+        text-decoration: underline !important;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        line-height: 18px;
+        letter-spacing: 0px;
+        color: #ed8d38;
+        cursor: pointer;
+      }
+    }
+    /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+      background-color: #356fb8;
+      border-color: #356fb8;
+    }
+    /deep/ .el-input-number.is-controls-right .el-input-number__increase {
+      line-height: 17px;
+    }
+    /deep/ .el-input-number {
+      line-height: 34px;
+    }
+    .grey {
+      margin-left: 10px;
+      color: #b4b6ba;
+    }
+    .con-btn {
+      margin-top: 10px;
+      .item-btn {
+        // width: 45%;
+        border-radius: 16px;
+        height: 32px;
+        line-height: 0px;
+        padding: 10px 30px;
+      }
+    }
+  }
+}
 </style>
