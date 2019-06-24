@@ -3,7 +3,7 @@
     <div class="con-left">
       <Editor
         ref="editor"
-        :value.sync="form.content"
+        v-model="form.content"
         :tribute-config="tributeConfig"
         class="editor"
         @upate:value="handleValue"
@@ -17,7 +17,9 @@
         >
           保存
         </el-button>
-        <el-button>
+        <el-button
+          @click="gotoSetSeal"
+        >
           设置盖章
         </el-button>
       </div>
@@ -85,6 +87,18 @@
         </el-form-item>
       </el-form>
       <p>动态内容 <span class="grey">提取文档中##中间字段作为动态字段</span></p>
+      <div class="con-template">
+        <el-input
+          v-model="templateTxt"
+          placeholder="请输入动态内容"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-plus"
+            @click="addTemplateTxt"
+          />
+        </el-input>
+      </div>
       <div class="con-btn">
         <el-button
           v-for="item in tributeConfig.values"
@@ -145,11 +159,14 @@ export default {
       },
       confirmButtonLoading: false,
       contractId: null,
+      templateTxt: '',
     };
   },
   created() {
     this.contractId = this.$route.query.id;
-    this.getDetail(this.contractId);
+    if (this.contractId) {
+      this.getDetail(this.contractId);
+    }
   },
   methods: {
     async onInsertVar(item) {
@@ -195,6 +212,16 @@ export default {
       this.$api.getContract({ contractTemplateId }).then((res) => {
         this.form = res;
       });
+    },
+    addTemplateTxt() {
+      this.tributeConfig.values.push({
+        key: this.tributeConfig.values.length,
+        value: this.templateTxt,
+      });
+      this.templateTxt = '';
+    },
+    gotoSetSeal() {
+      this.$router.push({ path: 'setSeal', query: { id: this.contractId } });
     },
   },
 };
@@ -265,6 +292,9 @@ export default {
       margin-left: 10px;
       color: #b4b6ba;
     }
+    .con-template {
+      margin-top: 10px;
+    }
     .con-btn {
       margin-top: 10px;
       .item-btn {
@@ -273,6 +303,7 @@ export default {
         height: 32px;
         line-height: 0px;
         padding: 10px 30px;
+        margin: 10px;
       }
     }
   }

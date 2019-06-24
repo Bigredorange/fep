@@ -306,7 +306,9 @@ const api = {
   // 新增签约模板
   addContract: args => postJson('contract_template', args),
   // 签约模板设置印章
-  setContractSeal: args => postJson('contract_template', args),
+  setContractSeal: args => postJson('contract_template/set_seal', args),
+  // 根据签约模板查询合同印章
+  getContractSeal: ({ contractTemplateId, ...arg }) => get(`contract_template/${contractTemplateId}/seal_params`, arg),
   // 修改签约模板
   updateContract: ({ contractTemplateId, ...arg }) => putJson(`contract_template/${contractTemplateId}`, arg),
   // 查询签约模板

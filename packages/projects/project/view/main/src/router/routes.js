@@ -721,6 +721,13 @@ const asyncRoutes = [{
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/sign/template/edit/index.vue'),
             },
+            {
+              path: 'setSeal',
+              meta: {
+                title: '设置盖章',
+              },
+              component: () => import(/* webpackChunkName: "v-setSeal" */ '../view/manage/sign/template/setSeal/index.vue'),
+            },
           ],
         },
       ],

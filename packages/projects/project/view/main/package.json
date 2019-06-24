@@ -8,6 +8,9 @@
   },
   "dependencies": {
     "echarts": "^4.2.1",
-    "vue-echarts": "^4.0.3"
+    "vue-echarts": "^4.0.3",
+    "pdfjs-dist": "v2.1.266",
+    "jquery": "2.2.4",
+    "lodash": "^4.17.4"
   }
 }

@@ -73,8 +73,8 @@ export default {
       };
       // 监听内容更改事件
       editor.customConfig.onchange = (html) => {
-        // this.$emit('input', html);
-        this.$emit('update:value', html);
+        this.$emit('input', html);
+        // this.$emit('update:value', html);
       };
     },
 
@@ -106,7 +106,7 @@ export default {
       const tribute = new Tribute({
         ...this.tributeConfig,
         selectTemplate(item) {
-          this.setParms(item.value);
+          this.setParams(item.value);
           return `
             <a
               class="contract-template-flag"
@@ -128,12 +128,12 @@ export default {
       // }
       this.editor.cmd.do('insertHTML', `<${insertTagName} class="contract-template-flag" style="color: #356fb8;
       text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
-      this.setParms(item.value);
+      this.setParams(item.value);
       // this.oldRange = this._editor.currentRange()
       // 手动触发改变
       // this._editor.$txt.change()
     },
-    setParms(value) {
+    setParams(value) {
       if (this.params.indexOf(value) === -1) {
         this.params.push(value);
         this.$emit('updateParams', this.params);
