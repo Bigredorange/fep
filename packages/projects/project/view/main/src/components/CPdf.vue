@@ -34,15 +34,17 @@
               关闭
             </button> -->
           </div>
-          <canvas
-            id="the-canvas"
-            class="canvasstyle"
-          />
+          <div class="con-canvas">
+            <slot />
+            <canvas
+              id="the-canvas"
+              class="canvasstyle"
+            />
+          </div>
         </div>
       </div>
     </div>
     <div />
-    <slot />
   </div>
 </template>
 <script>
@@ -185,6 +187,9 @@ export default {
     #the-canvas {
       width: 100%;
       height: 100%;
+    }
+    .con-canvas {
+      position: relative;
     }
   }
 </style>

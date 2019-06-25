@@ -1,7 +1,7 @@
 <template>
   <div class="con">
     <div
-      v-for="item in sealList"
+      v-for="item in list"
       :key="item.id"
       class="item"
     >
@@ -41,7 +41,7 @@
 export default {
   data() {
     return {
-      sealList: [],
+      list: [],
     };
   },
   created() {
@@ -53,7 +53,7 @@ export default {
       this.$api.getContractList({
         companyId,
       }).then((res) => {
-        this.sealList = res;
+        this.list = res;
       }).finally(() => {
       });
     },

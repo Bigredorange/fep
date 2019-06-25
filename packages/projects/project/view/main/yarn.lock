@@ -44,11 +44,6 @@ fast-json-stable-stringify@^2.0.0:
   resolved "https://registry.npm.taobao.org/fast-json-stable-stringify/download/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
   integrity sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
 
-jquery@2.2.4:
-  version "2.2.4"
-  resolved "https://registry.npm.taobao.org/jquery/download/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
-  integrity sha1-LInWiJterFIqfuoywUUhVZxsvwI=
-
 json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npm.taobao.org/json-schema-traverse/download/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
@@ -70,7 +65,7 @@ loader-utils@^1.0.0:
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
-lodash@^4.17.11, lodash@^4.17.4:
+lodash@^4.17.11:
   version "4.17.11"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha1-s56mIp72B+zYniyN8SU2iRysm40=
@@ -117,6 +112,11 @@ uri-js@^4.2.2:
   integrity sha1-lMVA4f93KVbiKZUHwBCupsiDjrA=
   dependencies:
     punycode "^2.1.0"
+
+vue-draggable-resizable@2.0.0-rc2:
+  version "2.0.0-rc2"
+  resolved "https://registry.npm.taobao.org/vue-draggable-resizable/download/vue-draggable-resizable-2.0.0-rc2.tgz#492925541eabebeb5b805b2fafb358ff27927d24"
+  integrity sha1-SSklVB6r6+tbgFsvr7NY/yeSfSQ=
 
 vue-echarts@^4.0.3:
   version "4.0.3"

@@ -730,6 +730,30 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'contract',
+          component: RouterView,
+          redirect: 'contract/list',
+          meta: {
+            title: '合同生成',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/sign/contract/list/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '合同详情',
+              },
+              component: () => import(/* webpackChunkName: "v-detail" */ '../view/manage/sign/contract/detail/index.vue'),
+            },
+          ],
+        },
       ],
     },
   ],

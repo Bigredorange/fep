@@ -74,7 +74,6 @@ export default {
       // 监听内容更改事件
       editor.customConfig.onchange = (html) => {
         this.$emit('input', html);
-        // this.$emit('update:value', html);
       };
     },
 
@@ -103,21 +102,21 @@ export default {
       });
     },
     setTribute() {
-      const tribute = new Tribute({
-        ...this.tributeConfig,
-        selectTemplate(item) {
-          this.setParams(item.value);
-          return `
-            <a
-              class="contract-template-flag"
-              style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;"
-            >#${item.original.value}#</a>&nbsp;
-          `;
-        },
-      });
-      this.$nextTick(() => {
-        tribute.attach(document.querySelector('.w-e-text'));
-      });
+      if (this.tributeConfig && Object.keys(this.tributeConfig).length > 0) {
+        const tribute = new Tribute({
+          ...this.tributeConfig,
+          selectTemplate(item) {
+            return `
+              <a
+                class="contract-template-flag"
+                style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;"
+              >#${item.original.value}#</a>&nbsp;`;
+          },
+        });
+        tribute.attach(document.querySelectorAll('.w-e-text-container'));
+        // this.$nextTick(() => {
+        // });
+      }
     },
     insertVarsIntoHtml(item) {
       const insertTagName = 'a';
@@ -128,16 +127,6 @@ export default {
       // }
       this.editor.cmd.do('insertHTML', `<${insertTagName} class="contract-template-flag" style="color: #356fb8;
       text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
-      this.setParams(item.value);
-      // this.oldRange = this._editor.currentRange()
-      // 手动触发改变
-      // this._editor.$txt.change()
-    },
-    setParams(value) {
-      if (this.params.indexOf(value) === -1) {
-        this.params.push(value);
-        this.$emit('updateParams', this.params);
-      }
     },
   },
 };

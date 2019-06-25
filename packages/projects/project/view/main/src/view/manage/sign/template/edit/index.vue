@@ -7,7 +7,6 @@
         :tribute-config="tributeConfig"
         class="editor"
         @upate:value="handleValue"
-        @updateParams="handleUpdate"
       />
       <div class="bot-menu">
         <el-button

@@ -1,35 +1,56 @@
 <template>
   <div>
     <div class="con">
-      <div class="con-pdf">
-        <c-pdf :pdfurl="pdfurl">
-          <template
-            slot="drag"
+      <div
+        class="con-pdf"
+      >
+        <c-pdf
+          :pdfurl="pdfurl"
+        >
+          <vue-draggable-resizable
+            v-if="sealStore.corpSeal.flag"
+            :w="140"
+            :h="140"
+            parent=".con-canvas"
+            :resizable="false"
+            class-name="con-draggable"
+            @dragging="onDrag"
           >
-            <drag
-              :absolute="true"
+            <div
+              ref="corpSeal"
+              class="con-seal-left"
             >
-              <transition
-                name="fade"
-              >
-                <drag-item
-                  v-model="sealStore.corpSeal.position"
-                >
-                  <div class="con-seal-left">
-                    <img src="../../../../../assets/icon/seal1.png">
-                    <i class="el-icon-close del-btn" />
-                  </div>
-                </drag-item>
-              </transition>
-            </drag>
-          </template>
+              <img src="../../../../../assets/icon/seal1.png">
+              <i class="el-icon-close del-btn" />
+            </div>
+          </vue-draggable-resizable>
         </c-pdf>
       </div>
       <div class="con-seal">
         <div class="con-seal-btn">
           <div class="item">
-            <img src="../../../../../assets/icon/seal1.png">
-            <p>xx专用章</p>
+            <img
+              class="img-fixed"
+              src="../../../../../assets/icon/seal1.png"
+            >
+            <!-- <p>xx专用章</p> -->
+            <vue-draggable-resizable
+              v-if="sealStore.corpSeal.flag"
+              :w="140"
+              :h="140"
+              :resizable="false"
+              class-name="con-draggable"
+              @dragging="onDragRight"
+            >
+              <div
+                ref="corpSeal"
+                class="con-seal-left"
+              >
+                <img
+                  src="../../../../../assets/icon/seal1.png"
+                >
+              </div>
+            </vue-draggable-resizable>
           </div>
         </div>
       </div>
@@ -51,15 +72,13 @@
   </div>
 </template>
 <script>
+import VueDraggableResizable from 'vue-draggable-resizable';
 import CPdf from '../../../../../components/CPdf.vue';
-import Drag from '../../../../../components/Drag.vue';
-import DragItem from '../../../../../components/DragItem.vue';
 
 export default {
   components: {
     CPdf,
-    Drag,
-    DragItem,
+    VueDraggableResizable,
   },
   data() {
     return {
@@ -68,6 +87,7 @@ export default {
       // pdfurl: '../view/main/src/view/manage/sign/template/setSeal/contract.pdf',
       sealStore: {
         corpSeal: {
+          flag: true,
           position: {
             x: 400 / 0.75,
             y: 100 / 0.75,
@@ -79,6 +99,9 @@ export default {
       loading: false,
       sealPositions: [],
     };
+  },
+  mounted() {
+
   },
   methods: {
     save() {
@@ -103,6 +126,16 @@ export default {
         this.sealStore.corpSeal.position.ptX = '';
       });
     },
+    onDrag(x, y) {
+      this.sealStore.corpSeal.position.x = x;
+      this.sealStore.corpSeal.position.y = y;
+      // console.log(x, y);
+    },
+    onDragRight(x, y) {
+      // this.sealStore.corpSeal.position.x = x;
+      // this.sealStore.corpSeal.position.y = y;
+      console.log(x, y);
+    },
   },
 };
 </script>
@@ -116,6 +149,7 @@ export default {
     background: #fff;
     margin: 10px;
     border-radius: 10px;
+    position: relative;
     .con-seal-left {
       position: relative;
       .del-btn {
@@ -143,6 +177,9 @@ export default {
     }
     .item {
       text-align: center;
+      .img-fixed {
+        border: 1px dashed rgba(0, 0, 0, 0.8);
+      }
       // display: flex;
       // justify-content: center;
     }
@@ -159,5 +196,9 @@ export default {
     display: flex;
     justify-content: center;
     margin-right: 224px;
+}
+.con-draggable {
+    cursor: move;
+    border: 1px dashed rgba(0, 0, 0, 0.8);
 }
 </style>

@@ -315,5 +315,16 @@ const api = {
   getContract: ({ contractTemplateId, ...arg }) => get(`contract_template/${contractTemplateId}`, arg),
   // 签约模板列表
   getContractList: args => get('contract_template/list', args),
+  /**
+   * 合同管理
+   */
+  // 导入合同动态信息
+  importContractDynamic: args => postForm('e_contract/import_dynamic_info', args),
+  // 导出动态信息模板
+  exportContractTemplate: args => get('e_contract/export_dynamic_template', args),
+  // 获取合同动态信息
+  getContractDynamic: ({ rowDataId, ...arg }) => get(`e_contract/dynamic_row_data/${rowDataId}`, arg),
+  // 合同模板对应动态信息
+  getContractDynamicList: args => get('e_contract/dynamic_row_data/list', args),
 };
 module.exports = api;
