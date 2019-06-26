@@ -83,8 +83,8 @@ export default {
   data() {
     return {
       // pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/freeculture.pdf',
-      pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
-      // pdfurl: '../view/main/src/view/manage/sign/template/setSeal/contract.pdf',
+      // pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
+      pdfurl: 'https://prv-cdn-hro.2haohro.com/contract.pdf?attname=&e=1561551357&token=N7vjJxbsX_Ekgig5O30bs4bTYpOie6GEkh-gJ0JW:muQvZnmxXq5WRCSmitcJXdtZmAI',
       sealStore: {
         corpSeal: {
           flag: true,

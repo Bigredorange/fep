@@ -36,6 +36,9 @@
               <li @click="$refs.selfInfo.open()">
                 个人信息
               </li>
+              <li @click="$refs.authenticPerson.open()">
+                实名认证
+              </li>
               <li @click="$refs.modifyPassword.open()">
                 修改密码
               </li>
@@ -56,16 +59,21 @@
       ref="modifyPassword"
       @reset="resetPassword"
     />
+    <authentic-person
+      ref="authenticPerson"
+    />
   </div>
 </template>
 
 <script>
 // import Menu from './Menu.vue';
 import Menus from './Menu.vue';
+import AuthenticPerson from './hroCompany/authentic/AuthenticPerson.vue';
 
 export default {
   components: {
     Menus,
+    AuthenticPerson,
   },
   props: {
     menuList: {

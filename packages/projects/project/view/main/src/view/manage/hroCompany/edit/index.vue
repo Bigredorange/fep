@@ -182,43 +182,6 @@
           >
         </mask-code>
       </div>
-      <div
-        v-if="companyId"
-        class="con-code"
-      >
-        <i class="line" />
-        <label>企业认证</label>
-        <el-button
-          type="primary"
-          class="btn"
-          @click="authentication"
-        >
-          去认证
-        </el-button>
-        <div class="authentication">
-          <el-alert
-            title="已认证成功"
-            type="success"
-          />
-          <el-alert
-            type="info"
-          >
-            <slot name="title">
-              <p>关于银行打款金额认证说明</p>
-              <p>1、运营方会根据提交的企业认证信息做校验，比对成功后会给您所填写的银行账户打款，整个过程大概需要1-2个工作日</p>
-              <p>2、认证机构会通过【连连支付】的第三方向企业账户打款，请及时确认</p>
-              <p>3、从您所在企业账户收到打款的72小时内输入有效，超过时间则认证失败</p>
-              <el-button
-                class="amount"
-                type="primary"
-                @click="$refs.authenticAmount.open(form.companyId)"
-              >
-                打款金额
-              </el-button>
-            </slot>
-          </el-alert>
-        </div>
-      </div>
       <div class="bot-menu">
         <el-button
           v-loading="confirmButtonLoading"
@@ -231,23 +194,17 @@
           取消
         </el-button>
       </div>
-      <authentic-amount
-        ref="authenticAmount"
-        @update="handleUpdate"
-      />
     </div>
   </div>
 </template>
 <script>
 import MaskCode from './Mask.vue';
 import Areas from '../../../../components/Area.vue';
-import AuthenticAmount from './AuthenticAmount.vue';
 
 export default {
   components: {
     MaskCode,
     Areas,
-    AuthenticAmount,
   },
   data() {
     return {
@@ -433,13 +390,6 @@ export default {
         .btn {
           margin-left: 20px;
         }
-        .amount {
-          float: right;
-          margin-top: 10px;
-        }
-      .authentication {
-        padding: 10px;
-      }
     }
   }
   .bot-menu {

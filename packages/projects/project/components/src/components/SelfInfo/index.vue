@@ -32,6 +32,11 @@
           {{ userinfo.name }}
         </el-form-item>
         <el-form-item
+          label="实名状态："
+        >
+          {{ userinfo.authStatus === 0 ? '未认证' : '已认证' }}
+        </el-form-item>
+        <el-form-item
           label="手机号："
           prop="mobile"
         >

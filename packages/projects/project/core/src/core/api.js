@@ -326,5 +326,32 @@ const api = {
   getContractDynamic: ({ rowDataId, ...arg }) => get(`e_contract/dynamic_row_data/${rowDataId}`, arg),
   // 合同模板对应动态信息
   getContractDynamicList: args => get('e_contract/dynamic_row_data/list', args),
+  /**
+   * 认证管理
+   */
+  // 企业信息校验
+  authCompanyCheck: ({ id, ...arg }) => postJson(`auth/company/${id}/check`, arg),
+  // 对企业对公账户打款
+  authCompanyPay: ({ id, ...arg }) => postJson(`auth/company/${id}/pay`, arg),
+  // 打款金额校验
+  authCompanyPayAuth: ({ id, ...arg }) => postForm(`auth/company/${id}/payAuth`, arg),
+  // 个人银行四要素认证 type 1小程序 2 PC端
+  authPerBank: ({ type, ...arg }) => postJson(`auth/per/${type}/ban`, arg),
+  // 校验手机验证码 type 1小程序 2 PC端
+  authPerCode: ({ type, ...arg }) => postJson(`auth/per/${type}/ban/check`, arg),
+  /**
+   * 认证管理
+   */
+  // 获取银行名称列表
+  getBankList: args => get('bank/name', args),
+  // 根据银行名称获取省份城市
+  getCityList: ({ bankName, ...arg }) => get(`bank/${bankName}/city`, arg),
+  // 获取支行名称
+  getCityBankList: ({
+    bankName,
+    province,
+    city,
+    ...arg
+  }) => get(`bank/${bankName}/${province}/${city}/branch`, arg),
 };
 module.exports = api;
