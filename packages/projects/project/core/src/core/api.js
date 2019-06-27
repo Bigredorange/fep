@@ -165,7 +165,7 @@ const api = {
   fileUpload: args => postForm('file/upload', args),
   // 根据ID下载上传的文件
   fileDownloadById: ({ name, ...arg }) => getBlob('file/download', arg).then((blob) => {
-    $utils.autoLoad(new Blob([blob]), name);
+    $utils.autoLoad(new Blob([blob]), name || blob.fileName);
   }),
   // 下载上传的文件
   fileDownloadUpload: ({ name, ...arg }) => getBlob('file/download_upload', arg).then((blob) => {
@@ -319,13 +319,15 @@ const api = {
    * 合同管理
    */
   // 导入合同动态信息
-  importContractDynamic: args => postForm('e_contract/import_dynamic_info', args),
+  importContractDynamic: args => postForm('e_contract/import_dynamic_info', args, { noMessage: true }),
   // 导出动态信息模板
   exportContractTemplate: args => get('e_contract/export_dynamic_template', args),
   // 获取合同动态信息
   getContractDynamic: ({ rowDataId, ...arg }) => get(`e_contract/dynamic_row_data/${rowDataId}`, arg),
   // 合同模板对应动态信息
   getContractDynamicList: args => get('e_contract/dynamic_row_data/list', args),
+  // 批量生成合同
+  generateContracts: args => postJson('e_contract/batch/create_contract', args),
   /**
    * 认证管理
    */
@@ -353,5 +355,22 @@ const api = {
     city,
     ...arg
   }) => get(`bank/${bankName}/${province}/${city}/branch`, arg),
+  /**
+   * 签约管理
+   */
+  // 签约列表
+  getContractSignList: args => get('contract_sign_record/list', args),
+  // 发起签约
+  startContractSign: args => postJson('contract_sign_record/start/sign', args),
+  // 撤回签约
+  revokeContractSign: ({ id, ...arg }) => postJson(`contract_sign_record/${id}/revoke`, arg),
+  // 作废签约
+  cancelContractSign: ({ id, ...arg }) => postJson(`contract_sign_record/${id}/expired`, arg),
+  // 发送签署短信验证码 type 1小程序 2 PC
+  sendContractSign: ({ type, ...arg }) => postJson(`contract_sign_record/${type}/agree/sign`, arg),
+  // 灵工签署
+  empContractSign: args => postJson('contract_sign_record/emp/sign', args),
+  // 存档
+  saveContractSign: args => postJson('contract_sign_record/file', args),
 };
 module.exports = api;

@@ -754,6 +754,13 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'signList',
+          component: () => import(/* webpackChunkName: "v-signList" */ '../view/manage/sign/signList/index.vue'),
+          meta: {
+            title: '签约列表',
+          },
+        },
       ],
     },
   ],

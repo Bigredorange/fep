@@ -22,7 +22,7 @@
         type="primary"
         @click="submit"
       >
-        确定
+        生成合同
       </el-button>
     </span>
   </el-dialog>
@@ -44,14 +44,13 @@ export default {
       this.getDeatail();
     },
     submit() {
-      // this.$api.addCusBalance({
-      //   id: this.rowDataId,
-      //   money: this.money,
-      // }).then(() => {
-      //   this.isShow = false;
-      //   this.$message.success('充值成功');
-      //   this.$emit('update');
-      // });
+      this.$api.generateContracts([
+        this.rowDataId,
+      ]).then(() => {
+        this.isShow = false;
+        this.$message.success('合同生成成功');
+        this.$emit('update');
+      });
     },
     getDeatail() {
       this.$api.getContractDynamic({

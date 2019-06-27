@@ -5,7 +5,7 @@
         <label>请选择签约模板</label>
         <el-select
           v-model="form.contractTemplateId"
-          placeholder="请选择签约模板"
+          placeholder="请选择签约模板："
           @change="handleContractChange"
         >
           <el-option
@@ -33,7 +33,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="exportTemplate"
+          @click="generateContracts"
         >
           批量生成合同
         </el-button>
@@ -105,7 +105,10 @@
         </el-pagination>
       </affix>
       <upload-detail ref="uploadDetail" />
-      <detail ref="contractDetail" />
+      <detail
+        ref="contractDetail"
+        @update="getList"
+      />
     </div>
   </div>
 </template>
@@ -155,7 +158,6 @@ export default {
         this.list = res.dataList;
         if (res.dataList.length > 0) {
           const [first] = res.dataList;
-          console.log(first);
           this.cols = JSON.parse(first.data);
         }
         this.total = res.allCount;
@@ -224,7 +226,8 @@ export default {
             detail: {
               ...res.data,
               flag: 201,
-              fileName: '合同动态信息错误内容.xlsx',
+              msg: res.message,
+              fileName: res.fileName,
             },
             cols,
           });
@@ -235,6 +238,12 @@ export default {
     },
     view(id) {
       this.$refs.contractDetail.open(id);
+    },
+    generateContracts() {
+      this.$api.generateContracts(this.selection).then(() => {
+        this.$message.success('合同生成成功');
+        this.getList();
+      });
     },
   },
 };

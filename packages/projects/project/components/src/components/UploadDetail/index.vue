@@ -90,10 +90,10 @@ export default {
     },
     download() {
       const { fileId, fileName } = this.detail;
-      console.log(fileName);
       this.$api.fileDownloadById({
+        name: fileName,
         fileId,
-      }).then(blob => this.$utils.autoLoad(new Blob([blob]), fileName));
+      });
     },
     close() {
       this.isShow = false;
