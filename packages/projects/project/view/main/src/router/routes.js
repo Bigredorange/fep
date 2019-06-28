@@ -488,6 +488,13 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'contract',
+          component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/employee/contract/index.vue'),
+          meta: {
+            title: '合同记录',
+          },
+        },
       ],
     },
     {

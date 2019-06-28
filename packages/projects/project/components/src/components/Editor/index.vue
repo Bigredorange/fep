@@ -103,9 +103,11 @@ export default {
     },
     setTribute() {
       if (this.tributeConfig && Object.keys(this.tributeConfig).length > 0) {
+        const vm = this;
         const tribute = new Tribute({
-          ...this.tributeConfig,
+          ...vm.tributeConfig,
           selectTemplate(item) {
+            vm.setParms(item.original.value);
             return `
               <a
                 class="contract-template-flag"
@@ -127,6 +129,13 @@ export default {
       // }
       this.editor.cmd.do('insertHTML', `<${insertTagName} class="contract-template-flag" style="color: #356fb8;
       text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
+      this.setParms(item.value);
+    },
+    setParms(value) {
+      if (this.params.indexOf(value) === -1) {
+        this.params.push(value);
+        this.$emit('updateParams', this.params);
+      }
     },
   },
 };

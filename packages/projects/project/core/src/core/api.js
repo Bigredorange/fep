@@ -212,6 +212,15 @@ const api = {
   // 灵工更新状态
   updateEmployeeStatus: ({ id, status, ...arg }) => postJson(`/employee/${id}/${status}/update`, arg),
   /**
+   * 灵工合同
+   */
+  // 签约列表
+  getEmpContractList: args => get('emp_contract/list', args),
+  // 查看合同详情
+  getContractDetail: ({ id, ...arg }) => postJson(`emp_contract/${id}/pdf`, arg),
+  // 批量下载灵工合同
+  batchDownloadContract: ({ arr }) => postJson('emp_contract/batch/download', arr),
+  /**
    * 服务报酬
    */
   // 导入服务报酬
@@ -363,13 +372,11 @@ const api = {
   // 发起签约
   startContractSign: args => postJson('contract_sign_record/start/sign', args),
   // 撤回签约
-  revokeContractSign: ({ id, ...arg }) => postJson(`contract_sign_record/${id}/revoke`, arg),
+  revokeContractSign: ({ id, ...arg }) => postJson(`contract_sign_record/${id}/remoke`, arg),
   // 作废签约
   cancelContractSign: ({ id, ...arg }) => postJson(`contract_sign_record/${id}/expired`, arg),
   // 发送签署短信验证码 type 1小程序 2 PC
-  sendContractSign: ({ type, ...arg }) => postJson(`contract_sign_record/${type}/agree/sign`, arg),
-  // 灵工签署
-  empContractSign: args => postJson('contract_sign_record/emp/sign', args),
+  sendContractSign: ({ type, id, ...arg }) => postJson(`contract_sign_record/${type}/${id}/agree/sign`, arg),
   // 存档
   saveContractSign: args => postJson('contract_sign_record/file', args),
 };

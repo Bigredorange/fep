@@ -6,7 +6,7 @@
         v-model="form.content"
         :tribute-config="tributeConfig"
         class="editor"
-        @upate:value="handleValue"
+        @updateParams="handleUpdate"
       />
       <div class="bot-menu">
         <el-button
@@ -142,7 +142,7 @@ export default {
       rules: {
         templateName: [{
           required: true,
-          message: '请输入HRO名称',
+          message: '请输入模板名称',
           trigger: 'blur',
         }],
         needSetSeal: [{
@@ -190,7 +190,11 @@ export default {
               contractTemplateId: this.contractId,
             };
           }
-          this.$api[api](param).then(() => {
+          this.$api[api](param).then((res) => {
+            if (!this.contractId) {
+              this.contractId = res;
+              this.$router.replace({ path: 'edit', query: { id: res } });
+            }
             this.$message.success('保存成功');
           }).finally(() => {
             this.confirmButtonLoading = false;
@@ -201,11 +205,8 @@ export default {
       });
     },
     handleUpdate(params) {
+      console.log(params);
       this.form.params = params;
-    },
-    handleValue(v) {
-      console.log(v);
-      this.form.content = v;
     },
     getDetail(contractTemplateId) {
       this.$api.getContract({ contractTemplateId }).then((res) => {

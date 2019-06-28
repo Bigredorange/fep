@@ -34,7 +34,11 @@
               关闭
             </button> -->
           </div>
-          <div class="con-canvas">
+          <div
+            class="con-canvas"
+            @drop="onDrop"
+            @dragover="allowDrop"
+          >
             <slot />
             <canvas
               id="the-canvas"
@@ -79,7 +83,8 @@ export default {
   },
   mounted() {
     const vm = this;
-    PDFJS.disableWorker = true;
+    // PDFJS.disableWorker = true;
+    PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
     PDFJS.getDocument(vm.pdfurl).then((pdfDoc_) => { // 初始化pdf
       vm.pdfDoc = pdfDoc_;
       vm.page_count = vm.pdfDoc.numPages;
@@ -117,6 +122,9 @@ export default {
       });
       vm.page_num = vm.pageNum;
     },
+    getPageNum() {
+      return this.page_num;
+    },
     addscale() { // 放大
       if (this.scale >= this.maxscale) {
         return;
@@ -138,6 +146,7 @@ export default {
       }
       vm.pageNum -= 1;
       vm.queueRenderPage(vm.pageNum);
+      this.$emit('prevPage', vm.pageNum);
     },
     next() { // 下一页
       const vm = this;
@@ -146,6 +155,7 @@ export default {
       }
       vm.pageNum += 1;
       vm.queueRenderPage(vm.pageNum);
+      this.$emit('nextPage', vm.pageNum);
     },
     closepdf() { // 关闭PDF
       this.$emit('closepdf');
@@ -157,11 +167,20 @@ export default {
         this.renderPage(num);
       }
     },
+    onDrop(e) {
+      this.$emit('imgDrop', e);
+      // console.log(e);
+    },
+    allowDrop(event) {
+      event.preventDefault();
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .cpdf {
+    display: flex;
+    justify-content: center;
     // position: fixed;
     // top: 0;
     // left: 0;
@@ -184,10 +203,10 @@ export default {
       padding: 10px;
       text-align: center;
     }
-    #the-canvas {
-      width: 100%;
-      height: 100%;
-    }
+    // #the-canvas {
+    //   width: 100%;
+    //   height: 100%;
+    // }
     .con-canvas {
       position: relative;
     }

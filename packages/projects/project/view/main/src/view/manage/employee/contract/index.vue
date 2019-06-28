@@ -3,26 +3,34 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>档案编号：</span>
+          <span>合同编号：</span>
           <el-input
-            v-model="form.empArchivesNo"
-            placeholder="请输入档案编号"
+            v-model="form.contractNo"
+            placeholder="请输入合同编号"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>姓名：</span>
+          <span>合同名称：</span>
           <el-input
-            v-model="form.name"
-            placeholder="请输入姓名"
+            v-model="form.contractName"
+            placeholder="请输入合同名称"
             style="width: 200px;"
           />
         </div>
         <div class="item">
-          <span>手机：</span>
+          <span>签约对象：</span>
           <el-input
-            v-model="form.mobile"
-            placeholder="请输入手机"
+            v-model="form.signObject"
+            placeholder="请输入签约对象"
+            style="width: 200px;"
+          />
+        </div>
+        <div class="item">
+          <span>证件号码</span>
+          <el-input
+            v-model="form.certificateNum"
+            placeholder="请输入证件号码"
             style="width: 200px;"
           />
         </div>
@@ -43,15 +51,7 @@
           </el-select>
         </div>
         <div class="item">
-          <span>合同名称：</span>
-          <el-input
-            v-model="form.contractName"
-            placeholder="请输入合同名称"
-            style="width: 200px;"
-          />
-        </div>
-        <div class="item">
-          <span>签约日期：</span>
+          <span>合同日期：</span>
           <el-date-picker
             v-model="createTime"
             style="width: 260px;"
@@ -86,9 +86,9 @@
         <el-button
           :disabled="selection.length === 0"
           type="primary"
-          @click="startContractSign"
+          @click="batchDownloadContract"
         >
-          批量发送签约
+          批量下载
         </el-button>
       </div>
       <el-table
@@ -102,32 +102,6 @@
           :selectable="(row) => row.signStatus === 0"
         />
         <el-table-column
-          prop="empArchivesNo"
-          align="center"
-          label="档案编号"
-        />
-        <el-table-column
-          prop="name"
-          align="center"
-          label="姓名"
-        />
-        <el-table-column
-          prop="certificateNum"
-          align="center"
-          label="身份证号"
-        />
-        <el-table-column
-          prop="mobile"
-          align="center"
-          label="手机号"
-        />
-        <el-table-column
-          prop="status"
-          align="center"
-          label="状态"
-          :formatter="getStatusName"
-        />
-        <el-table-column
           prop="contractNo"
           align="center"
           label="合同编号"
@@ -138,14 +112,45 @@
           label="合同名称"
         />
         <el-table-column
-          prop="sendTime"
+          prop="signObject"
           align="center"
-          label="发送时间"
+          label="签约对象"
         />
         <el-table-column
-          prop="signingTime"
+          prop="certificateNum"
           align="center"
-          label="签约时间"
+          label="证件号码"
+        />
+        <el-table-column
+          prop="mobile"
+          align="center"
+          label="手机号"
+        />
+        <el-table-column
+          prop="contractStartTime"
+          align="center"
+          label="合同开始日期"
+        />
+        <el-table-column
+          prop="contractEndTime"
+          align="center"
+          label="合同结束日期"
+        />
+        <el-table-column
+          prop="contractStatus"
+          align="center"
+          label="合同状态"
+          :formatter="getStatusName"
+        />
+        <el-table-column
+          prop="creatorName"
+          align="center"
+          label="创建人"
+        />
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="创建时间"
         />
         <el-table-column
           label="操作"
@@ -157,36 +162,11 @@
             slot-scope="{ row }"
           >
             <el-button
-              v-if="row.signStatus === 0"
               type="text"
               class="primary"
-              @click="startContractSign(row)"
+              @click="getContractDetail(row)"
             >
-              发送签约
-            </el-button>
-            <el-button
-              v-if="row.signStatus === 1"
-              type="text"
-              class="primary"
-              @click="revoke(row.id)"
-            >
-              撤回
-            </el-button>
-            <el-button
-              v-if="row.signStatus === 2"
-              type="text"
-              class="primary"
-              @click="$refs.saveContract.open(row)"
-            >
-              存档
-            </el-button>
-            <el-button
-              v-if="row.signStatus === 2"
-              type="text"
-              class="primary"
-              @click="cancel(row.id)"
-            >
-              作废
+              查看详情
             </el-button>
           </template>
         </el-table-column>
@@ -208,30 +188,20 @@
           <span class="total">{{ total }} 条记录，共 {{ Math.ceil(total / form.pageSize) }} 页</span>
         </el-pagination>
       </affix>
-      <save-contract
-        ref="saveContract"
-        @update="getList"
-      />
     </div>
   </div>
 </template>
 <script>
-import saveContract from './saveContract.vue';
-
 export default {
-  components: {
-    saveContract,
-  },
   data() {
     return {
       list: [],
       listLoading: false,
       form: {
-        empArchivesNo: null,
-        name: null,
+        contractNo: null,
+        signObject: null,
         contractName: null,
-        mobile: null,
-        signStatus: 99,
+        certificateNum: null,
         pageCurrent: 1,
         pageSize: 20,
         startTime: null,
@@ -242,31 +212,15 @@ export default {
       statusList: [
         {
           key: 0,
-          label: '未签约',
+          label: '未生效',
         },
         {
           key: 1,
-          label: '待签约',
+          label: '已生效',
         },
         {
           key: 2,
-          label: '已签约',
-        },
-        {
-          key: 3,
-          label: '已撤回',
-        },
-        {
-          key: 4,
-          label: '已存档',
-        },
-        {
-          key: 5,
-          label: '已失效',
-        },
-        {
-          key: 99,
-          label: '全部',
+          label: '已到期',
         },
       ],
       createTime: [],
@@ -284,7 +238,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.$api.getContractSignList({
+      this.$api.getEmpContractList({
         ...this.form,
       }).then((res) => {
         this.list = res.dataList;
@@ -311,51 +265,24 @@ export default {
     add() {
       this.$router.push('edit');
     },
-    startContractSign(row) {
-      row.loading = true;
+    batchDownloadContract() {
       let ids = [];
-      if (row.id) {
-        ids.push(row.id);
-      } else {
-        ids = this.selection.map(item => item.id);
-      }
-      this.$api.startContractSign(ids).then(() => {
-        this.$message.success('发送成功');
-        this.getList();
-      }).finally(() => {
-        row.loading = false;
+      ids = this.selection.map(item => item.id);
+      this.$api.batchDownloadContract(ids).then((res) => {
+        this.fileDownloadById({
+          fileId: res,
+        });
       });
     },
-    revoke(id) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要撤回吗？',
-        onOk: () => {
-          this.$api.revokeContractSign({
-            id,
-          }).then(() => {
-            this.$message.success('撤回成功');
-            this.getList();
-          });
-        },
-      });
-    },
-    cancel(id) {
-      this.$dialogs.confirm({
-        title: '提示',
-        content: '确定要作废吗？',
-        onOk: () => {
-          this.$api.cancelContractSign({
-            id,
-          }).then(() => {
-            this.$message.success('操作成功');
-            this.getList();
-          });
-        },
+    getContractDetail(id) {
+      this.$api.getContractDetail({
+        id,
+      }).then((res) => {
+        console.log(res);
       });
     },
     getStatusName(row) {
-      const temp = this.statusList.find(item => item.key === row.signStatus);
+      const temp = this.statusList.find(item => item.key === row.contractStatus);
       return temp.label;
     },
   },

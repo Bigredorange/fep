@@ -175,20 +175,6 @@ export default {
         this.$refs.form.clearValidate();
       });
     },
-    submit() {
-      if (!/^\d+$/.test(this.money) || Number(this.money) <= 0) {
-        this.$message.warning('请输入大于 0 的金额');
-        return;
-      }
-      this.$api.addCusBalance({
-        id: this.companyId,
-        money: this.money,
-      }).then(() => {
-        this.isShow = false;
-        this.$message.success('充值成功');
-        this.$emit('update');
-      });
-    },
     sendRealNameMsg() {
       if (typeof this.btnMsg === 'string') {
         if (this.form.name && this.form.idno && this.form.cardno && this.form.mobile) {
