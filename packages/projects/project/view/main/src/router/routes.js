@@ -498,6 +498,47 @@ const asyncRoutes = [{
       ],
     },
     {
+      path: 'eSignFee',
+      component: RouterView,
+      redirect: 'eSignFee/standard',
+      meta: {
+        title: '电子签约费用',
+      },
+      children: [
+        {
+          path: 'standard',
+          component: () => import(/* webpackChunkName: "v-standard" */ '../view/manage/eSignFee/standard/index.vue'),
+          meta: {
+            title: '签约费用标准',
+          },
+        },
+        {
+          path: 'fee',
+          meta: {
+            title: '签约费用',
+          },
+          redirect: 'fee/list',
+          component: RouterView,
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+              },
+              component: () => import(/* webpackChunkName: "v-fee" */ '../view/manage/eSignFee/fee/list/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '签约费用详情',
+              },
+              component: () => import(/* webpackChunkName: "v-feeDetail" */ '../view/manage/eSignFee/fee/detail/index.vue'),
+            },
+          ],
+        },
+      ],
+    },
+    {
       path: 'settle',
       component: RouterView,
       redirect: 'settle/service',

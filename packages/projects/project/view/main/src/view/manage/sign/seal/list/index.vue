@@ -65,11 +65,12 @@ export default {
   background: #fff;
   margin: 10px;
   border-radius: 8px;
-  height: calc(100vh - 102px);
+  // height: calc(100vh - 102px);
   padding: 15px 10px;
   display: flex;
+  flex-wrap: wrap;
   .item {
-    width: 10%;
+    width: 180px;
     height: 220px;
     text-align: center;
     border: 1px solid #F3F3F3;

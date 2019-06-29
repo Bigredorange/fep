@@ -2,7 +2,7 @@ import $utils from './utils';
 
 const {
   get,
-  // post,
+  post,
   // put,
   postForm,
   del,
@@ -167,6 +167,8 @@ const api = {
   fileDownloadById: ({ name, ...arg }) => getBlob('file/download', arg).then((blob) => {
     $utils.autoLoad(new Blob([blob]), name || blob.fileName);
   }),
+  // 根据ID下载上传的pdf url
+  pdfDownloadById: ({ fileId, ...arg }) => get(`file/qiniuyun/download/${fileId}`, arg),
   // 下载上传的文件
   fileDownloadUpload: ({ name, ...arg }) => getBlob('file/download_upload', arg).then((blob) => {
     $utils.autoLoad(new Blob([blob]), name);
@@ -322,6 +324,8 @@ const api = {
   updateContract: ({ contractTemplateId, ...arg }) => putJson(`contract_template/${contractTemplateId}`, arg),
   // 查询签约模板
   getContract: ({ contractTemplateId, ...arg }) => get(`contract_template/${contractTemplateId}`, arg),
+  // 查询签约模板pdf url
+  getContractPdfUrl: ({ contractTemplateId, ...arg }) => post(`contract_template/${contractTemplateId}/pdf`, arg),
   // 签约模板列表
   getContractList: args => get('contract_template/list', args),
   /**
@@ -379,5 +383,23 @@ const api = {
   sendContractSign: ({ type, id, ...arg }) => postJson(`contract_sign_record/${type}/${id}/agree/sign`, arg),
   // 存档
   saveContractSign: args => postJson('contract_sign_record/file', args),
+  /**
+   * 签约费用管理
+   */
+  // 查询费用标准列表
+  getStandardFeeList: args => get('standard_cost/list', args),
+  // 新增费用标准
+  addStandardFee: ({ id, ...arg }) => postJson(`standard_cost/${id}`, arg),
+  // 更新费用标准
+  updateStandardFee: ({ id, ...arg }) => putJson(`standard_cost/${id}`, arg),
+  // 查询费用标准
+  getStandardFee: ({ id, ...arg }) => get(`standard_cost/${id}`, arg),
+  // 查询签约费用列表
+  getCompanyBalanceList: args => get('company/balance/list', args),
+  // 充值
+  addCompanyBalance: ({ id, ...arg }) => postForm(`company/balance/${id}/add/credit`, arg),
+  // 查看详情 type 1费用记录 2充值记录
+  getCompanyBalanceLog: ({ type, ...arg }) => get(`company/balance/log/${type}/list`, arg),
+
 };
 module.exports = api;

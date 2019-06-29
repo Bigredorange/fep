@@ -3,6 +3,10 @@
     <div class="con">
       <div
         class="con-pdf"
+        :loading="loading"
+        element-loading-text="正在加载"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
       >
         <c-pdf
           :pdfurl="pdfurl"
@@ -142,6 +146,7 @@ export default {
       this.isShow = true;
     }, 1000);
     this.getContractSeal();
+    this.getContractPdfUrl();
   },
   methods: {
     save() {
@@ -261,6 +266,16 @@ export default {
       } else {
         this.sealType = 'per';
       }
+    },
+    getContractPdfUrl() {
+      this.loading = true;
+      this.$api.getContractPdfUrl({
+        contractTemplateId: this.$route.query.id,
+      }).then((res) => {
+        this.pdfurl = res;
+      }).finally(() => {
+        this.loading = false;
+      });
     },
   },
 };
