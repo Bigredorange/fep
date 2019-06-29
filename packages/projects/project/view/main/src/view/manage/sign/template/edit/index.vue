@@ -20,6 +20,7 @@
           保存
         </el-button>
         <el-button
+          :disabled="!contractId"
           @click="gotoSetSeal"
         >
           设置盖章

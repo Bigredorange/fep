@@ -164,7 +164,7 @@
             <el-button
               type="text"
               class="primary"
-              @click="getContractDetail(row)"
+              @click="getContractDetail(row.contractSignFileId)"
             >
               查看详情
             </el-button>
@@ -230,7 +230,6 @@ export default {
   created() {
     this.form.companyId = this.$store.state.fepUserInfo.companyId;
     this.getList();
-    window.open('https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf');
   },
   methods: {
     reset() {
@@ -275,21 +274,16 @@ export default {
         });
       });
     },
-    getContractDetail(id) {
-      this.$api.getContractDetail({
-        id,
-      }).then((fileId) => {
-        this.$api.pdfDownloadById({
-          fileId,
-        }).then((res) => {
-          window.open('https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf');
-          console.log(res);
-        });
+    getContractDetail(fileId) {
+      this.$api.pdfDownloadById({
+        fileId,
+      }).then((res) => {
+        window.open(res);
       });
     },
     getStatusName(row) {
       const temp = this.statusList.find(item => item.key === row.contractStatus);
-      return temp.label;
+      return temp ? temp.label : '';
     },
   },
 };

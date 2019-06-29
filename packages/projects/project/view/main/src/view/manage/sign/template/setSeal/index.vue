@@ -151,31 +151,50 @@ export default {
     save() {
       const perPosition = this.sealStore.perSeal.map((item) => {
         const arr = [];
-        item.forEach((ele) => {
-          const temp = {
-            posPage: ele.page,
-            posX: ele.x,
-            posY: ele.y,
-            type: 2,
-          };
-          arr.push(temp);
-        });
+        if (item) {
+          item.forEach((ele) => {
+            const temp = {
+              posPage: ele.page,
+              posX: ele.x,
+              posY: ele.y,
+              type: 2,
+            };
+            arr.push(temp);
+          });
+        }
         return arr;
       });
+      console.log(perPosition);
       const corpPosition = this.sealStore.corpSeal.map((item) => {
         const arr = [];
-        item.forEach((ele) => {
-          const temp = {
-            posPage: ele.page,
-            posX: ele.x,
-            posY: ele.y,
-            type: 1,
-          };
-          arr.push(temp);
-        });
+        if (item) {
+          item.forEach((ele) => {
+            const temp = {
+              posPage: ele.page,
+              posX: ele.x,
+              posY: ele.y,
+              type: 1,
+            };
+            arr.push(temp);
+          });
+        }
         return arr;
       });
-      this.sealPositions = this.sealPositions.concat(...perPosition, ...corpPosition);
+      perPosition.forEach((item) => {
+        if (item) {
+          this.sealPositions.push(item);
+        } else {
+          this.sealPositions.push([]);
+        }
+      });
+      corpPosition.forEach((item) => {
+        if (item) {
+          this.sealPositions.push(...item);
+        } else {
+          this.sealPositions.push([]);
+        }
+      });
+      // this.sealPositions = this.sealPositions.concat(...perPosition || [], ...corpPosition || []);
       console.log(this.sealPositions);
       this.$api.setContractSeal({
         contractTemplateId: this.$route.query.id,

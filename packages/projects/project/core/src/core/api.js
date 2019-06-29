@@ -219,7 +219,7 @@ const api = {
   // 签约列表
   getEmpContractList: args => get('emp_contract/list', args),
   // 查看合同详情
-  getContractDetail: ({ id, ...arg }) => postJson(`emp_contract/${id}/pdf`, arg),
+  getContractDetail: ({ id, ...arg }) => get(`emp_contract/${id}/pdf`, arg),
   // 批量下载灵工合同
   batchDownloadContract: ({ arr }) => postJson('emp_contract/batch/download', arr),
   /**
