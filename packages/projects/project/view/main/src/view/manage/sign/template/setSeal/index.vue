@@ -30,7 +30,7 @@
                 class="con-seal-left"
               >
                 <img
-                  src="../../../../../assets/icon/seal1.png"
+                  :src="require('../../../../../assets/icon/seal1.png')"
                   @click="selectCorpItem(index)"
                 >
                 <i
@@ -60,7 +60,7 @@
               >
                 <img
                   width="140"
-                  src="../../../../../assets/icon/personWrite.png"
+                  :src="require('../../../../../assets/icon/personWrite.png')"
                   @click="selectPerItem(index)"
                 >
                 <i
@@ -122,8 +122,8 @@ export default {
   data() {
     return {
       // pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/freeculture.pdf',
-      // pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
-      pdfurl: 'https://prv-cdn-hro.2haohro.com/contract.pdf?attname=&e=1561551357&token=N7vjJxbsX_Ekgig5O30bs4bTYpOie6GEkh-gJ0JW:muQvZnmxXq5WRCSmitcJXdtZmAI',
+      pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
+      // pdfurl: 'https://prv-cdn-hro.2haohro.com/contract.pdf?attname=&e=1561551357&token=N7vjJxbsX_Ekgig5O30bs4bTYpOie6GEkh-gJ0JW:muQvZnmxXq5WRCSmitcJXdtZmAI',
       sealStore: {
         corpSeal: [],
         perSeal: [],
@@ -196,6 +196,8 @@ export default {
             sealArr = [];
           }
           const obj = {};
+          const num = parseInt(Math.random() * 100, 10);
+          obj.key = `${prop}${num}`;
           obj.page = item.posPage;
           obj.x = item.posX;
           obj.y = item.posY;

@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     value(v) {
-      this.editor.txt.html(v);
+      this.setHtml(v);
     },
   },
   mounted() {
@@ -50,10 +50,11 @@ export default {
     editor.create();
     this.editor = editor;
     this.editor.txt.html(this.value);
-    this.setTribute();
+    this.$nextTick(() => {
+      this.setTribute();
+    });
   },
   methods: {
-
     /**
      * 配置编辑器
      */
@@ -108,16 +109,14 @@ export default {
           ...vm.tributeConfig,
           selectTemplate(item) {
             vm.setParms(item.original.value);
-            return `
-              <a
-                class="contract-template-flag"
-                style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;"
-              >#${item.original.value}#</a>&nbsp;`;
+            const temp = `<a class="contract-template-flag" style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.original.value}#</a>&nbsp;`;
+            return temp;
           },
         });
-        tribute.attach(document.querySelectorAll('.w-e-text-container'));
-        // this.$nextTick(() => {
-        // });
+        tribute.attach(document.querySelectorAll('.w-e-text'));
+        this.$nextTick(() => {
+          // tribute.attach(this.$refs.editor.$el);
+        });
       }
     },
     insertVarsIntoHtml(item) {
@@ -136,6 +135,9 @@ export default {
         this.params.push(value);
         this.$emit('updateParams', this.params);
       }
+    },
+    setContent() {
+      this.editor.change();
     },
   },
 };
