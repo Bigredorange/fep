@@ -18,17 +18,18 @@
           label="收费项目"
           prop="chargeItem"
         >
-          <el-select
+          <!-- <el-select
             v-model="form.chargeItem"
             placeholder="请选择"
           >
             <el-option
-              v-for="item in $opt('chargeItem')"
-              :key="item.dictKey"
-              :label="item.dictValue"
-              :value="item.dictKey"
+              v-for="item in chargeItemList"
+              :key="item.key"
+              :label="item.label"
+              :value="item.label"
             />
-          </el-select>
+          </el-select> -->
+          <p>{{ form.chargeItem }}</p>
         </el-form-item>
         <el-form-item
           label="收费方式"
@@ -43,7 +44,7 @@
               固定金额
             </el-radio-button>
             <el-radio-button
-              v-if="form.chargeItem === '3'"
+              v-if="form.chargeItem === '签约费用'"
               label="单价收费"
             >
               单价收费
@@ -118,6 +119,20 @@ export default {
           trigger: 'blur',
         }],
       },
+      chargeItemList: [
+        {
+          key: 1,
+          label: '企业认证',
+        },
+        {
+          key: 2,
+          label: '个人认证',
+        },
+        {
+          key: 3,
+          label: '签约费用',
+        },
+      ],
       standardId: null,
     };
   },

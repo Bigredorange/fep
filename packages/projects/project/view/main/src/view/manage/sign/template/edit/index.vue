@@ -1,5 +1,8 @@
 <template>
-  <div class="con">
+  <div
+    class="con"
+    :loading="loading"
+  >
     <div class="con-left">
       <Editor
         ref="editor"
@@ -44,6 +47,22 @@
             v-model="form.templateName"
             placeholder="请输入模板名称"
           />
+        </el-form-item>
+        <el-form-item
+          label="企业印章"
+          prop="companySealId"
+        >
+          <el-select
+            v-model="form.companySealId"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in companySealList"
+              :key="item.id"
+              :label="item.sealName"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item
           prop="needSetSeal"
@@ -138,11 +157,17 @@ export default {
         effectiveDay: null,
         params: [],
         content: '',
+        companySealId: null,
       },
       rules: {
         templateName: [{
           required: true,
           message: '请输入模板名称',
+          trigger: 'blur',
+        }],
+        companySealId: [{
+          required: true,
+          message: '请选择印章',
           trigger: 'blur',
         }],
         needSetSeal: [{
@@ -159,10 +184,13 @@ export default {
       confirmButtonLoading: false,
       contractId: null,
       templateTxt: '',
+      companySealList: [],
+      loading: false,
     };
   },
   created() {
     this.contractId = this.$route.query.id;
+    this.getCompanySealList();
     if (this.contractId) {
       this.getDetail(this.contractId);
     }
@@ -205,23 +233,47 @@ export default {
       });
     },
     handleUpdate(params) {
-      console.log(params);
       this.form.params = params;
     },
     getDetail(contractTemplateId) {
       this.$api.getContract({ contractTemplateId }).then((res) => {
         this.form = res;
+        this.tributeConfig.values = JSON.parse(res.params).map((item, index) => {
+          const temp = {};
+          temp.key = index;
+          temp.value = item;
+          return temp;
+        });
       });
     },
     addTemplateTxt() {
-      this.tributeConfig.values.push({
-        key: this.tributeConfig.values.length,
-        value: this.templateTxt,
-      });
-      this.templateTxt = '';
+      if (this.templateTxt) {
+        this.tributeConfig.values.push({
+          key: this.tributeConfig.values.length,
+          value: this.templateTxt,
+        });
+        this.templateTxt = '';
+      }
     },
     gotoSetSeal() {
-      this.$router.push({ path: 'setSeal', query: { id: this.contractId } });
+      this.loading = true;
+      this.$api.getContractPdfUrl({
+        contractTemplateId: this.$route.query.id,
+      }).then((res) => {
+        this.pdfurl = res;
+        this.$router.push({ path: 'setSeal', query: { id: this.contractId, pdfurl: res } });
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+    getCompanySealList() {
+      const { companyId } = this.$store.state.fepUserInfo;
+      this.$api.getSealList({
+        companyId,
+      }).then((res) => {
+        this.companySealList = res;
+      }).finally(() => {
+      });
     },
   },
 };

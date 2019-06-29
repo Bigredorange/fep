@@ -7,7 +7,7 @@
     >
       <img
         class="img"
-        src="../../../../../assets/icon/seal1.png"
+        :src="`data:image/png;base64,${item.sealData}`"
       >
       <!-- <img
         src="item.sealUrl"
@@ -78,6 +78,7 @@ export default {
     position: relative;
     .img {
       margin-top: 10px;
+      width: 135px;
     }
     .btn {
       display: flex;

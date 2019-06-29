@@ -125,9 +125,7 @@ export default {
   },
   data() {
     return {
-      // pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/freeculture.pdf',
-      pdfurl: 'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
-      // pdfurl: 'https://prv-cdn-hro.2haohro.com/contract.pdf?attname=&e=1561551357&token=N7vjJxbsX_Ekgig5O30bs4bTYpOie6GEkh-gJ0JW:muQvZnmxXq5WRCSmitcJXdtZmAI',
+      pdfurl: '',
       sealStore: {
         corpSeal: [],
         perSeal: [],
@@ -145,6 +143,7 @@ export default {
     setTimeout(() => {
       this.isShow = true;
     }, 1000);
+    this.pdfurl = this.$route.query.pdfurl;
     this.getContractSeal();
     this.getContractPdfUrl();
   },
@@ -284,7 +283,6 @@ export default {
 .con {
   display: flex;
   .con-pdf {
-    // flex: 6;
     width: 60%;
     padding: 10px;
     background: #f3f6fb;
@@ -303,7 +301,6 @@ export default {
     }
   }
   .con-seal {
-    // flex: 4;
     width: 40%;
     background: #f3f6fb;
     .con-seal-btn {
@@ -324,8 +321,6 @@ export default {
         height: 140px;
         border: 1px dashed rgba(0, 0, 0, 0.8);
       }
-      // display: flex;
-      // justify-content: center;
     }
   }
 }

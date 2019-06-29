@@ -10,9 +10,9 @@
           align="center"
         />
         <el-table-column
+          prop="chargeItem"
           align="center"
           label="收费项目"
-          :formatter="({ chargeItem }) => $optDicLabel('chargeItem', chargeItem)"
         />
         <el-table-column
           prop="chargeMethod"
@@ -67,20 +67,6 @@ export default {
       list: [],
       listLoading: false,
       total: 0,
-      statusList: [
-        {
-          key: 0,
-          label: '未生效',
-        },
-        {
-          key: 1,
-          label: '已生效',
-        },
-        {
-          key: 2,
-          label: '已到期',
-        },
-      ],
       createTime: [],
       selection: [],
     };

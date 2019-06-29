@@ -81,7 +81,7 @@
             class="step-three"
           >
             <div
-              v-if="step === 2 && authStatus === 2"
+              v-if="step === 2 && authStatus === 1"
             >
               <el-form
                 ref="form"
@@ -172,7 +172,7 @@
               </div>
             </div>
             <div
-              v-if="step === 2 && authStatus === 3"
+              v-if="step === 2 && authStatus === 2"
               class="step-ing"
             >
               <img src="../../../../assets/icon/ing.png">
@@ -359,10 +359,8 @@ export default {
         this.step = 0;
       } else if (this.authStatus === 0 && this.perAuthStatus === 1) {
         this.step = 1;
-      } else if (this.authStatus === 2) {
-        this.step = this.authStatus;
-      } else if (this.authStatus === 3) {
-        this.step = this.authStatus;
+      } else if (this.authStatus === 1) {
+        this.step = this.authStatus + 1;
       } else {
         this.step = this.authStatus;
       }
