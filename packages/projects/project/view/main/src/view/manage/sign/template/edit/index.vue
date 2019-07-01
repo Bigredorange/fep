@@ -9,6 +9,7 @@
         v-model="form.content"
         :tribute-config="tributeConfig"
         class="editor"
+        :params="params"
         @updateParams="handleUpdate"
       />
       <div class="bot-menu">
@@ -47,23 +48,8 @@
           <el-input
             v-model="form.templateName"
             placeholder="请输入模板名称"
+            style="width: 300px"
           />
-        </el-form-item>
-        <el-form-item
-          label="企业印章"
-          prop="companySealId"
-        >
-          <el-select
-            v-model="form.companySealId"
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in companySealList"
-              :key="item.id"
-              :label="item.sealName"
-              :value="item.id"
-            />
-          </el-select>
         </el-form-item>
         <el-form-item
           prop="needSetSeal"
@@ -71,7 +57,7 @@
           <label
             slot="label"
           >
-            <span>盖章 <span class="grey">是否需要设置盖章</span></span>
+            <span>盖章 <span class="grey">是否需要设置企业盖章</span></span>
           </label>
           <el-radio-group
             v-model="form.needSetSeal"
@@ -87,6 +73,24 @@
               不需要
             </el-radio-button>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          v-if="form.needSetSeal"
+          label="企业印章"
+          prop="companySealId"
+        >
+          <el-select
+            v-model="form.companySealId"
+            placeholder="请选择"
+            style="width: 300px"
+          >
+            <el-option
+              v-for="item in companySealList"
+              :key="item.id"
+              :label="item.sealName"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item
           label="HRO名称"
@@ -105,11 +109,12 @@
           /> 天内有效
         </el-form-item>
       </el-form>
-      <p>动态内容 <span class="grey">提取文档中##中间字段作为动态字段</span></p>
+      <p>动态字段 <span class="grey">新增动态字段并将字段插入合同相应位置，可在合同生成时替换为真实信息</span></p>
       <div class="con-template">
         <el-input
           v-model="templateTxt"
-          placeholder="请输入动态内容"
+          placeholder="请输入动态字段"
+          style="width: 300px"
         >
           <el-button
             slot="append"
@@ -160,6 +165,7 @@ export default {
         content: '',
         companySealId: null,
       },
+      params: [],
       rules: {
         templateName: [{
           required: true,
@@ -209,6 +215,7 @@ export default {
           if (this.form.params instanceof Array) {
             this.form.params = JSON.stringify(this.form.params);
           }
+          this.form.content = this.$refs.editor.getContent(); // 手动获取富文本编辑器的内容
           if (!this.contractId) {
             api = 'addContract';
             param = this.form;
@@ -239,7 +246,8 @@ export default {
     getDetail(contractTemplateId) {
       this.$api.getContract({ contractTemplateId }).then((res) => {
         this.form = res;
-        this.tributeConfig.values = JSON.parse(res.params).map((item, index) => {
+        const params = JSON.parse(res.params);
+        this.tributeConfig.values = params.map((item, index) => {
           const temp = {};
           temp.key = index;
           temp.value = item;

@@ -13,7 +13,7 @@ export default [
   'justify', // 对齐方式
   'quote', // 引用
   // 'emoticon', // 表情
-  'image', // 插入图片
+  // 'image', // 插入图片
   'table', // 表格
   // 'video', // 插入视频
   // 'code', // 插入代码

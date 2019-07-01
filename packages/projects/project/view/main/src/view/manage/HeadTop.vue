@@ -36,7 +36,9 @@
               <li @click="$refs.selfInfo.open()">
                 个人信息
               </li>
-              <li @click="$refs.authenticPerson.open()">
+              <li
+                @click="handleAuthentic"
+              >
                 实名认证
               </li>
               <li @click="$refs.modifyPassword.open()">
@@ -154,6 +156,13 @@ export default {
     },
     tabSystem(link) {
       window.location.href = link;
+    },
+    handleAuthentic() {
+      if (this.$store.state.fepUserInfo.authStatus === 1) {
+        this.$message.info('您已经实名认证了，无需再实名');
+        return;
+      }
+      this.$refs.authenticPerson.open();
     },
   },
 };

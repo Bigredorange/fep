@@ -1,9 +1,9 @@
 <template>
   <div>
     <div
+      id="editor"
       ref="editor"
       v-loading="isLoading"
-      class="editor"
     />
   </div>
 </template>
@@ -27,6 +27,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    params: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -36,7 +40,6 @@ export default {
       tribute: {
 
       },
-      params: [],
     };
   },
   watch: {
@@ -49,10 +52,8 @@ export default {
     this.setConfig(editor);
     editor.create();
     this.editor = editor;
-    this.editor.txt.html(this.value);
-    this.$nextTick(() => {
-      this.setTribute();
-    });
+    // this.editor.txt.html(this.value);
+    this.setTribute();
   },
   methods: {
     /**
@@ -74,6 +75,8 @@ export default {
       };
       // 监听内容更改事件
       editor.customConfig.onchange = (html) => {
+        // console.log(html);
+        // console.log(this.value);
         this.$emit('input', html);
       };
     },
@@ -88,19 +91,19 @@ export default {
     /**
      * 上传并返回图片路径
      */
-    uploadImage(files) {
-      this.isLoading = true;
-      return Promise.all(
-        files.map(file => this.$api.filesUploadFile({
-          file,
-          type: 2,
-        })),
-      ).then((filePaths) => {
-        const paths = filePaths.map(path => `${this.$config.baseURL}/files/downLoadUpFile?type=2&filePath=${path}`);
-        return paths;
-      }).finally(() => {
-        this.isLoading = false;
-      });
+    uploadImage() {
+      // this.isLoading = true;
+      // return Promise.all(
+      //   files.map(file => this.$api.fileUpload({
+      //     file,
+      //     type: 'USER_AVATAR',
+      //   })),
+      // ).then((filePaths) => {
+      //   const paths = filePaths.map(path => `${this.$config.baseURL}/file/download_upload?type=USER_AVATAR&fileId=${path}`);
+      //   return paths;
+      // }).finally(() => {
+      //   this.isLoading = false;
+      // });
     },
     setTribute() {
       if (this.tributeConfig && Object.keys(this.tributeConfig).length > 0) {
@@ -108,15 +111,15 @@ export default {
         const tribute = new Tribute({
           ...vm.tributeConfig,
           selectTemplate(item) {
+            console.log(item);
             vm.setParms(item.original.value);
             const temp = `<a class="contract-template-flag" style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.original.value}#</a>&nbsp;`;
+            // const temp = `#${item.original.value}#`;
             return temp;
           },
         });
-        tribute.attach(document.querySelectorAll('.w-e-text'));
-        this.$nextTick(() => {
-          // tribute.attach(this.$refs.editor.$el);
-        });
+        // tribute.attach(document.querySelectorAll('.w-e-text'));
+        tribute.attach(document.querySelectorAll('#editor'));
       }
     },
     insertVarsIntoHtml(item) {
@@ -138,6 +141,9 @@ export default {
     },
     setContent() {
       this.editor.change();
+    },
+    getContent() {
+      return this.editor.txt.html();
     },
   },
 };
