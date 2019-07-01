@@ -500,7 +500,7 @@ const asyncRoutes = [{
     {
       path: 'eSignFee',
       component: RouterView,
-      redirect: 'eSignFee/standard',
+      redirect: 'eSignFee/fee',
       meta: {
         title: '电子签约费用',
       },

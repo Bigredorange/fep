@@ -84,7 +84,10 @@ export default {
   mounted() {
     const vm = this;
     // PDFJS.disableWorker = true;
-    PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+    // console.log(PDFJS);
+    PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.js';
+    // PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjsWorker';
+    // PDFJS.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js';
     PDFJS.getDocument(vm.pdfurl).then((pdfDoc_) => { // 初始化pdf
       vm.pdfDoc = pdfDoc_;
       vm.page_count = vm.pdfDoc.numPages;
@@ -203,10 +206,10 @@ export default {
       padding: 10px;
       text-align: center;
     }
-    // #the-canvas {
-    //   width: 100%;
-    //   height: 100%;
-    // }
+    #the-canvas {
+      // width: 842px;
+      height: 842px;
+    }
     .con-canvas {
       position: relative;
     }

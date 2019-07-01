@@ -18,7 +18,7 @@
             v-for="(item, index) in sealStore.corpSeal[pageNum - 1]"
           >
             <vue-draggable-resizable
-              v-if="item.flag"
+              v-show="item.flag"
               :key="item.key"
               :w="140"
               :h="140"
@@ -35,7 +35,7 @@
               >
                 <img
                   :src="require('../../../../../assets/icon/seal1.png')"
-                  @click="selectCorpItem(index)"
+                  @dragstart="selectCorpItem(item)"
                 >
                 <i
                   class="el-icon-close del-btn"
@@ -156,7 +156,7 @@ export default {
             const temp = {
               posPage: ele.page,
               posX: ele.x,
-              posY: ele.y,
+              posY: 842 - ele.y,
               type: 2,
             };
             arr.push(temp);
@@ -164,7 +164,6 @@ export default {
         }
         return arr;
       });
-      console.log(perPosition);
       const corpPosition = this.sealStore.corpSeal.map((item) => {
         const arr = [];
         if (item) {
@@ -172,7 +171,7 @@ export default {
             const temp = {
               posPage: ele.page,
               posX: ele.x,
-              posY: ele.y,
+              posY: 842 - ele.y,
               type: 1,
             };
             arr.push(temp);
@@ -195,7 +194,6 @@ export default {
         }
       });
       // this.sealPositions = this.sealPositions.concat(...perPosition || [], ...corpPosition || []);
-      console.log(this.sealPositions);
       this.$api.setContractSeal({
         contractTemplateId: this.$route.query.id,
         sealPositions: this.sealPositions,
@@ -207,7 +205,7 @@ export default {
       this.$api.getContractSeal({
         contractTemplateId: this.$route.query.id,
       }).then((res) => {
-        res.forEach((item) => {
+        res.forEach((item, index) => {
           let prop = '';
           if (item.type === 1) {
             prop = 'corpSeal';
@@ -219,11 +217,11 @@ export default {
             sealArr = [];
           }
           const obj = {};
-          const num = parseInt(Math.random() * 100, 10);
-          obj.key = `${prop}${num}`;
+          // const num = new Date().getTime();
+          obj.key = `${prop}${index}`;
           obj.page = item.posPage;
           obj.x = item.posX;
-          obj.y = item.posY;
+          obj.y = 842 - item.posY;
           obj.type = item.type;
           obj.flag = true;
           sealArr.push(obj);
@@ -247,7 +245,7 @@ export default {
         prop = 'perSeal';
       }
       const obj = {};
-      const num = parseInt(Math.random() * 100, 10);
+      const num = new Date().getTime();
       obj.key = `${prop}${num}`;
       obj.flag = true;
       obj.x = e.offsetX - 70;
@@ -266,8 +264,8 @@ export default {
     handleNextPage(num) {
       this.pageNum = num;
     },
-    selectCorpItem(index) {
-      this.corpIndex = index;
+    selectCorpItem(item) {
+      this.corpIndex = this.sealStore.corpSeal[this.pageNum - 1].indexOf(item);
     },
     selectPerItem(index) {
       this.perIndex = index;
