@@ -119,7 +119,7 @@ export default {
           },
         });
         // tribute.attach(document.querySelectorAll('.w-e-text'));
-        tribute.attach(document.querySelectorAll('#editor'));
+        tribute.attach(document.querySelectorAll('.w-e-text'));
       }
     },
     insertVarsIntoHtml(item) {

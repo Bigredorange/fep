@@ -269,8 +269,10 @@ export default {
       this.$api.getContractPdfUrl({
         contractTemplateId: this.$route.query.id,
       }).then((res) => {
-        this.pdfurl = res;
-        this.$router.push({ path: 'setSeal', query: { id: this.contractId, pdfurl: res } });
+        // const time = encodeURI(`&t=${new Date().getTime()}`);
+        const time = new Date().getTime();
+        const pdfurl = `${res}&t=${time}`;
+        this.$router.push({ path: 'setSeal', query: { id: this.contractId, pdfurl } });
       }).finally(() => {
         this.loading = false;
       });

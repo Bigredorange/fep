@@ -9,7 +9,7 @@
         element-loading-background="rgba(0, 0, 0, 0.8)"
       >
         <c-pdf
-          :pdfurl="pdfurl"
+          :pdfurl="$route.query.pdfurl"
           @imgDrop="onDrop"
           @prevPage="handlePrevPage"
           @nextPage="handleNextPage"
@@ -18,7 +18,7 @@
             v-for="(item, index) in sealStore.corpSeal[pageNum - 1]"
           >
             <vue-draggable-resizable
-              v-show="item.flag"
+              v-show="item.flag && isShow"
               :key="item.key"
               :w="140"
               :h="140"
@@ -48,7 +48,7 @@
             v-for="(item, index) in sealStore.perSeal[pageNum - 1]"
           >
             <vue-draggable-resizable
-              v-if="item.flag"
+              v-if="item.flag && isShow"
               :key="item.key"
               :w="140"
               :h="140"
@@ -208,12 +208,14 @@ export default {
     };
   },
   created() {
+    this.getContractSeal();
+    this.getContractPdfUrl();
+  },
+  mounted() {
     setTimeout(() => {
       this.isShow = true;
     }, 1000);
     this.pdfurl = this.$route.query.pdfurl;
-    this.getContractSeal();
-    this.getContractPdfUrl();
   },
   methods: {
     save() {
@@ -223,8 +225,8 @@ export default {
           item.forEach((ele) => {
             const temp = {
               posPage: ele.page,
-              posX: ele.x,
-              posY: 842 - ele.y,
+              posX: ele.x - 70,
+              posY: 842 - ele.y - 70,
               type: 2,
             };
             arr.push(temp);
@@ -238,8 +240,8 @@ export default {
           item.forEach((ele) => {
             const temp = {
               posPage: ele.page,
-              posX: ele.x,
-              posY: 842 - ele.y,
+              posX: ele.x - 70,
+              posY: 842 - ele.y - 70,
               type: 1,
             };
             arr.push(temp);
@@ -288,8 +290,8 @@ export default {
           // const num = new Date().getTime();
           obj.key = `${prop}${index}`;
           obj.page = item.posPage;
-          obj.x = item.posX;
-          obj.y = 842 - item.posY;
+          obj.x = item.posX + 70;
+          obj.y = 842 - item.posY - 70;
           obj.type = item.type;
           obj.flag = true;
           sealArr.push(obj);
