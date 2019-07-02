@@ -12,7 +12,12 @@
       <!-- <img
         src="item.sealUrl"
       > -->
-      <p>{{ item.templateName }}</p>
+      <p
+        class="txt"
+        :title="item.templateName"
+      >
+        {{ item.templateName }}
+      </p>
       <div class="btn">
         <el-button
           class="primary edit"
@@ -22,7 +27,10 @@
           编辑
         </el-button>
         <div class="con-icon">
-          <i class="el-icon-delete icon" />
+          <i
+            class="el-icon-delete icon"
+            @click="del(item.id)"
+          />
         </div>
       </div>
     </div>
@@ -57,6 +65,20 @@ export default {
       }).finally(() => {
       });
     },
+    del(id) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要删除吗',
+        onOk: () => {
+          this.$api.deleteContract({
+            id,
+          }).then(() => {
+            this.$message.success('删除成功');
+            this.getList();
+          });
+        },
+      });
+    },
   },
 };
 </script>
@@ -77,6 +99,12 @@ export default {
     margin: 10px;
     padding: 10px;
     position: relative;
+    .txt {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0 10px;
+    }
     .img {
       margin-top: 10px;
     }

@@ -69,7 +69,6 @@
             slot-scope="{ row }"
           >
             <el-button
-              v-if="$p('/customer/cus/list/editCus')"
               type="text"
               class="primary"
               @click="view(row.id)"
@@ -77,12 +76,11 @@
               预览合同
             </el-button>
             <el-button
-              v-if="$p('/customer/cus/list/viewCus')"
               type="text"
-              class="primary"
-              @click="view(row)"
+              class="red"
+              @click="del(row.id)"
             >
-              查看客户
+              删除
             </el-button>
           </template>
         </el-table-column>
@@ -243,6 +241,20 @@ export default {
       this.$api.generateContracts(this.selection).then(() => {
         this.$message.success('合同生成成功');
         this.getList();
+      });
+    },
+    del(id) {
+      this.$dialogs.confirm({
+        title: '提示',
+        content: '确定要删除吗',
+        onOk: () => {
+          this.$api.deleteContractDynamic({
+            id,
+          }).then(() => {
+            this.$message.success('删除成功');
+            this.getList();
+          });
+        },
       });
     },
   },

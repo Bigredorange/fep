@@ -145,12 +145,12 @@
         <el-table-column
           prop="creatorName"
           align="center"
-          label="创建人"
+          label="存档人"
         />
         <el-table-column
           prop="createTime"
           align="center"
-          label="创建时间"
+          label="存档时间"
         />
         <el-table-column
           label="操作"

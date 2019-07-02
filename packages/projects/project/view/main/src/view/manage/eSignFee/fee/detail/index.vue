@@ -81,6 +81,11 @@
               label="费用项目"
             />
             <el-table-column
+              prop="name"
+              align="center"
+              label="消费对象"
+            />
+            <el-table-column
               prop="idno"
               align="center"
               label="证件号码"

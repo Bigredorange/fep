@@ -155,6 +155,11 @@
           :formatter="({ sex }) => $optDicLabel('Sex', sex)"
         />
         <el-table-column
+          align="center"
+          label="认证状态"
+          :formatter="({ authStatus }) => authStatus === 1 ? '已认证' : '未认证'"
+        />
+        <el-table-column
           prop="contactName"
           align="center"
           label="状态"

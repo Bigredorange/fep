@@ -159,6 +159,13 @@
                 :rows="2"
               />
             </el-form-item>
+            <!-- <el-form-item
+              v-if="form.id"
+              label="认证状态: "
+              prop="email"
+            >
+              <p>{{ form.authStatus === 1 ? '已认证' : '未认证' }}</p>
+            </el-form-item> -->
             <el-form-item
               label="头像"
               prop="attachment"

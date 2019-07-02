@@ -32,6 +32,7 @@
             >
               <el-input
                 v-model="form.companyName"
+                :disabled="form.authStatus === 4"
                 placeholder="请输入HRO名称"
               />
             </el-form-item>
@@ -92,6 +93,7 @@
             >
               <el-input
                 v-model="form.legalRepresentative"
+                :disabled="form.authStatus === 4"
                 placeholder="请输入企业法人"
               />
             </el-form-item>
@@ -102,6 +104,7 @@
               <el-input
                 v-model="form.uscc"
                 placeholder="请输入统一社会信用代码"
+                :disabled="form.authStatus === 4"
               />
             </el-form-item>
             <el-form-item

@@ -147,14 +147,14 @@ export default {
         lookup: 'value',
         fillAttr: 'value',
         values: [
-          {
-            key: 'name',
-            value: '姓名',
-          },
-          {
-            key: 'company',
-            value: '公司',
-          },
+          // {
+          //   key: 'name',
+          //   value: '姓名',
+          // },
+          // {
+          //   key: 'company',
+          //   value: '公司',
+          // },
         ],
       },
       form: {
@@ -354,6 +354,7 @@ export default {
     .grey {
       margin-left: 10px;
       color: #b4b6ba;
+      font-size: 14px;
     }
     .con-template {
       margin-top: 10px;

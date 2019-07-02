@@ -311,6 +311,8 @@ const api = {
   delSealManager: ({ smId, ...arg }) => del(`seal/seal_manage/${smId}`, arg),
   // 印章列表
   getSealList: args => get('seal/list', args),
+  // 删除印章
+  deleteSeal: ({ id, ...arg }) => del(`seal/${id}`, arg),
   /**
    * 签约模板管理
    */
@@ -328,6 +330,8 @@ const api = {
   getContractPdfUrl: ({ contractTemplateId, ...arg }) => post(`contract_template/${contractTemplateId}/pdf`, arg),
   // 签约模板列表
   getContractList: args => get('contract_template/list', args),
+  // 删除签约模板
+  deleteContract: ({ id, ...arg }) => del(`contract_template/${id}`, arg),
   /**
    * 合同管理
    */
@@ -341,6 +345,8 @@ const api = {
   getContractDynamicList: args => get('e_contract/dynamic_row_data/list', args),
   // 批量生成合同
   generateContracts: args => postJson('e_contract/batch/create_contract', args),
+  // 删除动态信息
+  deleteContractDynamic: ({ id, ...arg }) => del(`e_contract/dynamic_row_data/${id}`, arg),
   /**
    * 认证管理
    */
