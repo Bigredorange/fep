@@ -113,7 +113,7 @@ export default {
           selectTemplate(item) {
             console.log(item);
             vm.setParms(item.original.value);
-            const temp = `<a class="contract-template-flag" style="color: #356fb8;text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.original.value}#</a>&nbsp;`;
+            const temp = `<a class="contract-template-flag" style="color: #356fb8;border-bottom: 1px solid #356fb8;">#${item.original.value}#</a>&nbsp;`;
             // const temp = `#${item.original.value}#`;
             return temp;
           },
@@ -130,7 +130,7 @@ export default {
       //     insertTagName = 'label'
       // }
       this.editor.cmd.do('insertHTML', `<${insertTagName} class="contract-template-flag" style="color: #356fb8;
-      text-decoration-line: underline !important;text-decoration-color: #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
+      border-bottom: 1px solid #356fb8;">#${item.value}#</${insertTagName}>&nbsp;`);
       this.setParms(item.value);
     },
     setParms(value) {
