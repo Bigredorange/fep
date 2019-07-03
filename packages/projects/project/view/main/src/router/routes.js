@@ -555,12 +555,6 @@ const asyncRoutes = [{
           component: () => import(/* webpackChunkName: "v-standard" */ '../view/manage/eSignFee/standard/index.vue'),
           meta: {
             title: '签约费用标准',
-            btnPermission: [
-              {
-                title: '充值',
-                value: '/eSignFee/fee/list/recharge',
-              },
-            ],
           },
         },
         {
@@ -575,6 +569,12 @@ const asyncRoutes = [{
               path: 'list',
               meta: {
                 title: '列表',
+                btnPermission: [
+                  {
+                    title: '充值',
+                    value: '/eSignFee/fee/list/recharge',
+                  },
+                ],
               },
               component: () => import(/* webpackChunkName: "v-fee" */ '../view/manage/eSignFee/fee/list/index.vue'),
             },
