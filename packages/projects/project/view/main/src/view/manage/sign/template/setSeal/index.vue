@@ -167,21 +167,21 @@
         </div>
       </div>
     </div>
-    <affix
+    <!-- <affix
       v-show="isShow"
       direction="bottom"
       :offset="0"
     >
-      <div class="bot-menu">
-        <el-button
-          :loading="loading"
-          type="primary"
-          @click="save"
-        >
-          保存
-        </el-button>
-      </div>
-    </affix>
+    </affix> -->
+    <div class="bot-menu">
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="save"
+      >
+        保存
+      </el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -388,6 +388,7 @@ export default {
       height: 140px;
       .img {
         width: 138px;
+        height: 138px;
       }
       .del-btn {
         position: absolute;
@@ -430,9 +431,12 @@ export default {
 .bot-menu {
     background: #fff;
     padding: 10px;
-    display: flex;
-    justify-content: center;
-    margin-right: 224px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0px;
+    // margin-right: 112px;
 }
 .con-draggable {
     cursor: move;

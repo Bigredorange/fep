@@ -74,11 +74,9 @@ export default {
         urls.forEach(url => insert(url));
       };
       // 监听内容更改事件
-      editor.customConfig.onchange = (html) => {
-        // console.log(html);
-        // console.log(this.value);
-        this.$emit('input', html);
-      };
+      // editor.customConfig.onchange = (html) => {
+      //   this.$emit('input', html);
+      // };
     },
 
     /**

@@ -175,7 +175,7 @@ export default {
         companySealId: [{
           required: true,
           message: '请选择印章',
-          trigger: 'blur',
+          trigger: 'change',
         }],
         needSetSeal: [{
           required: true,

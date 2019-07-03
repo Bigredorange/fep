@@ -117,6 +117,7 @@ export default {
       this.$refs.Editor.setHtml('');
     },
     async submit() {
+      this.form.content = this.$refs.Editor.getContent(); // 手动获取富文本编辑器的内容
       if (!this.form.content) {
         this.$message.warning('请输入协议内容');
       }
