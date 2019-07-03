@@ -78,6 +78,7 @@
             slot-scope="{ row }"
           >
             <el-button
+              v-if="$p('/eSignFee/fee/list/recharge')"
               type="text"
               class="primary"
               @click="recharge(row)"

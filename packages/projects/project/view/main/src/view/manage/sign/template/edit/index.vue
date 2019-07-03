@@ -272,7 +272,7 @@ export default {
         // const time = encodeURI(`&t=${new Date().getTime()}`);
         const time = new Date().getTime();
         const pdfurl = `${res}&t=${time}`;
-        this.$router.push({ path: 'setSeal', query: { id: this.contractId, pdfurl } });
+        this.$router.push({ path: 'setSeal', query: { id: this.contractId, pdfurl, needSetSeal: this.form.needSetSeal } });
       }).finally(() => {
         this.loading = false;
       });

@@ -344,6 +344,51 @@ const asyncRoutes = [{
             },
           ],
         },
+        {
+          path: 'contract',
+          component: RouterView,
+          redirect: 'contract/list',
+          meta: {
+            title: '合同管理',
+          },
+          children: [
+            {
+              path: 'list',
+              meta: {
+                title: '列表',
+                btnPermission: [
+                  {
+                    title: '编辑合同',
+                    value: '/hroCompany/contract/list/editContract',
+                  },
+                  {
+                    title: '新增合同',
+                    value: '/hroCompany/contract/list/addContract',
+                  },
+                  {
+                    title: '查看合同',
+                    value: '/hroCompany/contract/list/viewContract',
+                  },
+                ],
+              },
+              component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/hroCompany/contract/list/index.vue'),
+            },
+            {
+              path: 'edit',
+              meta: {
+                title: '新增/编辑',
+              },
+              component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/contract/edit/index.vue'),
+            },
+            {
+              path: 'detail',
+              meta: {
+                title: '合同详情',
+              },
+              component: () => import(/* webpackChunkName: "v-contractDetail" */ '../view/manage/hroCompany/contract/detail/index.vue'),
+            },
+          ],
+        },
       ],
     },
     {
@@ -510,6 +555,12 @@ const asyncRoutes = [{
           component: () => import(/* webpackChunkName: "v-standard" */ '../view/manage/eSignFee/standard/index.vue'),
           meta: {
             title: '签约费用标准',
+            btnPermission: [
+              {
+                title: '充值',
+                value: '/eSignFee/fee/list/recharge',
+              },
+            ],
           },
         },
         {

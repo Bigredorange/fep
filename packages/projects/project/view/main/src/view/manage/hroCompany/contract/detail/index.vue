@@ -16,11 +16,10 @@
             class="ui-form three-col"
           >
             <el-form-item
-              label="客户"
-              prop="customerId"
+              label="HRO名称"
             >
               <p>
-                {{ form.customerName }}
+                {{ form.companyName }}
               </p>
             </el-form-item>
             <el-form-item
@@ -160,7 +159,7 @@ export default {
   },
   methods: {
     getDetail(id) {
-      this.$api.getCusContract({ id }).then((res) => {
+      this.$api.getCompanyContract({ id }).then((res) => {
         this.form = res;
         const fileList = res.attachmentFiles || [];
         this.fileList = fileList.map((item) => {

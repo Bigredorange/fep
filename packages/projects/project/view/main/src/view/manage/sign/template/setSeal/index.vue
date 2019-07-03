@@ -34,7 +34,8 @@
                 class="con-seal-left"
               >
                 <img
-                  :src="require('../../../../../assets/icon/seal1.png')"
+                  :src="`data:image/png;base64,${coSeal.sealData}`"
+                  class="img"
                   @dragstart="selectCorpItem(item)"
                 >
                 <i
@@ -114,9 +115,10 @@
         <div class="con-seal-btn">
           <div class="item">
             <img
+              v-if="coSeal.needSetSeal && coSeal.sealData"
               id="imgCorp"
               class="img-fixed"
-              src="../../../../../assets/icon/seal1.png"
+              :src="`data:image/png;base64,${coSeal.sealData}`"
               @dragstart="handleDragType"
             >
           </div>
@@ -205,11 +207,16 @@ export default {
       perIndex: 0,
       sealType: '',
       isShow: false,
+      coSeal: {
+        needSetSeal: true,
+        sealData: '',
+      },
     };
   },
   created() {
     this.getContractSeal();
     this.getContractPdfUrl();
+    this.coSeal.needSetSeal = this.$route.query.needSetSeal;
   },
   mounted() {
     setTimeout(() => {
@@ -275,7 +282,8 @@ export default {
       this.$api.getContractSeal({
         contractTemplateId: this.$route.query.id,
       }).then((res) => {
-        res.forEach((item, index) => {
+        this.coSeal.sealData = res.coSeal.sealData;
+        res.contractTempSealParams.forEach((item, index) => {
           let prop = '';
           if (item.type === 1) {
             prop = 'corpSeal';
@@ -378,6 +386,9 @@ export default {
       position: relative;
       width: 140px;
       height: 140px;
+      .img {
+        width: 138px;
+      }
       .del-btn {
         position: absolute;
         top: 0;

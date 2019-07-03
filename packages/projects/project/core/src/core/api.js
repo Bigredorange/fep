@@ -406,6 +406,17 @@ const api = {
   addCompanyBalance: ({ id, ...arg }) => postForm(`company/balance/${id}/add/credit`, arg),
   // 查看详情 type 1费用记录 2充值记录
   getCompanyBalanceLog: ({ type, ...arg }) => get(`company/balance/log/${type}/list`, arg),
+  /**
+   * 企业合同管理
+   */
+  // 查询企业合同列表
+  getCompanyContractList: args => get('company_contract/list', args),
+  // 新增企业合同
+  addCompanyContract: args => postJson('company_contract', args),
+  // 更新企业合同
+  updateCompanyContract: ({ id, ...arg }) => putJson(`company_contract/${id}`, arg),
+  // 查询企业合同
+  getCompanyContract: ({ id, ...arg }) => get(`company_contract/${id}`, arg),
 
 };
 module.exports = api;

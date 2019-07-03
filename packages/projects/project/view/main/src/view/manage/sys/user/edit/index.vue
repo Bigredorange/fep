@@ -466,8 +466,9 @@ export default {
     }
     if (this.level === 1) {
       this.userTypeList = this.userTypeList.filter(user => user.key >= level + 1 && user.key <= level + 2);
+    } else if (level === 3) {
+      this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
     } else {
-      // this.userTypeList = this.userTypeList.filter(user => user.key === level + 1);
       this.userTypeList = this.userTypeList.filter(user => user.key === level + 1 || user.key === level);
     }
   },

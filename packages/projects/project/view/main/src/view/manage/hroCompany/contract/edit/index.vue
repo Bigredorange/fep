@@ -18,16 +18,16 @@
           >
             <el-form-item
               label="客户"
-              prop="customerId"
+              prop="companyId"
             >
               <el-select
-                v-model="form.customerId"
-                placeholder="请选择客户"
+                v-model="form.companyId"
+                placeholder="请选择HRO"
               >
                 <el-option
-                  v-for="item in customerList"
+                  v-for="item in companyList"
                   :key="item.id"
-                  :label="item.customerName"
+                  :label="item.companyName"
                   :value="item.id"
                 />
               </el-select>
@@ -147,7 +147,6 @@
                       <span class="name">{{ item.fileName }}</span>
                       <span class="action">
                         <span>操作人: {{ item.userName }} </span>
-                      <!-- <span v-if="item.insertTime">| 操作时间: {{item.insertTime}}</span> -->
                       </span>
                     </div>
                   </li>
@@ -188,7 +187,7 @@ export default {
           message: '请输入合同编号',
           trigger: 'blur',
         }],
-        customerId: [{
+        companyId: [{
           required: true,
           message: '请选择客户',
           trigger: 'blur',
@@ -215,11 +214,10 @@ export default {
         }],
       },
       form: {
-        customerId: null,
+        companyId: null,
         contractNo: null,
         contractState: 1,
         contractName: null,
-        customerName: null,
         remark: null,
         signingDate: null,
         contractStartDate: null,
@@ -227,7 +225,6 @@ export default {
         attachment: null,
       },
       confirmButtonLoading: false,
-      customerList: [],
       contractId: null,
       statusList: [
         {
@@ -250,10 +247,11 @@ export default {
         path: null,
         userName: null,
       },
+      companyList: [],
     };
   },
   created() {
-    this.getCustomerAll();
+    this.getCompanyList();
     this.contractId = this.$route.query.id;
     if (this.contractId) {
       this.getDetail(this.contractId);
@@ -269,12 +267,12 @@ export default {
           let param = null;
           this.form.companyId = this.$store.state.fepUserInfo.companyId;
           if (!this.contractId) {
-            api = 'addCusContract';
+            api = 'addCompanyContract';
             param = {
               ...this.form,
             };
           } else {
-            api = 'updateCusContract';
+            api = 'updateCompanyContract';
             param = {
               ...this.form,
               id: this.contractId,
@@ -292,7 +290,7 @@ export default {
       });
     },
     getDetail(id) {
-      this.$api.getCusContract({ id }).then((res) => {
+      this.$api.getCompanyContract({ id }).then((res) => {
         this.form = res;
         const fileList = res.attachmentFiles || [];
         this.fileList = fileList.map((item) => {
@@ -333,12 +331,12 @@ export default {
         fileId: item.id,
       }).then(blob => this.$utils.autoLoad(new Blob([blob]), item.fileName));
     },
-    getCustomerAll() {
-      this.isLoading = true;
-      this.$api.getCustomerAll().then((res) => {
-        this.customerList = res;
-      }).finally(() => {
-        this.isLoading = false;
+    getCompanyList() {
+      this.$api.getCompanyList({
+        pageCurrent: 1,
+        pageSize: 1000,
+      }).then((res) => {
+        this.companyList = res.dataList;
       });
     },
   },

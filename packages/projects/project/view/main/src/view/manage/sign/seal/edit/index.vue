@@ -21,6 +21,7 @@
           >
             <el-input
               v-model="form.companyName"
+              :disabled="true"
               placeholder="请输入企业名称"
             />
           </el-form-item>
