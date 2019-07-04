@@ -592,7 +592,7 @@ const asyncRoutes = [{
     {
       path: 'settle',
       component: RouterView,
-      redirect: 'settle/service',
+      redirect: 'settle/cusService',
       meta: {
         title: '结算管理',
       },
@@ -602,7 +602,7 @@ const asyncRoutes = [{
           component: RouterView,
           redirect: 'service/list',
           meta: {
-            title: '服务报酬',
+            title: '灵工服务结算',
           },
           children: [
             {
@@ -613,6 +613,39 @@ const asyncRoutes = [{
               component: () => import(/* webpackChunkName: "v-service" */ '../view/manage/settle/service/list/index.vue'),
             },
           ],
+        },
+        {
+          path: 'cusService',
+          meta: {
+            title: '客户服务结算',
+            btnPermission: [
+              {
+                title: '批量发送确认',
+                value: '/settle/cusService/batchSend',
+              },
+              {
+                title: '导出',
+                value: '/settle/cusService/export',
+              },
+              {
+                title: '批量确认',
+                value: '/settle/cusService/batchConfirm',
+              },
+              {
+                title: '发送确认',
+                value: '/settle/cusService/send',
+              },
+              {
+                title: '确认',
+                value: '/settle/cusService/confirm',
+              },
+              {
+                title: '编辑',
+                value: '/settle/cusService/edit',
+              },
+            ],
+          },
+          component: () => import(/* webpackChunkName: "v-cusService" */ '../view/manage/settle/cusService/index.vue'),
         },
       ],
     },

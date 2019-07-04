@@ -228,7 +228,7 @@ const api = {
   // 导入服务报酬
   importServiceReward: args => postForm('service_reward/import', args, { noMessage: true }),
   // 批量发送确认
-  batchSendServiceReward: ({ arr }) => postJson('service_reward/batch/send_confirm', arr),
+  batchSendServiceReward: ({ arr, status }) => postJson(`service_reward/batch/send_confirm/${status}`, arr),
   // 批量删除服务报酬
   batchDeleteServiceReward: ({ arr }) => postJson('service_reward/batch/delete', arr),
   // 根据查询条件导出excel
@@ -360,6 +360,10 @@ const api = {
   authPerBank: ({ type, ...arg }) => postJson(`auth/per/${type}/ban`, arg),
   // 校验手机验证码 type 1小程序 2 PC端
   authPerCode: ({ type, ...arg }) => postJson(`auth/per/${type}/ban/check`, arg),
+  // 个人运营商三要素认证 type 1小程序 2 PC端
+  authPerThree: ({ type, ...arg }) => postJson(`auth/per/${type}/three`, arg),
+  // 获取个人认证配置方式
+  getPersonAuthenWay: args => get('standard_cost/getPersonWay', args),
   /**
    * 认证管理
    */

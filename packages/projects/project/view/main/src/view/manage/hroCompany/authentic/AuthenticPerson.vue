@@ -54,6 +54,7 @@
           />
         </el-form-item>
         <el-form-item
+          v-if="isBankAuthen"
           prop="cardno"
           label="银行卡号："
         >
@@ -64,7 +65,7 @@
         </el-form-item>
         <el-form-item
           prop="mobile"
-          label="银行预留手机号："
+          :label="isBankAuthen ? '银行预留手机号：' : '手机号：'"
         >
           <el-input
             v-model.trim="form.mobile"
@@ -72,6 +73,7 @@
           />
         </el-form-item>
         <el-form-item
+          v-if="isBankAuthen"
           prop="code"
           label="验证码："
         >
@@ -161,6 +163,7 @@ export default {
         }],
       },
       btnMsg: '获取验证码',
+      isBankAuthen: true,
     };
   },
   methods: {
@@ -168,6 +171,7 @@ export default {
       this.money = '';
       this.isShow = true;
       this.companyId = this.$store.state.fepUserInfo.companyId;
+      this.getPersonAuthenWay();
     },
     reset() {
       this.$utils.initData.call(this);
@@ -207,11 +211,24 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$api.authPerCode({
-            serviceId: this.form.serviceId,
-            code: this.form.code,
-            type: this.form.type,
-          }).then(() => {
+          let api = 'authPerCode';
+          let form = {};
+          if (!this.isBankAuthen) {
+            api = 'authPerThree';
+            form = {
+              idno: this.form.idno,
+              name: this.form.name,
+              mobile: this.form.mobile,
+              type: this.form.type,
+            };
+          } else {
+            form = {
+              serviceId: this.form.serviceId,
+              code: this.form.code,
+              type: this.form.type,
+            };
+          }
+          this.$api[api](form).then(() => {
             this.$message.success('实名认证成功');
             this.updateLocalUserinfo();
             this.isShow = false;
@@ -228,6 +245,11 @@ export default {
         sessionStorage.fepUserInfo = JSON.stringify(res);
         this.$store.commit('setFepUserInfo', res);
         this.$emit('update');
+      });
+    },
+    getPersonAuthenWay() {
+      this.$api.getPersonAuthenWay().then((res) => {
+        this.isBankAuthen = res.way === 2;
       });
     },
   },

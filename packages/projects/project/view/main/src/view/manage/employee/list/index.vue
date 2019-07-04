@@ -103,12 +103,12 @@
         >
           导入灵工
         </el-button>
-        <!-- <el-button
+        <el-button
           type="primary"
           @click="downTemplate"
         >
           下载模板
-        </el-button> -->
+        </el-button>
         <el-button @click="exportEmployee">
           导出
         </el-button>

@@ -3,10 +3,10 @@
     <top-bar>
       <section>
         <div class="item">
-          <span>证件号码：</span>
+          <span>客户名称：</span>
           <el-input
-            v-model="form.certificateNum"
-            placeholder="请输入证件号码"
+            v-model="form.customerName"
+            placeholder="请输入客户名称"
             style="width: 200px;"
           />
         </div>
@@ -47,14 +47,6 @@
             />
           </el-select>
         </div>
-        <div class="item">
-          <span>客户名称：</span>
-          <el-input
-            v-model="form.customerName"
-            placeholder="请输入客户名称"
-            style="width: 200px;"
-          />
-        </div>
         <el-button
           type="primary"
           icon="el-icon-search"
@@ -73,34 +65,33 @@
       <div class="buttons">
         <div>
           <el-button
-            type="primary"
-            icon="el-icon-plus"
-            @click="importServiceReward"
+            v-if="$p('/settle/cusService/export')"
+            @click="handleExport"
           >
-            导入服务报酬
-          </el-button>
-          <el-button
-            type="primary"
-            @click="downloadTemplate"
-          >
-            下载模板
-          </el-button>
-          <el-button @click="handleExport">
             导出
           </el-button>
         </div>
         <div>
           <el-button
+            v-if="$p('/settle/cusService/batchDel')"
             type="primary"
             @click="batchDelete"
           >
             批量删除
           </el-button>
           <el-button
+            v-if="$p('/settle/cusService/batchSend')"
             type="primary"
             @click="batchSend"
           >
             批量发送确认
+          </el-button>
+          <el-button
+            v-if="$p('/settle/cusService/batchConfirm')"
+            type="primary"
+            @click="batchConfirm"
+          >
+            批量确认
           </el-button>
         </div>
       </div>
@@ -147,67 +138,20 @@
           label="姓名"
         />
         <el-table-column
-          prop="certificateNum"
-          align="center"
-          label="证件号码"
-        />
-        <el-table-column
-          prop="bankAccount"
-          align="center"
-          label="卡号"
-        />
-        <el-table-column
-          prop="bankName"
-          align="center"
-          label="开户行"
-        />
-        <el-table-column
-          prop="bankAddress"
-          align="center"
-          label="开户地"
-        />
-        <el-table-column
           prop="reward"
           align="center"
           label="服务报酬"
-        >
-          <template slot-scope="{ row, $index }">
-            <el-input
-              v-if="row.isEdit"
-              v-model="list[$index].reward"
-              placeholder="请输入"
-            />
-            <span v-else>{{ row.reward }}</span>
-          </template>
-        </el-table-column>
+        />
         <el-table-column
           prop="taxesPayable"
           align="center"
           label="应交税费"
-        >
-          <template slot-scope="{ row, $index }">
-            <el-input
-              v-if="row.isEdit"
-              v-model="list[$index].taxesPayable"
-              placeholder="请输入"
-            />
-            <span v-else>{{ row.taxesPayable }}</span>
-          </template>
-        </el-table-column>
+        />
         <el-table-column
           prop="actualPay"
           align="center"
           label="实发金额(元)"
-        >
-          <template slot-scope="{ row, $index }">
-            <el-input
-              v-if="row.isEdit"
-              v-model="list[$index].actualPay"
-              placeholder="请输入"
-            />
-            <span v-else>{{ row.actualPay }}</span>
-          </template>
-        </el-table-column>
+        />
         <el-table-column
           prop="serviceFee"
           align="center"
@@ -263,11 +207,11 @@
           width="220px"
         >
           <template
-            v-if="row.status !== 2"
+            v-if="row.status !== 4"
             slot-scope="{ $index, row }"
           >
             <el-button
-              v-if="row.status === 0"
+              v-if="row.status === 2 && $p('/settle/cusService/send')"
               type="text"
               class="green"
               @click="sendItem(row)"
@@ -275,7 +219,15 @@
               发送确认
             </el-button>
             <el-button
-              v-if="row.isEdit"
+              v-if="row.status === 3 && $p('/settle/cusService/confirm')"
+              type="text"
+              class="green"
+              @click="confirmItem(row)"
+            >
+              确认
+            </el-button>
+            <el-button
+              v-if="row.isEdit && $p('/settle/cusService/edit')"
               type="text"
               class="primary"
               @click="save($index)"
@@ -283,19 +235,12 @@
               保存
             </el-button>
             <el-button
-              v-else
+              v-if="row.status === 2 && $p('/settle/cusService/edit')"
               type="text"
               class="primary"
               @click="edit($index)"
             >
               编辑
-            </el-button>
-            <el-button
-              type="text"
-              class="red"
-              @click="deleteItem(row)"
-            >
-              删除
             </el-button>
           </template>
         </el-table-column>
@@ -328,37 +273,54 @@ export default {
       list: [],
       listLoading: false,
       form: {
-        certificateNum: null,
         customerName: null,
         startMonth: null,
         endMonth: null,
-        status: -1,
+        status: -2, // -1 灵工服务全部 -2 客户服务结算全部 -3 当前客户的全部
         pageCurrent: 1,
         pageSize: 20,
       },
       total: 0,
       statusList: [
         {
-          key: 0,
+          key: 2,
           label: '未确认',
         },
         {
-          key: 1,
+          key: 3,
           label: '确认中',
         },
         {
-          key: 2,
+          key: 4,
           label: '已确认',
         },
         {
-          key: -1,
+          key: -2,
           label: '全部',
         },
       ],
       selection: [],
+      status: '',
     };
   },
   created() {
+    if (this.$store.state.fepUserInfo.level === 5) {
+      this.form.status = -3;
+      this.statusList = [
+        {
+          key: 3,
+          label: '未确认',
+        },
+        {
+          key: 4,
+          label: '已确认',
+        },
+        {
+          key: -3,
+          label: '全部',
+        },
+      ];
+    }
     this.getList();
   },
   methods: {
@@ -377,66 +339,12 @@ export default {
         this.listLoading = false;
       });
     },
-    importServiceReward() {
-      this.$upload({
-        multiple: false,
-        fileType: 'excel',
-      }).then(([item]) => {
-        this.uploading = true;
-        this.$message.info('导入中...');
-        this.$api.importServiceReward({
-          file: item.file,
-        }).then(() => {
-          this.$dialogs.confirm({
-            content: '服务报酬导入完成',
-            type: 'success',
-            showClose: false,
-          });
-          this.getList();
-        }).catch((res) => {
-          if (res.status !== 1302) {
-            this.$message.error('导入失败');
-            return;
-          }
-          this.$refs.uploadDetail.open({
-            detail: {
-              ...res.data,
-              fileName: '服务报酬错误导入信息',
-              flag: 201,
-            },
-            cols: [
-              {
-                prop: 'empName',
-                label: '姓名',
-                align: 'center',
-              },
-              {
-                prop: 'certificateNum',
-                label: '身份证号',
-                align: 'center',
-              },
-              {
-                prop: 'customerName',
-                label: '客户名称',
-                align: 'center',
-              },
-              {
-                prop: 'errorMsg',
-                label: '错误描述',
-              },
-            ],
-          });
-        }).finally(() => {
-          this.uploading = false;
-        });
-      });
-    },
-    downloadTemplate() {
-      // 下载模板
-      this.$api.downloadTemplate({
-        file: 'service_reward_import.xlsx',
-      }).then(blob => this.$utils.autoLoad(new Blob([blob]), '服务薪酬模板.xlsx'));
-    },
+    // downloadTemplate() {
+    //   // 下载模板
+    //   this.$api.downloadTemplate({
+    //     file: 'service_reward_import.xlsx',
+    //   }).then(blob => this.$utils.autoLoad(new Blob([blob]), '服务薪酬模板.xlsx'));
+    // },
     selectionChange(selection) {
       this.selection = selection;
     },
@@ -446,24 +354,9 @@ export default {
     },
     save(index) {
       const currentRow = this.list[index];
-      const reward = currentRow.reward || 0;
-      const taxesPayable = currentRow.taxesPayable || 0;
-      const actualPay = currentRow.actualPay || 0;
       const serviceFee = currentRow.serviceFee || 0;
       const billingTax = currentRow.billingTax || 0;
       const totalAmount = currentRow.totalAmount || 0;
-      if (reward && !this.$utils.regExp(reward, 'money')) {
-        this.$message.warning('服务报酬只能为数值');
-        return;
-      }
-      if (actualPay && !this.$utils.regExp(actualPay, 'money')) {
-        this.$message.warning('实发金额只能为数值');
-        return;
-      }
-      if (taxesPayable && !this.$utils.regExp(taxesPayable, 'money')) {
-        this.$message.warning('应交税费只能为数值');
-        return;
-      }
       if (serviceFee && !this.$utils.regExp(serviceFee, 'money')) {
         this.$message.warning('服务费只能为数值');
         return;
@@ -478,9 +371,6 @@ export default {
       }
 
       const params = {
-        reward,
-        actualPay,
-        taxesPayable,
         serviceFee,
         billingTax,
         totalAmount,
@@ -506,7 +396,6 @@ export default {
       }).then(async (res) => {
         await this.$api.fileDownloadById({
           fileId: res,
-          name: '服务报酬.xlsx',
         });
         this.$dialogs.confirm({ content: '成功', type: 'success', showClose: false });
       });
@@ -522,10 +411,6 @@ export default {
       }
       const ids = this.selection.map(item => item.id);
       this.deleteApi(ids, '确定批量删除该服务报酬？');
-    },
-    deleteItem(row) {
-      const arr = [row.id];
-      this.deleteApi(arr);
     },
     deleteApi(arr, title = '确定批量删除该服务报酬？') {
       this.$dialogs.confirm({
@@ -545,7 +430,7 @@ export default {
         this.$message.warning('请选择批量发送操作项');
         return;
       }
-      if (this.selection.some(t => t.status === 1)) {
+      if (this.selection.some(t => t.status === 3)) {
         this.$message.warning('包含确认中的数据，请勾选未确认的数据');
         return;
       }
@@ -560,12 +445,29 @@ export default {
       }
       this.sendApi(arr);
     },
+    batchConfirm() {
+      if (!this.selection.length) {
+        this.$message.warning('请选择批量发送操作项');
+        return;
+      }
+      // if (this.selection.some(t => t.status === 3)) {
+      //   this.$message.warning('包含确认中的数据，请勾选未确认的数据');
+      //   return;
+      // }
+      const ids = this.selection.map(item => item.id);
+      this.confirmApi(ids, '确定批量确认嘛？');
+    },
+    confirmItem(row) {
+      const arr = [row.id];
+      this.confirmApi(arr);
+    },
     sendApi(arr, title = '确定发送服务报酬确认？') {
       this.$dialogs.confirm({
         content: title,
         sync: true,
         onOk: () => this.$api.batchSendServiceReward({
           arr,
+          status: 3,
         }),
         onResolve: () => {
           this.$message.success('发送成功');
@@ -573,25 +475,27 @@ export default {
         },
       });
     },
+    confirmApi(arr, title = '确定要确认嘛？') {
+      this.$dialogs.confirm({
+        content: title,
+        sync: true,
+        onOk: () => this.$api.batchSendServiceReward({
+          arr,
+          status: 4,
+        }),
+        onResolve: () => {
+          this.$message.success('确认成功');
+          this.getList();
+        },
+      });
+    },
     getStatusName(status) {
-      let name = '';
-      switch (status) {
-        case 0:
-          name = '未确认';
-          break;
-        case 1:
-          name = '确认中';
-          break;
-        case 2:
-          name = '已确认';
-          break;
-        case '':
-          break;
-      }
-      return name;
+      const temp = this.statusList.find(item => item.key === status);
+      console.log(temp);
+      return temp ? temp.label : '';
     },
     selectable(row) {
-      return row.status !== 2 ? 1 : 0;
+      return row.status !== 4 ? 1 : 0;
     },
   },
 };

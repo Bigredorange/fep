@@ -52,6 +52,26 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item
+          v-if="form.chargeItem === '个人认证'"
+          prop="way"
+          label="认证方式："
+        >
+          <el-radio-group
+            v-model="form.way"
+          >
+            <el-radio
+              :label="1"
+            >
+              三要素认证
+            </el-radio>
+            <el-radio
+              :label="2"
+            >
+              四要素认证
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
           prop="chargeAmount"
           label="收费金额："
         >
@@ -101,6 +121,7 @@ export default {
         chargeMethod: null,
         chargeAmount: null,
         remark: null,
+        way: 1,
       },
       rules: {
         chargeItem: [{
@@ -111,6 +132,11 @@ export default {
         chargeMethod: [{
           required: true,
           message: '请选择收费项目',
+          trigger: 'blur',
+        }],
+        way: [{
+          required: true,
+          message: '请选择认证方式',
           trigger: 'blur',
         }],
         chargeAmount: [{

@@ -71,7 +71,6 @@ axios.interceptors.response.use((response) => {
       if (fileName) {
         res.fileName = iconv.decode(fileName.replace(/.+filename=/, ''), 'gb2312');
       }
-      console.log(res);
       return Promise.resolve(res);
     }
     return new Promise((resolve, reject) => {

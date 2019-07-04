@@ -232,7 +232,7 @@ export default {
           item.forEach((ele) => {
             const temp = {
               posPage: ele.page,
-              posX: ele.x - 70,
+              posX: ele.x + 70,
               posY: 842 - ele.y - 70,
               type: 2,
             };
@@ -247,7 +247,7 @@ export default {
           item.forEach((ele) => {
             const temp = {
               posPage: ele.page,
-              posX: ele.x - 70,
+              posX: ele.x + 70,
               posY: 842 - ele.y - 70,
               type: 1,
             };
@@ -298,8 +298,8 @@ export default {
           // const num = new Date().getTime();
           obj.key = `${prop}${index}`;
           obj.page = item.posPage;
-          obj.x = item.posX + 70;
-          obj.y = 842 - item.posY - 70;
+          obj.x = item.posX - 70;
+          obj.y = 842 - item.posY + 70;
           obj.type = item.type;
           obj.flag = true;
           sealArr.push(obj);
