@@ -174,7 +174,6 @@
               name="register"
             >
               <el-form
-                ref="form"
                 :model="form"
                 :rules="rules"
                 label-width="140px"
@@ -254,7 +253,6 @@
               name="invoice"
             >
               <el-form
-                ref="form"
                 :model="form"
                 :rules="rules"
                 label-width="140px"
@@ -392,10 +390,10 @@ export default {
           required: true,
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的联系电话'));
-            } else {
+            if (value && this.$utils.regExp(value, 'mp')) {
               callback();
+            } else {
+              callback(new Error('请输入正确的联系电话'));
             }
           },
         }],

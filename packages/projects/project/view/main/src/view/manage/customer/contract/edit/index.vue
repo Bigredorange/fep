@@ -113,7 +113,6 @@
             </el-form-item>
             <el-form-item
               label="合同附件"
-              prop="attachment"
               style="width: 66%"
             >
               <div class="file-upload">
@@ -207,11 +206,6 @@ export default {
           required: true,
           message: '请选择合作结束时间',
           trigger: 'blur',
-        }],
-        attachment: [{
-          required: true,
-          message: '请上传文件',
-          trigger: 'change',
         }],
       },
       form: {

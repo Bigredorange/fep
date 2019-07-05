@@ -326,6 +326,15 @@
 <script>
 export default {
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入正确的手机号'));
+      } else if (this.$utils.regExp(value, 'mp')) {
+        callback();
+      } else {
+        callback('请输入正确的手机号');
+      }
+    };
     return {
       rules: {
         level: [{
@@ -352,23 +361,20 @@ export default {
         mobile: [{
           required: true,
           trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的手机号'));
-            } else {
-              callback();
-            }
-          },
+          validator: validatePhone,
         }],
         email: [{
           required: false,
           message: '请输入正确的邮箱',
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'em')) {
-              callback(new Error('请输入正确的邮箱'));
-            } else {
+            if (!value) {
               callback();
+            }
+            if (value && this.$utils.regExp(value, 'em')) {
+              callback();
+            } else {
+              callback('请输入正确的邮箱');
             }
           },
         }],

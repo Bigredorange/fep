@@ -155,22 +155,24 @@ export default {
           required: true,
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'mp')) {
-              callback(new Error('请输入正确的手机号'));
-            } else {
+            if (value && this.$utils.regExp(value, 'mp')) {
               callback();
+            } else {
+              callback(new Error('请输入正确的手机号'));
             }
           },
         }],
         email: [{
           required: false,
-          message: '请输入正确的邮箱',
           trigger: 'blur',
           validator: (rule, value, callback) => {
-            if (value && !this.$utils.regExp(value, 'em')) {
-              callback(new Error('请输入正确的邮箱'));
-            } else {
+            if (!value) {
               callback();
+            }
+            if (value && this.$utils.regExp(value, 'em')) {
+              callback();
+            } else {
+              callback('请输入正确的邮箱');
             }
           },
         }],

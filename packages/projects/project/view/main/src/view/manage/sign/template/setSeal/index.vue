@@ -263,6 +263,10 @@ export default {
           this.sealPositions.push([]);
         }
       });
+      if (this.sealPositions.findIndex(item => item.type === 2) === -1) {
+        this.$message.info('至少需设置一个个人签章');
+        return;
+      }
       corpPosition.forEach((item) => {
         if (item) {
           this.sealPositions.push(...item);

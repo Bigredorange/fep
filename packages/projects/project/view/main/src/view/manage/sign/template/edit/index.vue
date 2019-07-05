@@ -10,7 +10,6 @@
         :tribute-config="tributeConfig"
         class="editor"
         :params="params"
-        @updateParams="handleUpdate"
       />
       <div class="bot-menu">
         <el-button
@@ -124,15 +123,23 @@
         </el-input>
       </div>
       <div class="con-btn">
-        <el-button
+        <div
           v-for="item in tributeConfig.values"
           :key="item.key"
-          class="item-btn"
-          type="primary"
-          @click="onInsertVar(item)"
+          class="item"
         >
-          {{ item.value }}
-        </el-button>
+          <el-button
+            type="primary"
+            class="item-btn"
+            @click="onInsertVar(item)"
+          >
+            {{ item.value }}
+          </el-button>
+          <i
+            class="el-icon-close item-icon"
+            @click="deleteText(item)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -212,6 +219,7 @@ export default {
           this.confirmButtonLoading = true;
           let api = '';
           let param = null;
+          this.form.params = this.params;
           if (this.form.params instanceof Array) {
             this.form.params = JSON.stringify(this.form.params);
           }
@@ -240,13 +248,14 @@ export default {
         }
       });
     },
-    handleUpdate(params) {
-      this.form.params = params;
-    },
+    // handleUpdate(params) {
+    //   this.form.params = params;
+    // },
     getDetail(contractTemplateId) {
       this.$api.getContract({ contractTemplateId }).then((res) => {
         this.form = res;
         const params = JSON.parse(res.params);
+        this.params = params;
         this.tributeConfig.values = params.map((item, index) => {
           const temp = {};
           temp.key = index;
@@ -257,12 +266,23 @@ export default {
     },
     addTemplateTxt() {
       if (this.templateTxt) {
+        if (this.tributeConfig.values.find(item => item.value === this.templateTxt)) {
+          this.$message.info('已有这个动态字段');
+          return;
+        }
         this.tributeConfig.values.push({
-          key: this.tributeConfig.values.length,
+          key: new Date().getTime(),
           value: this.templateTxt,
         });
+        this.params.push(this.templateTxt);
         this.templateTxt = '';
       }
+    },
+    deleteText(item) {
+      const index = this.tributeConfig.values.indexOf(item);
+      this.tributeConfig.values.splice(index, 1);
+      const indexP = this.params.indexOf(item.value);
+      this.params.splice(indexP, 1);
     },
     gotoSetSeal() {
       this.loading = true;
@@ -361,13 +381,27 @@ export default {
     }
     .con-btn {
       margin-top: 10px;
-      .item-btn {
-        // width: 45%;
-        border-radius: 16px;
-        height: 32px;
-        line-height: 0px;
-        padding: 10px 30px;
-        margin: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      .item {
+        position: relative;
+        .item-icon {
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.7;
+          }
+        }
+        .item-btn {
+          // width: 45%;
+          border-radius: 16px;
+          height: 32px;
+          line-height: 0px;
+          padding: 10px 30px;
+          margin: 10px;
+        }
       }
     }
   }

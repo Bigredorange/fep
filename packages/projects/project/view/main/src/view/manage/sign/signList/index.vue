@@ -131,7 +131,18 @@
           prop="contractNo"
           align="center"
           label="合同编号"
-        />
+        >
+          <template
+            slot-scope="{ row }"
+          >
+            <span
+              class="link"
+              @click="getContractDetail(row.contractSignFileId)"
+            >
+              {{ row.contractNo }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="contractName"
           align="center"
@@ -358,6 +369,13 @@ export default {
       const temp = this.statusList.find(item => item.key === row.signStatus);
       return temp.label;
     },
+    getContractDetail(fileId) {
+      this.$api.pdfDownloadById({
+        fileId,
+      }).then((res) => {
+        window.open(res);
+      });
+    },
   },
 };
 </script>
@@ -375,6 +393,11 @@ export default {
     color: #999999;
   }
   .mouse {
+    cursor: pointer;
+  }
+  .link {
+    color: #1b559d;
+    font-weight: 500;
     cursor: pointer;
   }
 }
