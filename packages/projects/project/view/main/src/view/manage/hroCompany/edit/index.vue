@@ -222,6 +222,11 @@ export default {
           message: '请输入企业法人',
           trigger: 'blur',
         }],
+        uscc: [{
+          required: true,
+          message: '请输入统一社会信用代码',
+          trigger: 'blur',
+        }],
         industry: [{
           required: true,
           message: '请选择行业',

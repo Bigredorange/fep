@@ -459,7 +459,6 @@ export default {
       }).then((res) => {
         this.$api.fileDownloadById({
           fileId: res,
-          name: '工单.xlsx',
         });
       });
     },

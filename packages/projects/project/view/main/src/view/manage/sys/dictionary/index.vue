@@ -14,7 +14,7 @@
           <span>字典键：</span>
           <el-input
             v-model="form.dictKey"
-            placeholder="请输入姓名"
+            placeholder="请输入字典键"
             style="width: 200px;"
           />
         </div>
@@ -22,7 +22,7 @@
           <span>字典值：</span>
           <el-input
             v-model="form.dictValue"
-            placeholder="请输入键值"
+            placeholder="请输入字典值"
             style="width: 200px;"
           />
         </div>

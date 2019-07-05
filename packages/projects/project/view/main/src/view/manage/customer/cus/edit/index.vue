@@ -174,8 +174,9 @@
               name="register"
             >
               <el-form
+                ref="formRegister"
                 :model="form"
-                :rules="rules"
+                :rules="rulesReigster"
                 label-width="140px"
                 inline
                 class="ui-form three-col"
@@ -240,6 +241,7 @@
                 </el-form-item>
                 <el-form-item
                   label="统一社会信用代码"
+                  prop="uscc"
                 >
                   <el-input
                     v-model="form.uscc"
@@ -384,7 +386,7 @@ export default {
         industry: [{
           required: true,
           message: '请选择行业',
-          trigger: 'blur',
+          trigger: 'change',
         }],
         contactPhone: [{
           required: true,
@@ -396,6 +398,13 @@ export default {
               callback(new Error('请输入正确的联系电话'));
             }
           },
+        }],
+      },
+      rulesReigster: {
+        uscc: [{
+          required: true,
+          message: '请输入统一社会信用代码',
+          trigger: 'blur',
         }],
       },
       form: {
@@ -453,33 +462,36 @@ export default {
   methods: {
     submit() {
       this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.confirmButtonLoading = true;
-          let api = '';
-          let param = null;
-          this.form.companyId = this.$store.state.fepUserInfo.companyId;
-          if (!this.customerId) {
-            api = 'addCustomer';
-            param = {
-              ...this.form,
-            };
+        console.log(this.$refs.formRegister.validateField('uscc'));
+        this.$refs.formRegister.validate((flag) => {
+          if (valid && flag) {
+            this.confirmButtonLoading = true;
+            let api = '';
+            let param = null;
+            this.form.companyId = this.$store.state.fepUserInfo.companyId;
+            if (!this.customerId) {
+              api = 'addCustomer';
+              param = {
+                ...this.form,
+              };
+            } else {
+              api = 'updateCustomer';
+              param = {
+                ...this.form,
+                id: this.customerId,
+              };
+            }
+            this.$api[api](param).then((res) => {
+              this.$message.success('保存成功');
+              this.$router.push('list');
+              this.customerId = res;
+            }).finally(() => {
+              this.confirmButtonLoading = false;
+            });
           } else {
-            api = 'updateCustomer';
-            param = {
-              ...this.form,
-              id: this.customerId,
-            };
+            this.$message.info('请按提示填写');
           }
-          this.$api[api](param).then((res) => {
-            this.$message.success('保存成功');
-            this.$router.push('list');
-            this.customerId = res;
-          }).finally(() => {
-            this.confirmButtonLoading = false;
-          });
-        } else {
-          this.$message.info('请按提示填写');
-        }
+        });
       });
     },
     getRolesList() {

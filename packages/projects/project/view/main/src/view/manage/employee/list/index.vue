@@ -430,7 +430,7 @@ export default {
     },
     downTemplate() {
       this.$api.downloadTemplate({
-        file: 'employee_import.xlsx',
+        file: 'emp_import.xlsx',
       }).then(blob => this.$utils.autoLoad(new Blob([blob]), '灵工导入模板.xlsx'));
     },
   },

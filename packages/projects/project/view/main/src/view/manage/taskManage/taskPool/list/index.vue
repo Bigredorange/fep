@@ -452,12 +452,11 @@ export default {
       this.form.workPlanEndTime = end;
     },
     exportData() {
-      this.$api.exportWorkOrder({
+      this.$api.exportWorkTaskPool({
         ...this.form,
       }).then((res) => {
         this.$api.fileDownloadById({
           fileId: res,
-          name: '工单.xlsx',
         });
       });
     },

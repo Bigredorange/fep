@@ -272,6 +272,10 @@ const api = {
   getUnconfirmList: ({ id, ...arg }) => get(`empworktask/list/${id}/pool`, arg),
   // 拒绝任务
   refuseEmpWorkTask: ({ empWorkTaskId }) => postJson(`empworktask/refuse/${empWorkTaskId}`),
+  // 导出任务
+  exportWorkTaskList: args => postJson('worktask/export/task_list', args),
+  // 导出任务
+  exportWorkTaskPool: args => postJson('worktask/export/pool', args),
   /**
    * 报表管理
    */
