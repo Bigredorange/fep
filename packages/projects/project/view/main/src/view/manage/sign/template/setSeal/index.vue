@@ -18,7 +18,7 @@
             v-for="(item, index) in sealStore.corpSeal[pageNum - 1]"
           >
             <vue-draggable-resizable
-              v-show="item.flag && isShow"
+              v-if="item.flag && coSeal.needSetSeal"
               :key="item.key"
               :w="140"
               :h="140"
@@ -286,7 +286,9 @@ export default {
       this.$api.getContractSeal({
         contractTemplateId: this.$route.query.id,
       }).then((res) => {
-        this.coSeal.sealData = res.coSeal.sealData;
+        if (res.coSeal) {
+          this.coSeal.sealData = res.coSeal.sealData;
+        }
         res.contractTempSealParams.forEach((item, index) => {
           let prop = '';
           if (item.type === 1) {
@@ -303,7 +305,7 @@ export default {
           obj.key = `${prop}${index}`;
           obj.page = item.posPage;
           obj.x = item.posX - 70;
-          obj.y = 842 - item.posY + 70;
+          obj.y = 842 - item.posY - 70;
           obj.type = item.type;
           obj.flag = true;
           sealArr.push(obj);
