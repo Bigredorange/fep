@@ -182,7 +182,7 @@ export default {
     };
   },
   created() {
-    this.companyId = this.$route.query.companyId;
+    this.form.companyId = this.$route.query.companyId;
     this.getList();
   },
   methods: {
