@@ -126,7 +126,7 @@ const asyncRoutes = [{
     {
       path: 'customer',
       component: RouterView,
-      redirect: 'customer/cus',
+      redirect: 'customer/account',
       meta: {
         title: '客户管理',
       },

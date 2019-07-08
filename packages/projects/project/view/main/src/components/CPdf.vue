@@ -53,6 +53,7 @@
 </template>
 <script>
 import PDFJS from 'pdfjs-dist';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min';
 
 export default {
   name: 'CPdf',
@@ -85,9 +86,12 @@ export default {
     const vm = this;
     // PDFJS.disableWorker = true;
     // console.log(PDFJS);
-    PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.js';
+    // PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.js';
     // PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjsWorker';
     // PDFJS.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js';
+    const pdfjsWorkerBlob = new Blob([pdfjsWorker]);
+    const pdfjsWorkerBlobURL = URL.createObjectURL(pdfjsWorkerBlob);
+    PDFJS.GlobalWorkerOptions.workerSrc = pdfjsWorkerBlobURL;
     PDFJS.getDocument(vm.pdfurl).then((pdfDoc_) => { // 初始化pdf
       vm.pdfDoc = pdfDoc_;
       vm.page_count = vm.pdfDoc.numPages;
