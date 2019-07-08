@@ -413,7 +413,7 @@ const api = {
   // 充值
   addCompanyBalance: ({ id, ...arg }) => postForm(`company/balance/${id}/add/credit`, arg),
   // 查看详情 type 1费用记录 2充值记录
-  getCompanyBalanceLog: ({ type, ...arg }) => get(`company/balance/log/${type}/list`, arg),
+  getCompanyBalanceLog: ({ type, companyId, ...arg }) => get(`company/balance/log/${type}/${companyId}/list/`, arg),
   /**
    * 企业合同管理
    */
