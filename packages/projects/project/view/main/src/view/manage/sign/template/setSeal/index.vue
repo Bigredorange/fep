@@ -421,6 +421,9 @@ export default {
     .item {
       margin-bottom: 10px;
       text-align: center;
+      img {
+        cursor: move;
+      }
       .img-fixed {
         width: 140px;
         height: 140px;

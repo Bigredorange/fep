@@ -566,6 +566,7 @@ export default {
         sync: true,
         onOk: () => this.$api.batchSendServiceReward({
           arr,
+          status: 1,
         }),
         onResolve: () => {
           this.$message.success('发送成功');
