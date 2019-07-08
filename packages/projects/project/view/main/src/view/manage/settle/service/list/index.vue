@@ -283,7 +283,7 @@
               保存
             </el-button>
             <el-button
-              v-if="row.status === 1 && row.status === 2"
+              v-if="row.status === 0 && row.status === 1"
               type="text"
               class="primary"
               @click="edit($index)"
@@ -291,6 +291,7 @@
               编辑
             </el-button>
             <el-button
+              v-if="row.status === 0 && row.status === 1"
               type="text"
               class="red"
               @click="deleteItem(row)"
@@ -583,21 +584,8 @@ export default {
       });
     },
     getStatusName(status) {
-      let name = '';
-      switch (status) {
-        case 0:
-          name = '未确认';
-          break;
-        case 1:
-          name = '确认中';
-          break;
-        case 2:
-          name = '已确认';
-          break;
-        case '':
-          break;
-      }
-      return name;
+      const temp = this.statusList.find(item => item.key === status);
+      return temp ? temp.label : '';
     },
     selectable(row) {
       return row.status !== 2 ? 1 : 0;
