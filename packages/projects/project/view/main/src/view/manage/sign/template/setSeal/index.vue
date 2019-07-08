@@ -314,13 +314,18 @@ export default {
       });
     },
     onDragEnd(x, y) {
-      console.log(x, y);
-      this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].x = x;
-      this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].y = y;
+      this.corpIndex = undefined;
+      if (this.corpIndex) {
+        this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].x = x;
+        this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].y = y;
+      }
     },
     onDragEndPer(x, y) {
-      this.sealStore.perSeal[this.pageNum - 1][this.perIndex].x = x;
-      this.sealStore.perSeal[this.pageNum - 1][this.perIndex].y = y;
+      this.perIndex = undefined;
+      if (this.perIndex) {
+        this.sealStore.perSeal[this.pageNum - 1][this.perIndex].x = x;
+        this.sealStore.perSeal[this.pageNum - 1][this.perIndex].y = y;
+      }
     },
     onDrop(e) {
       let prop = '';
@@ -350,19 +355,20 @@ export default {
       this.pageNum = num;
     },
     selectCorpItem(item) {
+      this.corpIndex = undefined;
       this.corpIndex = this.sealStore.corpSeal[this.pageNum - 1].indexOf(item);
     },
     selectPerItem(item) {
+      this.perIndex = undefined;
       this.perIndex = this.sealStore.perSeal[this.pageNum - 1].indexOf(item);
     },
     deleteCorpSeal(item) {
       const index = this.sealStore.corpSeal[this.pageNum - 1].indexOf(item);
       this.corpIndex = undefined;
-      console.log(index);
       this.sealStore.corpSeal[this.pageNum - 1].splice(index, 1);
     },
     deletePerSeal(index) {
-      console.log(index);
+      this.corpIndex = undefined;
       this.sealStore.perSeal[this.pageNum - 1].splice(index, 1);
     },
     handleDragType(e) {
