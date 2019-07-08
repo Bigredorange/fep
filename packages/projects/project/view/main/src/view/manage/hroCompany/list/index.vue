@@ -151,7 +151,7 @@
         <el-table-column
           align="center"
           label="认证状态"
-          :formatter="({ authStatus }) => authStatus === 1 ? '已认证' : '未认证'"
+          :formatter="({ authStatus }) => authStatus === 4 ? '已认证' : '未认证'"
         />
         <!-- <el-table-column
           prop="area"
