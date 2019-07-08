@@ -234,8 +234,9 @@
             >
               保存
             </el-button>
+            <!-- level为5的时候对应角色是客户 -->
             <el-button
-              v-if="row.status === 2 && $p('/settle/cusService/edit')"
+              v-if="(row.status === 2 || (row.status === 3 && $store.state.fepUserInfo.level !== 5)) && $p('/settle/cusService/edit')"
               type="text"
               class="primary"
               @click="edit($index)"
@@ -491,7 +492,6 @@ export default {
     },
     getStatusName(status) {
       const temp = this.statusList.find(item => item.key === status);
-      console.log(temp);
       return temp ? temp.label : '';
     },
     selectable(row) {

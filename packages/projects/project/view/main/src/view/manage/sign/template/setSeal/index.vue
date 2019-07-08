@@ -15,10 +15,10 @@
           @nextPage="handleNextPage"
         >
           <template
-            v-for="(item, index) in sealStore.corpSeal[pageNum - 1]"
+            v-for="(item) in sealStore.corpSeal[pageNum - 1]"
           >
             <vue-draggable-resizable
-              v-if="item.flag && coSeal.needSetSeal"
+              v-if="item.flag && isShow && coSeal.needSetSeal"
               :key="item.key"
               :w="140"
               :h="140"
@@ -40,7 +40,7 @@
                 >
                 <i
                   class="el-icon-close del-btn"
-                  @click="deleteCorpSeal(index)"
+                  @click.self="deleteCorpSeal(item)"
                 />
               </div>
             </vue-draggable-resizable>
@@ -100,7 +100,7 @@
                   mT+R6vgX+hiP42251imeYj26nHa/RjON9LPoBe8vFfr8GngXyAfIB8AMgHyAeAfPD98E84+P9xAJEPkA8A+eB78nA+k+oBkQ+QDwD5APkAkA+QDwD5APkA
                   kA+QDwD5APkAkA+QDwD5APkA+QCQD5APAPkA+QCQD5APAPkA+QCQD5APAPkA+QCQD5APkI8mAOQD5ANAPkA+AOQD5ANAPkA+AOQD5ANAPkA+AOQD5ANAPk
                   A+QD4A5APkA0A+QD4A5APkA0A++HP5V4ABAOIp+GjBqkUOAAAAAElFTkSuQmCC"
-                  @click="selectPerItem(index)"
+                  @dragstart="selectPerItem(item)"
                 >
                 <i
                   class="el-icon-close del-btn"
@@ -314,6 +314,7 @@ export default {
       });
     },
     onDragEnd(x, y) {
+      console.log(x, y);
       this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].x = x;
       this.sealStore.corpSeal[this.pageNum - 1][this.corpIndex].y = y;
     },
@@ -351,13 +352,17 @@ export default {
     selectCorpItem(item) {
       this.corpIndex = this.sealStore.corpSeal[this.pageNum - 1].indexOf(item);
     },
-    selectPerItem(index) {
-      this.perIndex = index;
+    selectPerItem(item) {
+      this.perIndex = this.sealStore.perSeal[this.pageNum - 1].indexOf(item);
     },
-    deleteCorpSeal(index) {
+    deleteCorpSeal(item) {
+      const index = this.sealStore.corpSeal[this.pageNum - 1].indexOf(item);
+      this.corpIndex = undefined;
+      console.log(index);
       this.sealStore.corpSeal[this.pageNum - 1].splice(index, 1);
     },
     deletePerSeal(index) {
+      console.log(index);
       this.sealStore.perSeal[this.pageNum - 1].splice(index, 1);
     },
     handleDragType(e) {

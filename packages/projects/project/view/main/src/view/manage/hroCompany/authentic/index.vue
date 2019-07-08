@@ -177,7 +177,7 @@
             >
               <img src="../../../../assets/icon/ing.png">
               <h3 class="label">
-                企业基本信息审核中...请耐心等待
+                企业对公账户审核中...请耐心等待
               </h3>
             </div>
           </div>

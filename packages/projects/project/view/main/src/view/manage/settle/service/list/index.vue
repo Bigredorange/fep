@@ -283,7 +283,7 @@
               保存
             </el-button>
             <el-button
-              v-else
+              v-if="row.status === 1 && row.status === 2"
               type="text"
               class="primary"
               @click="edit($index)"
@@ -348,6 +348,14 @@ export default {
         },
         {
           key: 2,
+          label: '已确认',
+        },
+        {
+          key: 3,
+          label: '已确认',
+        },
+        {
+          key: 4,
           label: '已确认',
         },
         {

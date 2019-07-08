@@ -174,6 +174,7 @@ export default {
         pageSize: 20,
         startTime: null,
         endTime: null,
+        companyId: null,
       },
       total: 0,
       curTab: 'fee',
@@ -181,6 +182,7 @@ export default {
     };
   },
   created() {
+    this.companyId = this.$route.query.companyId;
     this.getList();
   },
   methods: {

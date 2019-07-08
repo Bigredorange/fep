@@ -31,7 +31,12 @@
       <div class="con-label">
         <i class="line" />
         <label>模板属性设置</label>
-        <a class="href">查看模板实例</a>
+        <a
+          class="href"
+          @click="$refs.templateD.open()"
+        >
+          查看模板实例
+        </a>
       </div>
       <el-form
         ref="formUser"
@@ -142,10 +147,18 @@
         </div>
       </div>
     </div>
+    <detail
+      ref="templateD"
+    />
   </div>
 </template>
 <script>
+import Detail from './detail.vue';
+
 export default {
+  components: {
+    Detail,
+  },
   data() {
     return {
       tributeConfig: {

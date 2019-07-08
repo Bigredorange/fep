@@ -168,8 +168,8 @@ export default {
     recharge(row) {
       this.$refs.recharge.open(row);
     },
-    checkRecord() {
-      this.$router.push({ path: 'detail' });
+    checkRecord(row) {
+      this.$router.push({ path: 'detail', query: { companyId: row.companyId } });
     },
     selectDate(val) {
       const [start, end] = val;

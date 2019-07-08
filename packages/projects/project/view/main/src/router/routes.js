@@ -246,13 +246,6 @@ const asyncRoutes = [{
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/customer/contract/edit/index.vue'),
             },
-            {
-              path: 'detail',
-              meta: {
-                title: '合同详情',
-              },
-              component: () => import(/* webpackChunkName: "v-contractDetail" */ '../view/manage/customer/contract/detail/index.vue'),
-            },
           ],
         },
         {
@@ -379,13 +372,6 @@ const asyncRoutes = [{
                 title: '新增/编辑',
               },
               component: () => import(/* webpackChunkName: "v-edit" */ '../view/manage/hroCompany/contract/edit/index.vue'),
-            },
-            {
-              path: 'detail',
-              meta: {
-                title: '合同详情',
-              },
-              component: () => import(/* webpackChunkName: "v-contractDetail" */ '../view/manage/hroCompany/contract/detail/index.vue'),
             },
           ],
         },
@@ -876,13 +862,6 @@ const asyncRoutes = [{
                 title: '列表',
               },
               component: () => import(/* webpackChunkName: "v-contract" */ '../view/manage/sign/contract/list/index.vue'),
-            },
-            {
-              path: 'detail',
-              meta: {
-                title: '合同详情',
-              },
-              component: () => import(/* webpackChunkName: "v-detail" */ '../view/manage/sign/contract/detail/index.vue'),
             },
           ],
         },
