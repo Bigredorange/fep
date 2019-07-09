@@ -20,9 +20,7 @@
               label="HRO企业编号"
               prop="enterpriseNum"
             >
-              <p
-                :class="{'grey': !form.enterpriseNum}"
-              >
+              <p :class="{'grey': !form.enterpriseNum}">
                 {{ form.enterpriseNum || '此编号系统自动生成' }}
               </p>
             </el-form-item>
@@ -52,9 +50,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label="企业性质"
-            >
+            <el-form-item label="企业性质">
               <el-select
                 v-model="form.enterpriseNature"
                 placeholder="请选择企业性质"
@@ -72,17 +68,11 @@
               label="状态"
               prop="status"
             >
-              <el-radio-group
-                v-model="form.status"
-              >
-                <el-radio-button
-                  :label="1"
-                >
+              <el-radio-group v-model="form.status">
+                <el-radio-button :label="1">
                   启用
                 </el-radio-button>
-                <el-radio-button
-                  :label="0"
-                >
+                <el-radio-button :label="0">
                   禁用
                 </el-radio-button>
               </el-radio-group>
@@ -295,6 +285,7 @@ export default {
           }
           this.$api[api](param).then(() => {
             this.$message.success('保存成功');
+            this.updateLocalUserinfo();
             if (this.$store.state.fepUserInfo.level !== 3) {
               this.$router.push('list');
             }
@@ -336,6 +327,13 @@ export default {
     authentication() {
       this.$router.push({ path: 'authentic', query: { id: this.form.companyId } });
     },
+    updateLocalUserinfo() {
+      this.$api.getUserInfo().then((res) => {
+        sessionStorage.fepUserInfo = JSON.stringify(res);
+        this.$store.commit('setFepUserInfo', res);
+        this.$emit('update');
+      });
+    },
   },
 };
 </script>
@@ -353,8 +351,8 @@ export default {
     .area {
       margin-top: 10px;
       display: flex;
-      border-top: dashed 1px #ebf0f9;;
-      border-bottom: dashed 1px #ebf0f9;;
+      border-top: dashed 1px #ebf0f9;
+      border-bottom: dashed 1px #ebf0f9;
       padding: 10px;
       i.line {
         margin-right: 7px;
@@ -370,7 +368,7 @@ export default {
         line-height: 16px;
         font-size: 14px;
       }
-      /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+      /deep/ .el-radio-button__orig-radio:checked + .el-radio-button__inner {
         background-color: #356fb8;
         border-color: #356fb8;
       }
@@ -380,30 +378,30 @@ export default {
     }
     .con-code {
       padding: 10px 0;
-      border-bottom: dashed 1px #ebf0f9;;
+      border-bottom: dashed 1px #ebf0f9;
       i.line {
-          margin-right: 7px;
-          vertical-align: middle;
-          display: inline-block;
-          width: 4px;
-          height: 14px;
-          border-radius: 2px;
-          background-color: #ffc000;
-        }
-        label {
-          vertical-align: middle;
-          line-height: 16px;
-          font-size: 14px;
-        }
-        .btn {
-          margin-left: 20px;
-        }
+        margin-right: 7px;
+        vertical-align: middle;
+        display: inline-block;
+        width: 4px;
+        height: 14px;
+        border-radius: 2px;
+        background-color: #ffc000;
+      }
+      label {
+        vertical-align: middle;
+        line-height: 16px;
+        font-size: 14px;
+      }
+      .btn {
+        margin-left: 20px;
+      }
     }
   }
   .bot-menu {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
