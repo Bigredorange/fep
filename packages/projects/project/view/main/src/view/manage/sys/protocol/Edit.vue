@@ -147,6 +147,7 @@ export default {
       });
     },
     perview() {
+      this.form.content = this.$refs.Editor.getContent();
       if (!this.form.content) {
         this.$message.warning('请输入协议内容');
         return;
@@ -164,7 +165,7 @@ export default {
     padding: 18px;
     background: #fff;
     border-radius: 10px;
-    .one-col .el-form-item{
+    .one-col .el-form-item {
       width: 100% !important;
     }
     .top-direction {
@@ -176,8 +177,8 @@ export default {
     .area {
       margin-top: 10px;
       display: flex;
-      border-top: dashed 1px #ebf0f9;;
-      border-bottom: dashed 1px #ebf0f9;;
+      border-top: dashed 1px #ebf0f9;
+      border-bottom: dashed 1px #ebf0f9;
       padding: 10px;
       i.line {
         margin-right: 7px;
@@ -193,7 +194,7 @@ export default {
         line-height: 16px;
         font-size: 14px;
       }
-      /deep/ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+      /deep/ .el-radio-button__orig-radio:checked + .el-radio-button__inner {
         background-color: #356fb8;
         border-color: #356fb8;
       }

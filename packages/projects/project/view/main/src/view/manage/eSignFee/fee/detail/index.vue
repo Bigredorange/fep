@@ -39,9 +39,7 @@
             @change="selectDate"
           />
         </div>
-        <div
-          class="item"
-        >
+        <div class="item">
           <el-button
             type="primary"
             icon="el-icon-search"
@@ -49,9 +47,7 @@
           >
             查询
           </el-button>
-          <el-button
-            @click="reset"
-          >
+          <el-button @click="reset">
             重置
           </el-button>
         </div>
@@ -188,6 +184,7 @@ export default {
   methods: {
     reset() {
       this.$utils.initData.call(this, { include: ['form'] });
+      this.form.companyId = this.$route.query.companyId;
       this.getList();
     },
     getList() {
