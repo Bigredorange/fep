@@ -99,7 +99,6 @@
         <el-table-column
           type="selection"
           align="center"
-          :selectable="(row) => row.signStatus === 0"
         />
         <el-table-column
           prop="contractNo"
@@ -268,9 +267,12 @@ export default {
     batchDownloadContract() {
       let ids = [];
       ids = this.selection.map(item => item.id);
-      this.$api.batchDownloadContract(ids).then((res) => {
-        this.fileDownloadById({
+      this.$api.batchDownloadContract({
+        arr: ids,
+      }).then((res) => {
+        this.$api.fileDownloadById({
           fileId: res,
+          name: '灵工合同合集.zip',
         });
       });
     },

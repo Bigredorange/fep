@@ -101,26 +101,6 @@ export default {
     add() {
       this.$router.push('edit');
     },
-    batchDownloadContract() {
-      let ids = [];
-      ids = this.selection.map(item => item.id);
-      this.$api.batchDownloadContract(ids).then((res) => {
-        this.fileDownloadById({
-          fileId: res,
-        });
-      });
-    },
-    getContractDetail(id) {
-      this.$api.getContractDetail({
-        id,
-      }).then((res) => {
-        console.log(res);
-      });
-    },
-    getStatusName(row) {
-      const temp = this.statusList.find(item => item.key === row.contractStatus);
-      return temp.label;
-    },
   },
 };
 </script>

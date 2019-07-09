@@ -48,13 +48,28 @@ export default {
 .menu {
   display: flex;
   .menu-item {
-    padding: 20px 30px;
+    // padding: 20px 30px;
     cursor: pointer;
     &:hover {
       background: #356FB8;
     }
     &.active {
       background: #356FB8;
+    }
+  }
+  @media screen and (max-width: 1460px){
+    .menu-item {
+      padding: 20px 10px;
+    }
+  }
+  @media screen and (max-width: 1660px) and (min-width: 1460px){
+    .menu-item {
+      padding: 20px 20px;
+    }
+  }
+  @media screen and (min-width: 1660px){
+    .menu-item {
+      padding: 20px 30px;
     }
   }
 }
