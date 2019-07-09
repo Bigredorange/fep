@@ -249,7 +249,7 @@
         <el-table-column
           prop="workStartTime"
           align="center"
-          label="工作开始日期"
+          label="工作计划日期"
         />
         <el-table-column
           prop="validityPeriod"
